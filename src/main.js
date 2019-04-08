@@ -10,6 +10,8 @@ let app = ''
 
 firebase.initializeApp(config)
 
+export const db = firebase.database()
+
 firebase.auth().onAuthStateChanged(() => {
   if (!app) {
     /* eslint-disable no-new */
