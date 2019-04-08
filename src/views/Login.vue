@@ -1,18 +1,10 @@
 <template>
   <div class="login">
     <h3>Sign In</h3>
-    <input
-      type="text"
-      v-model="email"
-      placeholder="Email"
-    >
-    <br>
-    <input
-      type="password"
-      v-model="password"
-      placeholder="Password"
-    >
-    <br>
+    <input type="text" v-model="email" placeholder="Email" />
+    <br />
+    <input type="password" v-model="password" placeholder="Password" />
+    <br />
     <button @click="login">
       Connection
     </button>
@@ -30,14 +22,14 @@ import firebase from 'firebase'
 
 export default {
   name: 'Login',
-  data () {
+  data() {
     return {
       email: '',
       password: ''
     }
   },
   methods: {
-    login: function () {
+    login: function() {
       firebase
         .auth()
         .signInWithEmailAndPassword(this.email, this.password)

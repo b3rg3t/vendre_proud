@@ -6,22 +6,20 @@
 
 <script>
 // @ is an alias to /src
-import firebase from "firebase";
+import firebase from 'firebase'
 
 export default {
-  name: "home",
-  components: {
-    HelloWorld
-  },
+  name: 'Home',
+  components: {},
   methods: {
     logout: function() {
       firebase
         .auth()
         .signOut()
         .then(() => {
-          this.$router.replace("login");
-        });
+          this.$router.replace('login')
+        })
     }
   }
-};
+}
 </script>
