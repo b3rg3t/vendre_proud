@@ -1,6 +1,6 @@
 <template>
   <div class="home">
-    <h1>Welcome {{ getCurrentUser }}</h1>
+    <h1>Welcome {{ getCurrentUserEmail }}</h1>
     <button @click="logout">Logout</button>
   </div>
 </template>
@@ -23,7 +23,7 @@ export default {
     }
   },
   computed: {
-    getCurrentUser: () => {
+    getCurrentUserEmail: () => {
       return firebase.auth().currentUser.email
     }
   }
