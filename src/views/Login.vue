@@ -1,18 +1,14 @@
 <template>
   <div class="login">
     <h3>Sign In</h3>
-    <input type="text" v-model="email" placeholder="Email" />
-    <br />
-    <input type="password" v-model="password" placeholder="Password" />
-    <br />
-    <button @click="login">
-      Connection
-    </button>
+    <form @submit.prevent="login">
+      <input type="text" v-model="email" placeholder="Email" />
+      <input type="password" v-model="password" placeholder="Password" />
+      <button type="submit">Connection</button>
+    </form>
     <p>
       You don't have an account ? You can
-      <router-link to="/sign-up">
-        create one
-      </router-link>
+      <router-link to="/sign-up">create one</router-link>
     </p>
   </div>
 </template>

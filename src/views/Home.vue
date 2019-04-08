@@ -1,5 +1,6 @@
 <template>
   <div class="home">
+    <h1>Welcome {{ getCurrentUser }}</h1>
     <button @click="logout">Logout</button>
   </div>
 </template>
@@ -19,6 +20,11 @@ export default {
         .then(() => {
           this.$router.replace('login')
         })
+    }
+  },
+  computed: {
+    getCurrentUser: () => {
+      return firebase.auth().currentUser.email
     }
   }
 }

@@ -1,10 +1,10 @@
 <template>
   <div class="sign-up">
     <p>Let's create a new account !</p>
-    <form>
+    <form @submit.prevent="signUp">
       <input type="text" v-model="email" placeholder="Email" />
       <input type="password" v-model="password" placeholder="Password" />
-      <button @click="signUp">Sign Up</button>
+      <button type="submit">Sign Up</button>
     </form>
     <span>
       or go back to
