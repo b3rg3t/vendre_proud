@@ -4,31 +4,38 @@
       <div class="logo">
         <h2>#PROUD</h2>
       </div>
-      <nav>
-        <div class="btn1">
-          <button class="dropdown button">Groups</button>
-          <button class="button primary">Profile</button>
-          <button class="button alert" @click="logout">Logout</button>
-        </div>
+      <nav class="navigation">
+        <ul class="navigation__list">
+          <li class="navigation__list__item">
+            <button class="dropdown button">Groups</button>
+          </li>
+          <li class="navigation__list__item">
+            <button class="button primary">Profile</button>
+          </li>
+          <li class="navigation__list__item">
+            <button class="button alert" @click="logout">Logout</button>
+          </li>
+        </ul>
       </nav>
     </div>
-    <div class="main">
-      <div class="timeline">
-        <header>
-          <h2>Timeline</h2>
-          <GetMessage />
-        </header>
-      </div>
-      <div class="feedback">
-        <article>
-          <h4>FeedBack</h4>
-          <div class="input">
-            <InputField msg="Write a new mention" />
-          </div>
-        </article>
-      </div>
+
+    <div class="wrapper">
+      <main class="main">
+        <Timeline />
+      </main>
+      <aside class="sidebar">
+        <section class="feedback">
+          <header>
+            <h4>FeedBack</h4>
+          </header>
+        </section>
+        <section class="new-proud">
+          <InputField msg="Create new proud" />
+        </section>
+      </aside>
     </div>
-    <footer>
+
+    <footer class="footer">
       <div class="bottom">
         <div class="left">
           <span>Copywright PROUD</span>
@@ -46,12 +53,12 @@ import firebase, { functions } from 'firebase'
 
 // @ is an alias to /src
 import InputField from '@/components/InputField.vue'
-import GetMessage from '@/components/GetMessage.vue'
+import Timeline from '@/components/Timeline.vue'
 export default {
   name: 'home',
   components: {
     InputField,
-    GetMessage
+    Timeline
   },
   methods: {
     logout: function() {
@@ -76,39 +83,62 @@ export default {
 }
 .nav {
   display: flex;
-  padding: 10px 10px 0 0;
-  button {
-    margin-left: 5px;
-  }
-}
-.logo {
-  flex: 1;
-  margin-left: 30px;
+  justify-content: space-between;
+  align-items: center;
+  padding: 1rem;
+
   h2 {
     margin: 0;
+  }
+
+  .navigation {
+    margin: 0;
+    &__list {
+      list-style: none;
+      padding: 0;
+      margin: 0;
+      display: flex;
+      flex-direction: row;
+
+      &__item {
+        display: flex;
+        flex-direction: column;
+        justify-content: center;
+        align-items: center;
+        margin-left: 0.5rem;
+
+        button {
+          margin: 0;
+        }
+      }
+    }
+  }
+}
+
+.wrapper {
+  display: grid;
+  grid-template-columns: 1fr;
+
+  @media screen and (min-width: 768px) {
+    grid-template-columns: 4fr 3fr;
   }
 }
 .btn1 {
   flex: 1;
 }
 .main {
-  display: flex;
-  text-align: center;
-  .timeline {
-    flex: 1 1 300px;
-  }
-  .feedback {
-    flex: 1 1 300px;
-  }
 }
 .input {
   margin-top: 500px;
 }
-footer {
-  position: absolute;
-  bottom: 10px;
+.footer {
+  background: #fff;
+  position: fixed;
+  bottom: 0;
+  padding: 1rem;
   display: flex;
   width: 100%;
+  box-shadow: 0px 0px 30px rgba(46, 139, 87, 0.16);
   .bottom {
     width: 100%;
     display: flex;
@@ -121,5 +151,9 @@ footer {
       text-align: center;
     }
   }
+}
+
+.sidebar {
+  padding: 1rem;
 }
 </style>

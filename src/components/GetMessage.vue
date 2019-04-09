@@ -1,6 +1,6 @@
 <template>
-  <div class="message">
-    <div v-for="(message, key) in messages" :key="key">
+  <div class="timeline">
+    <div v-show="messages" v-for="(message, key) in messages" :key="key">
       <Proud
         :owner="message.owner"
         :message="message.message"
@@ -18,7 +18,7 @@ export default {
   name: 'messageRecieve',
   data() {
     return {
-      messages
+      messages: false
     }
   },
   components: {
@@ -30,13 +30,15 @@ export default {
         this.messages = snapshot.val()
       })
     }
-    //     removeMessage(message) {
-    //       messagesRef.child(message['.key']).remove()
-    //       toastr.success('Message removed successfully')
-    //     }
   },
   beforeMount() {
     this.getMessage()
   }
 }
 </script>
+
+<style lang="scss" scoped>
+.timeline {
+  padding: 1rem;
+}
+</style>
