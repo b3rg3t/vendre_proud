@@ -10,6 +10,18 @@
       You don't have an account ? You can
       <router-link to="/sign-up">create one</router-link>
     </p>
+    <p>
+      or Sign In With Google
+      <br />
+      <button @click="googleLogin" class="social-button">
+        <img src="../assets/google-logo.png" alt="Google Logo" />
+      </button>
+    </p>
+    <p>
+      <button @click="facebookLogin" class="social-button">
+        <img src="../assets/facebook-logo.png" alt="Facebook Logo" />
+      </button>
+    </p>
   </div>
 </template>
 
@@ -25,18 +37,40 @@ export default {
     }
   },
   methods: {
-    login: function() {
+    login() {
       firebase
         .auth()
         .signInWithEmailAndPassword(this.email, this.password)
-        .then(
-          user => {
-            this.$router.replace('home')
-          },
-          err => {
-            throw Error(`Oops. ${err.message}`)
-          }
-        )
+        .then(user => {
+          this.$router.replace('home')
+        })
+        .catch(err => {
+          alert('Oops. ' + err.message)
+        })
+    },
+    facebookLogin() {
+      const provider = new firebase.auth.FacebookAuthProvider()
+      firebase
+        .auth()
+        .signInWithPopup(provider)
+        .then(result => {
+          this.$router.replace('home')
+        })
+        .catch(err => {
+          alert('Oops. ' + err.message)
+        })
+    },
+    googleLogin() {
+      const provider = new firebase.auth.GoogleAuthProvider()
+      firebase
+        .auth()
+        .signInWithPopup(provider)
+        .then(result => {
+          this.$router.replace('home')
+        })
+        .catch(err => {
+          alert('Oops. ' + err.message)
+        })
     }
   }
 }
@@ -64,5 +98,22 @@ p {
 p a {
   text-decoration: underline;
   cursor: pointer;
+}
+.social-button {
+  width: 75px;
+  background: white;
+  padding: 10px;
+  border-radius: 100%;
+  box-shadow: 0 2px 4px 0 rgba(0, 0, 0, 0.2);
+  outline: 0;
+  border: 0;
+}
+
+.social-button:active {
+  box-shadow: 0 2px 4px 0 rgba(0, 0, 0, 0.1);
+}
+
+.social-button img {
+  width: 100%;
 }
 </style>
