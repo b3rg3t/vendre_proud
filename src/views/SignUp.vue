@@ -15,7 +15,7 @@
 
 <script>
 import firebase from 'firebase'
-import { users } from '../refs.js'
+import { users } from '../main.js'
 
 export default {
   name: 'SignUp',
@@ -32,8 +32,17 @@ export default {
         .createUserWithEmailAndPassword(this.email, this.password)
         .then(
           auth => {
+            const {
+              user: { email, uid }
+            } = auth
+
+            const userObj = {
+              email,
+              uid
+            }
+
+            users.child(uid).set(userObj)
             this.$router.replace('home')
-            users.push(auth.user.email)
           },
           err => {
             throw Error(`Oops. ${err.message}`)

@@ -10,7 +10,11 @@ let app = ''
 
 firebase.initializeApp(config)
 
-export const db = firebase.database()
+const db = firebase.database()
+
+// refs
+export const users = db.ref('users')
+export const messages = db.ref('messages')
 
 firebase.auth().onAuthStateChanged(() => {
   if (!app) {
