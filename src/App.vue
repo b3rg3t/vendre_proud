@@ -1,6 +1,6 @@
 <template>
   <div id="app">
-    <img alt="Vue logo" src="./assets/logo.png" />
+    <img class="v" alt="Vue logo" src="./assets/logo.png" />
     <router-view />
   </div>
 </template>
@@ -25,7 +25,12 @@ body {
   text-align: center;
   color: #2c3e50;
 }
-
+.v {
+  height: 40px;
+  position: fixed;
+  left: 20px;
+  top: 20px;
+}
 .btn {
   @extend .button;
   background: seagreen;

@@ -38,7 +38,8 @@ export default {
 
             const userObj = {
               email,
-              uid
+              uid,
+              messages: true
             }
 
             users.child(uid).set(userObj)
