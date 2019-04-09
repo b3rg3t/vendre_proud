@@ -27,7 +27,8 @@ export default {
       const { uid } = firebase.auth().currentUser
       const proud = {
         message: this.newMessage.message,
-        owner: uid
+        owner: uid,
+        created: firebase.database.ServerValue.TIMESTAMP
       }
       const messagePush = messages.push(proud)
       this.newMessage.message = ''
@@ -37,10 +38,6 @@ export default {
         .child('messages')
         .update({ [messageId]: true })
     }
-    // removeMessage: function(message) {
-    //   messagesRef.child(message['.key']).remove()
-    //   toastr.success('Message removed successfully')
-    // }
   }
 }
 </script>
