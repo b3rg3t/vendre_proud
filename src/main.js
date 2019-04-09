@@ -2,20 +2,19 @@ import Vue from 'vue'
 import firebase from 'firebase'
 import App from './App.vue'
 import router from './router'
+import config from './config'
 
 Vue.config.productionTip = false
 
 let app = ''
-const config = {
-  apiKey: 'AIzaSyD50HAHTNxNVi5mhLISv5qMQq5maA8T8PA',
-  authDomain: 'proud-e4833.firebaseapp.com',
-  databaseURL: 'https://proud-e4833.firebaseio.com',
-  projectId: 'proud-e4833',
-  storageBucket: 'proud-e4833.appspot.com',
-  messagingSenderId: '667017411392'
-}
 
 firebase.initializeApp(config)
+
+const db = firebase.database()
+
+// refs
+export const users = db.ref('users')
+export const messages = db.ref('messages')
 
 firebase.auth().onAuthStateChanged(() => {
   if (!app) {

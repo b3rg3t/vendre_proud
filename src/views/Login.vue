@@ -1,12 +1,19 @@
 <template>
   <div class="login">
     <h3>Sign In</h3>
-    <input type="text" v-model="email" placeholder="Email" /><br />
-    <input type="password" v-model="password" placeholder="Password" /><br />
-    <button @click="login">Connection</button>
+    <form class="login-form" @submit.prevent="login">
+      <input type="text" v-model="email" placeholder="Email" />
+      <input type="password" v-model="password" placeholder="Password" />
+      <button class="btn" type="submit">Connection</button>
+    </form>
     <p>
-      or Sign In With Google <br />
-      <button @click="socialLogin" class="social-button">
+      You don't have an account ? You can
+      <router-link to="/sign-up">create one</router-link>
+    </p>
+    <p>
+      or Sign In With Google
+      <br />
+      <button @click="googleLogin" class="social-button">
         <img src="../assets/google-logo.png" alt="Google Logo" />
       </button>
     </p>
@@ -15,23 +22,19 @@
         <img src="../assets/facebook-logo.png" alt="Facebook Logo" />
       </button>
     </p>
-    <p>
-      You don't have an account ? You can
-      <router-link to="/sign-up">create one</router-link>
-    </p>
   </div>
 </template>
 
 <script>
-import firebase from "firebase";
+import firebase from 'firebase'
 
 export default {
-  name: "login",
+  name: 'Login',
   data() {
     return {
-      email: "",
-      password: ""
-    };
+      email: '',
+      password: ''
+    }
   },
   methods: {
     login() {
@@ -39,45 +42,53 @@ export default {
         .auth()
         .signInWithEmailAndPassword(this.email, this.password)
         .then(user => {
-          this.$router.replace("home");
+          this.$router.replace('home')
         })
         .catch(err => {
-          alert("Oops. " + err.message);
-        });
+          alert('Oops. ' + err.message)
+        })
     },
     facebookLogin() {
-      const provider = new firebase.auth.FacebookAuthProvider();
+      const provider = new firebase.auth.FacebookAuthProvider()
       firebase
         .auth()
         .signInWithPopup(provider)
         .then(result => {
-          this.$router.replace("home");
+          this.$router.replace('home')
         })
         .catch(err => {
-          alert("Oops. " + err.message);
-        });
+          alert('Oops. ' + err.message)
+        })
     },
-    socialLogin() {
-      const provider = new firebase.auth.GoogleAuthProvider();
+    googleLogin() {
+      const provider = new firebase.auth.GoogleAuthProvider()
       firebase
         .auth()
         .signInWithPopup(provider)
         .then(result => {
-          this.$router.replace("home");
+          this.$router.replace('home')
         })
         .catch(err => {
-          alert("Oops. " + err.message);
-        });
+          alert('Oops. ' + err.message)
+        })
     }
   }
-};
+}
 </script>
 
-<style scoped>
+<style lang="scss" scoped>
 /* "scoped" attribute limit the CSS to this component only */
 .login {
   margin-top: 40px;
 }
+
+.login-form {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+}
+
 input {
   margin: 10px 0;
   width: 20%;

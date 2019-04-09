@@ -1,28 +1,38 @@
 <template>
   <div id="app">
-    <img alt="Vue logo" src="./assets/logo.png">
-    <router-view/>
+    <img alt="Vue logo" src="./assets/logo.png" />
+    <router-view />
   </div>
 </template>
 
-<style>
+<style lang="scss">
+@import '~foundation-sites/scss/foundation.scss';
+@include foundation-button;
+* {
+  box-sizing: border-box;
+}
+
+body {
+  padding: 0;
+  margin: 0;
+}
+
 #app {
-  font-family: 'Avenir', Helvetica, Arial, sans-serif;
+  font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Helvetica,
+    Arial, sans-serif, 'Apple Color Emoji', 'Segoe UI Emoji', 'Segoe UI Symbol';
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
   text-align: center;
   color: #2c3e50;
 }
-#nav {
-  padding: 30px;
-}
 
-#nav a {
-  font-weight: bold;
-  color: #2c3e50;
-}
+.btn {
+  @extend .button;
+  background: seagreen;
+  border-radius: 5px;
 
-#nav a.router-link-exact-active {
-  color: #42b983;
+  &:hover {
+    background: darkseagreen;
+  }
 }
 </style>

@@ -1,56 +1,75 @@
 <template>
   <div class="sign-up">
     <p>Let's create a new account !</p>
-    <input type="text" v-model="email" placeholder="Email"><br>
-    <input type="password" v-model="password" placeholder="Password"><br>
-    <button @click="signUp">Sign Up</button>
-    <span>or go back to <router-link to="/login">login</router-link>.</span>
+    <form @submit.prevent="signUp">
+      <input type="text" v-model="email" placeholder="Email" />
+      <input type="password" v-model="password" placeholder="Password" />
+      <button type="submit">Sign Up</button>
+    </form>
+    <span>
+      or go back to
+      <router-link to="/login">login</router-link>
+    </span>
   </div>
 </template>
 
- <script>
-  import firebase from 'firebase';
+<script>
+import firebase from 'firebase'
+import { users } from '../main.js'
 
-  export default {
-    name: 'signUp',
-    data() {
-      return {
-        email: '',
-        password: ''
-      }
-    },
-    methods: {
-      signUp: function() {
-        firebase.auth().createUserWithEmailAndPassword(this.email, this.password).then(
-          (user) => {
+export default {
+  name: 'SignUp',
+  data() {
+    return {
+      email: '',
+      password: ''
+    }
+  },
+  methods: {
+    signUp: function() {
+      firebase
+        .auth()
+        .createUserWithEmailAndPassword(this.email, this.password)
+        .then(
+          auth => {
+            const {
+              user: { email, uid }
+            } = auth
+
+            const userObj = {
+              email,
+              uid
+            }
+
+            users.child(uid).set(userObj)
             this.$router.replace('home')
           },
-          (err) => {
-            alert('Oops. ' + err.message)
+          err => {
+            throw Error(`Oops. ${err.message}`)
           }
-        );
-      }
+        )
     }
   }
+}
 </script>
 
- <style scoped>
-  .sign-up {
-    margin-top: 40px;
-  }
-  input {
-    margin: 10px 0;
-    width: 20%;
-    padding: 15px;
-  }
-  button {
-    margin-top: 10px;
-    width: 10%;
-    cursor: pointer;
-  }
-  span {
-    display: block;
-    margin-top: 20px;
-    font-size: 11px;
-  }
+<style scoped>
+.sign-up {
+  margin-top: 40px;
+}
+input {
+  margin: 10px 0;
+  width: 20%;
+  padding: 15px;
+}
+button {
+  margin-top: 10px;
+  width: 10%;
+  cursor: pointer;
+}
+span {
+  display: block;
+  margin-top: 20px;
+  font-size: 11px;
+}
 </style>
