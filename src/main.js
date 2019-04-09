@@ -10,6 +10,12 @@ let app = ''
 
 firebase.initializeApp(config)
 
+const db = firebase.database()
+
+// refs
+export const users = db.ref('users')
+export const messages = db.ref('messages')
+
 firebase.auth().onAuthStateChanged(() => {
   if (!app) {
     /* eslint-disable no-new */

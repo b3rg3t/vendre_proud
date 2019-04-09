@@ -1,10 +1,10 @@
 <template>
   <div class="login">
     <h3>Sign In</h3>
-    <form @submit.prevent="login">
+    <form class="login-form" @submit.prevent="login">
       <input type="text" v-model="email" placeholder="Email" />
       <input type="password" v-model="password" placeholder="Password" />
-      <button type="submit">Connection</button>
+      <button class="btn" type="submit">Connection</button>
     </form>
     <p>
       You don't have an account ? You can
@@ -76,11 +76,19 @@ export default {
 }
 </script>
 
-<style scoped>
+<style lang="scss" scoped>
 /* "scoped" attribute limit the CSS to this component only */
 .login {
   margin-top: 40px;
 }
+
+.login-form {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+}
+
 input {
   margin: 10px 0;
   width: 20%;
