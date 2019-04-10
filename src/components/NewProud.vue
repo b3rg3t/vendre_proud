@@ -34,10 +34,7 @@ export default {
       const { uid } = firebase.auth().currentUser
       const proud = {
         message: this.newProud.message,
-<<<<<<< HEAD:src/components/NewProud.vue
         mentions: false,
-=======
->>>>>>> master:src/components/NewProud.vue
         owner: uid,
         created: firebase.database.ServerValue.TIMESTAMP
       }

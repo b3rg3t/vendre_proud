@@ -1,5 +1,4 @@
 <template>
-<<<<<<< HEAD
   <div class="create-group">
     <h3>Create a new group</h3>
     <form @submit.prevent="createGroup">
@@ -43,23 +42,10 @@ export default {
       this.$router.replace('groups')
     }
   }
-=======
-  <div></div>
-</template>
-
-<script>
-export default {
-  name: 'Create-Group',
-  data: () => {
-    return {}
-  },
-  methods: () => {}
->>>>>>> master
 }
 </script>
 
 <style lang="scss" scoped>
-<<<<<<< HEAD
 .create-group {
   display: flex;
   flex-direction: column;
@@ -81,6 +67,4 @@ export default {
     }
   }
 }
-=======
->>>>>>> master
 </style>

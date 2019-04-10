@@ -5,15 +5,11 @@
         <div class="logo">
           <h2 class="logo__text">#PROUD</h2>
         </div>
-<<<<<<< HEAD
         <Navigation
           v-show="user"
           :userName="user.displayName"
           :logout="logout"
         />
-=======
-        <Navigation />
->>>>>>> master
       </div>
     </header>
     <div class="content-wrapper grid-container">
@@ -21,23 +17,13 @@
     </div>
     <footer class="footer">
       <div class="bottom">
-<<<<<<< HEAD
         <span>Copywright PROUD</span>
-=======
-        <div class="left">
-          <span>Copywright PROUD</span>
-        </div>
-        <div class="right">
-          <button @click="showTimeline">New</button>
-        </div>
->>>>>>> master
       </div>
     </footer>
   </div>
 </template>
 
 <script>
-<<<<<<< HEAD
 import firebase from 'firebase'
 import { users } from '@/main'
 import Navigation from '@/components/Navigation'
@@ -77,13 +63,6 @@ export default {
   },
   beforeMount() {
     this.checkUser()
-=======
-import Navigation from '@/components/Navigation'
-export default {
-  name: 'App',
-  components: {
-    Navigation
->>>>>>> master
   }
 }
 </script>
@@ -91,7 +70,6 @@ export default {
 <style lang="scss">
 @import '~foundation-sites/scss/foundation.scss';
 @include foundation-button;
-<<<<<<< HEAD
 
 // Menu-based containers
 @include foundation-menu;
@@ -100,8 +78,6 @@ export default {
 @include foundation-badge;
 
 // Grid containers
-=======
->>>>>>> master
 @include foundation-xy-grid-classes(
   $base-grid: true,
   $margin-grid: true,
@@ -112,10 +88,6 @@ export default {
   $vertical-grid: true,
   $frame-grid: true
 );
-<<<<<<< HEAD
-
-=======
->>>>>>> master
 * {
   box-sizing: border-box;
 }
@@ -148,15 +120,10 @@ body {
   border-bottom: 1px solid lightgrey;
   margin-bottom: 1.5rem;
   padding: 1rem;
-<<<<<<< HEAD
   vertical-align: middle;
 
   &__wrapper {
     height: 42px;
-=======
-
-  &__wrapper {
->>>>>>> master
     display: flex;
     justify-content: space-between;
     align-items: center;
@@ -180,19 +147,8 @@ body {
   .bottom {
     width: 100%;
     display: flex;
-<<<<<<< HEAD
     justify-content: center;
     align-items: center;
-=======
-    .left {
-      flex: 1 1 auto;
-      text-align: center;
-    }
-    .right {
-      flex: 1 1 auto;
-      text-align: center;
-    }
->>>>>>> master
   }
 }
 </style>

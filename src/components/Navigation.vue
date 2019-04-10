@@ -2,7 +2,6 @@
   <nav class="navigation">
     <ul class="navigation__list">
       <li class="navigation__list__item">
-<<<<<<< HEAD
         <router-link class="navigation__list__item__link" to="home">
           Home
         </router-link>
@@ -54,15 +53,6 @@
             </a>
           </li>
         </ul>
-=======
-        <button class="dropdown button">Groups</button>
-      </li>
-      <li class="navigation__list__item">
-        <button class="button primary">Profile</button>
-      </li>
-      <li class="navigation__list__item">
-        <button class="button alert" @click="logout">Logout</button>
->>>>>>> master
       </li>
     </ul>
   </nav>
@@ -72,7 +62,6 @@
 export default {
   name: 'Navigation',
   data: () => {
-<<<<<<< HEAD
     return {
       profileDropdown: false,
       groupDropdown: false
@@ -93,12 +82,6 @@ export default {
     logout: Function,
     userName: String
   }
-=======
-    return {}
-  },
-  methods: {},
-  props: {}
->>>>>>> master
 }
 </script>
 
@@ -111,18 +94,14 @@ export default {
     margin: 0;
     display: flex;
     flex-direction: row;
-<<<<<<< HEAD
     justify-content: flex-end;
     align-items: center;
-=======
->>>>>>> master
 
     &__item {
       display: flex;
       flex-direction: column;
       justify-content: center;
       align-items: center;
-<<<<<<< HEAD
       margin-left: 2rem;
 
       &__link {
@@ -146,14 +125,5 @@ export default {
   height: 42px;
   border: 1px solid rgba(44, 62, 80, 0.2);
   border-radius: 50%;
-=======
-      margin-left: 0.5rem;
-
-      button {
-        margin: 0;
-      }
-    }
-  }
->>>>>>> master
 }
 </style>
