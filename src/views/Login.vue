@@ -45,7 +45,7 @@ export default {
           this.$router.replace('home')
         })
         .catch(err => {
-          alert('Oops. ' + err.message)
+          throw Error(`Oops. ${err.message}`)
         })
     },
     facebookLogin() {
@@ -57,7 +57,7 @@ export default {
           this.$router.replace('home')
         })
         .catch(err => {
-          alert('Oops. ' + err.message)
+          throw Error(`Oops. ${err.message}`)
         })
     },
     googleLogin() {
@@ -69,7 +69,7 @@ export default {
           this.$router.replace('home')
         })
         .catch(err => {
-          alert('Oops. ' + err.message)
+          throw Error(`Oops. ${err.message}`)
         })
     }
   }

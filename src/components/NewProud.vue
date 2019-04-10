@@ -27,13 +27,16 @@ export default {
     }
   },
   props: {
-    msg: String
+    msg: String,
+    currentGroup: String
   },
   methods: {
     addMessage: function() {
       const { uid } = firebase.auth().currentUser
       const proud = {
         message: this.newProud.message,
+        mentions: false,
+        group: this.currentGroup,
         owner: uid,
         created: firebase.database.ServerValue.TIMESTAMP
       }

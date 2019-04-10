@@ -44,7 +44,8 @@ export default {
               email,
               uid,
               groups: false,
-              messages: false
+              messages: false,
+              mentions: false
             }
 
             users.child(uid).set(userObj)

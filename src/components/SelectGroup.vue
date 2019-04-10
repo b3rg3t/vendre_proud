@@ -14,11 +14,13 @@
 export default {
   name: 'SelectGroups',
   data: () => {
-    return {}
+    return {
+      groups: false
+    }
   },
   methods: {},
   props: {
-    groups: [Array, Object]
+    groups: [Array, Object, Boolean]
   }
 }
 </script>
