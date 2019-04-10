@@ -17,10 +17,7 @@
     </div>
     <footer class="footer">
       <div class="bottom">
-        <div class="left">
-          <span>Copywright PROUD</span>
-        </div>
-        <div class="right"></div>
+        <span>Copywright PROUD</span>
       </div>
     </footer>
   </div>
@@ -151,14 +148,8 @@ body {
   .bottom {
     width: 100%;
     display: flex;
-    .left {
-      flex: 1 1 auto;
-      text-align: center;
-    }
-    .right {
-      flex: 1 1 auto;
-      text-align: center;
-    }
+    justify-content: center;
+    align-items: center;
   }
 }
 </style>
