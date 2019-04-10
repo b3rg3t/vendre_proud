@@ -1,6 +1,5 @@
 <template>
   <div class="prouds">
-<<<<<<< HEAD
     <div v-show="prouds" v-for="(proud, key) in prouds" :key="key">
       <Proud
         :owner="proud.owner"
@@ -9,16 +8,6 @@
       />
     </div>
     <div v-show="!prouds" class="no-prouds callout secondary">
-=======
-    <div v-show="messages" v-for="(message, key) in messages" :key="key">
-      <Proud
-        :owner="message.owner"
-        :message="message.message"
-        :created="message.created"
-      />
-    </div>
-    <div v-show="!messages" class="no-prouds callout secondary">
->>>>>>> master
       <h5>No prouds to show</h5>
       <p>
         Your group have not posted any prouds. Be the first one to be #proud
