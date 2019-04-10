@@ -102,7 +102,7 @@ export default {
       flex-direction: column;
       justify-content: center;
       align-items: center;
-      margin-left: 1rem;
+      margin-left: 2rem;
 
       &__link {
         text-decoration: none;

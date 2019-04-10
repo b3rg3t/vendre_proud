@@ -1,12 +1,18 @@
 <template>
-  <div class="groups">
-    <h3>Add your first group</h3>
-    <SelectGroup v-show="groups" :groups="groups" />
-    <p v-show="message">
-      No groups exsists, please create a new group
-      <router-link to="create-group">here</router-link>
-    </p>
-  </div>
+  <section>
+    <h2>Groups</h2>
+    <div class="groups">
+      <h3>Avaliable groups</h3>
+      <SelectGroup v-show="groups" :groups="groups" />
+      <p v-show="message">
+        No groups exsists, please create a new group
+        <router-link to="create-group">here</router-link>
+      </p>
+    </div>
+    <router-link v-show="groups" to="create-group">
+      Create new group
+    </router-link>
+  </section>
 </template>
 
 <script>
@@ -48,6 +54,7 @@ export default {
   max-width: 500px;
   margin-left: auto;
   margin-right: auto;
+  margin-bottom: 1rem;
 
   border: 1px solid lightgray;
   border-radius: 8px;

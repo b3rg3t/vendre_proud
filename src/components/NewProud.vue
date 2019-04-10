@@ -27,8 +27,7 @@ export default {
     }
   },
   props: {
-    msg: String,
-    currentGroup: String
+    msg: String
   },
   methods: {
     addMessage: function() {
@@ -36,7 +35,6 @@ export default {
       const proud = {
         message: this.newProud.message,
         mentions: false,
-        group: this.currentGroup,
         owner: uid,
         created: firebase.database.ServerValue.TIMESTAMP
       }

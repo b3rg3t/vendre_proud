@@ -78,6 +78,8 @@ export default {
 @include foundation-menu;
 @include foundation-menu-icon;
 
+@include foundation-badge;
+
 // Grid containers
 @include foundation-xy-grid-classes(
   $base-grid: true,

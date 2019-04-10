@@ -5,22 +5,25 @@
       v-for="(group, index) in groups"
       v-bind:key="index"
     >
-      <Group :name="group.name" :memberCount="group.members.length" />
+      <Group :group="group" />
     </section>
   </div>
 </template>
 
 <script>
+import Group from '@/components/Group'
 export default {
   name: 'SelectGroups',
   data: () => {
     return {
-      groups: false
+      memberCount: 0
     }
   },
-  methods: {},
   props: {
     groups: [Array, Object, Boolean]
+  },
+  components: {
+    Group
   }
 }
 </script>
