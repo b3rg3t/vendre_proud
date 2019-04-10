@@ -44,8 +44,12 @@ export default {
               email,
               uid,
               groups: false,
+<<<<<<< HEAD
               messages: false,
               mentions: false
+=======
+              messages: false
+>>>>>>> master
             }
 
             users.child(uid).set(userObj)

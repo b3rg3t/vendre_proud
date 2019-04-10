@@ -3,9 +3,13 @@ import Vue from 'vue'
 import Router from 'vue-router'
 
 import Home from '@/views/Home'
+<<<<<<< HEAD
 import Profile from '@/views/Profile'
 import Groups from '@/views/Groups'
 import CreateGroup from '@/views/CreateGroup'
+=======
+import Groups from '@/views/Groups'
+>>>>>>> master
 import Login from '@/views/Login'
 import SignUp from '@/views/SignUp'
 
@@ -46,6 +50,7 @@ const router = new Router({
       meta: {
         requiresAuth: true
       }
+<<<<<<< HEAD
     },
     {
       path: '/profile',
@@ -62,6 +67,8 @@ const router = new Router({
       meta: {
         requiresAuth: true
       }
+=======
+>>>>>>> master
     }
   ]
 })

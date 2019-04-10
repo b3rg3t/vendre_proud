@@ -1,4 +1,5 @@
 <template>
+<<<<<<< HEAD
   <section>
     <h2>Groups</h2>
     <div class="groups">
@@ -13,6 +14,16 @@
       Create new group
     </router-link>
   </section>
+=======
+  <div class="groups">
+    <h3>Add your first group</h3>
+    <SelectGroup v-show="groups" :groups="groups" />
+    <p v-show="message">
+      No groups exsists, please create a new group
+      <router-link to="create-group">here</router-link>
+    </p>
+  </div>
+>>>>>>> master
 </template>
 
 <script>
@@ -24,8 +35,12 @@ export default {
   data: () => {
     return {
       groups: false,
+<<<<<<< HEAD
       message: false,
       userId: ''
+=======
+      message: false
+>>>>>>> master
     }
   },
   methods: {
@@ -33,6 +48,7 @@ export default {
       groups.on('value', snapshot => {
         const groups = snapshot.val()
         if (groups) {
+<<<<<<< HEAD
           var newGroups
           Object.keys(groups).forEach(groupID => {
             newGroups = {
@@ -44,22 +60,31 @@ export default {
             }
           })
           this.groups = newGroups
+=======
+          this.groups = groups
+>>>>>>> master
           this.message = false
         } else {
           this.message = true
         }
       })
+<<<<<<< HEAD
     },
     getUserId() {
       this.userId = firebase.auth().currentUser.uid
+=======
+>>>>>>> master
     }
   },
   components: {
     SelectGroup
+<<<<<<< HEAD
   },
   beforeMount() {
     this.getGroups()
     this.getUserId()
+=======
+>>>>>>> master
   }
 }
 </script>
@@ -69,7 +94,10 @@ export default {
   max-width: 500px;
   margin-left: auto;
   margin-right: auto;
+<<<<<<< HEAD
   margin-bottom: 1rem;
+=======
+>>>>>>> master
 
   border: 1px solid lightgray;
   border-radius: 8px;
