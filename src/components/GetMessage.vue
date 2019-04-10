@@ -11,14 +11,13 @@
 </template>
 
 <script>
-import firebase from 'firebase'
 import { messages } from '@/main.js'
 import Proud from './Proud.vue'
 export default {
   name: 'messageRecieve',
   data() {
     return {
-      messages: false
+      messages: null
     }
   },
   components: {

@@ -16,7 +16,7 @@
 
 <script>
 import firebase from 'firebase'
-import { messages, users } from '../main.js'
+import { messages, users } from '@/main.js'
 export default {
   name: 'InputField',
   data() {
