@@ -44,7 +44,7 @@ export default {
               email,
               uid,
               groups: false,
-              messages: false,
+              prouds: false,
               mentions: false
             }
 

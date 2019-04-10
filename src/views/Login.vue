@@ -27,6 +27,7 @@
 
 <script>
 import firebase from 'firebase'
+import { users } from '@/main'
 
 export default {
   name: 'Login',
@@ -53,7 +54,22 @@ export default {
       firebase
         .auth()
         .signInWithPopup(provider)
-        .then(result => {
+        .then(auth => {
+          const {
+            additionalUserInfo: { isNewUser },
+            user: { email, displayName, uid }
+          } = auth
+          if (isNewUser) {
+            const userObj = {
+              displayName,
+              email,
+              uid,
+              groups: false,
+              mentions: false,
+              prouds: false
+            }
+            users.child(uid).set(userObj)
+          }
           this.$router.replace('home')
         })
         .catch(err => {
@@ -65,7 +81,22 @@ export default {
       firebase
         .auth()
         .signInWithPopup(provider)
-        .then(result => {
+        .then(auth => {
+          const {
+            additionalUserInfo: { isNewUser },
+            user: { email, displayName, uid }
+          } = auth
+          if (isNewUser) {
+            const userObj = {
+              displayName,
+              email,
+              uid,
+              groups: false,
+              mentions: false,
+              prouds: false
+            }
+            users.child(uid).set(userObj)
+          }
           this.$router.replace('home')
         })
         .catch(err => {

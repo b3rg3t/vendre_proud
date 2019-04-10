@@ -53,6 +53,7 @@ export default {
     },
     checkUser() {
       firebase.auth().onAuthStateChanged(user => {
+        console.log(user)
         if (user) {
           this.getCurrentUser(user.uid)
         } else {
@@ -104,6 +105,7 @@ body {
   -moz-osx-font-smoothing: grayscale;
   text-align: center;
   color: #2c3e50;
+  padding-bottom: 4rem;
 }
 
 .btn {
