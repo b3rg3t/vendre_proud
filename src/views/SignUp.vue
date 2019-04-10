@@ -2,6 +2,7 @@
   <div class="sign-up">
     <p>Let's create a new account !</p>
     <form @submit.prevent="signUp">
+      <input type="text" v-model="displayName" placeholder="Display Name" />
       <input type="text" v-model="email" placeholder="Email" />
       <input type="password" v-model="password" placeholder="Password" />
       <button type="submit">Sign Up</button>
@@ -21,6 +22,7 @@ export default {
   name: 'SignUp',
   data() {
     return {
+      displayName: '',
       email: '',
       password: ''
     }
@@ -32,18 +34,21 @@ export default {
         .createUserWithEmailAndPassword(this.email, this.password)
         .then(
           auth => {
+            const displayName = this.displayName
             const {
               user: { email, uid }
             } = auth
 
             const userObj = {
+              displayName,
               email,
               uid,
-              messages: true
+              groups: false,
+              messages: false
             }
 
             users.child(uid).set(userObj)
-            this.$router.replace('home')
+            this.$router.replace('groups')
           },
           err => {
             throw Error(`Oops. ${err.message}`)
