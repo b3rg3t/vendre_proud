@@ -6,7 +6,7 @@
         class="input-container__input"
         type="text"
         id="message"
-        v-model="newMessage.message"
+        v-model="newProud.message"
         placeholder="New proud message"
       />
     </fieldset>
@@ -16,12 +16,12 @@
 
 <script>
 import firebase from 'firebase'
-import { messages, users } from '@/main.js'
+import { prouds, users } from '@/main.js'
 export default {
-  name: 'InputField',
+  name: 'CreateProud',
   data() {
     return {
-      newMessage: {
+      newProud: {
         message: ''
       }
     }
@@ -33,17 +33,17 @@ export default {
     addMessage: function() {
       const { uid } = firebase.auth().currentUser
       const proud = {
-        message: this.newMessage.message,
+        message: this.newProud.message,
         owner: uid,
         created: firebase.database.ServerValue.TIMESTAMP
       }
-      const messagePush = messages.push(proud)
-      this.newMessage.message = ''
-      const messageId = messagePush.path.pieces_[1]
+      const proudPush = prouds.push(proud)
+      this.newProud.message = ''
+      const proudId = proudPush.path.pieces_[1]
       users
         .child(uid)
-        .child('messages')
-        .update({ [messageId]: true })
+        .child('prouds')
+        .update({ [proudId]: true })
     }
   }
 }

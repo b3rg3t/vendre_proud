@@ -3,19 +3,19 @@
     <header>
       <h2>Timeline</h2>
     </header>
-    <GetMessage />
+    <GetProuds />
   </section>
 </template>
 
 <script>
-import GetMessage from './GetMessage.vue'
+import GetProuds from './GetProuds.vue'
 export default {
   name: 'Timeline',
   data() {
     return {}
   },
   components: {
-    GetMessage
+    GetProuds
   }
 }
 </script>

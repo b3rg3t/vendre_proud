@@ -14,7 +14,8 @@ const db = firebase.database()
 
 // refs
 export const users = db.ref('users')
-export const messages = db.ref('messages')
+export const groups = db.ref('groups')
+export const prouds = db.ref('prouds')
 
 firebase.auth().onAuthStateChanged(() => {
   if (!app) {

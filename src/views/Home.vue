@@ -1,24 +1,5 @@
 <template>
   <div class="home">
-    <div class="nav">
-      <div class="logo">
-        <h2>#PROUD</h2>
-      </div>
-      <nav class="navigation">
-        <ul class="navigation__list">
-          <li class="navigation__list__item">
-            <button class="dropdown button">Groups</button>
-          </li>
-          <li class="navigation__list__item">
-            <button class="button primary">Profile</button>
-          </li>
-          <li class="navigation__list__item">
-            <button class="button alert" @click="logout">Logout</button>
-          </li>
-        </ul>
-      </nav>
-    </div>
-
     <div class="wrapper">
       <main class="main">
         <Timeline />
@@ -34,17 +15,6 @@
         </section>
       </aside>
     </div>
-
-    <footer class="footer">
-      <div class="bottom">
-        <div class="left">
-          <span>Copywright PROUD</span>
-        </div>
-        <div class="right">
-          <button @click="showTimeline">New</button>
-        </div>
-      </div>
-    </footer>
   </div>
 </template>
 
@@ -52,13 +22,15 @@
 import firebase, { functions } from 'firebase'
 
 // @ is an alias to /src
-import InputField from '@/components/InputField.vue'
+import NewProud from '@/components/NewProud.vue'
 import Timeline from '@/components/Timeline.vue'
+import Navigation from '@/components/Navigation.vue'
 export default {
-  name: 'home',
+  name: 'Home',
   components: {
-    InputField,
-    Timeline
+    NewProud,
+    Timeline,
+    Navigation
   },
   methods: {
     logout: function() {
@@ -79,40 +51,7 @@ export default {
 <style lang="scss" scoped>
 .home {
   width: 100%;
-  height: 100vh;
-}
-.nav {
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-  padding: 1rem;
-
-  h2 {
-    margin: 0;
-  }
-
-  .navigation {
-    margin: 0;
-    &__list {
-      list-style: none;
-      padding: 0;
-      margin: 0;
-      display: flex;
-      flex-direction: row;
-
-      &__item {
-        display: flex;
-        flex-direction: column;
-        justify-content: center;
-        align-items: center;
-        margin-left: 0.5rem;
-
-        button {
-          margin: 0;
-        }
-      }
-    }
-  }
+  height: 100%;
 }
 
 .wrapper {
@@ -130,27 +69,6 @@ export default {
 }
 .input {
   margin-top: 500px;
-}
-.footer {
-  background: #fff;
-  position: fixed;
-  bottom: 0;
-  padding: 1rem;
-  display: flex;
-  width: 100%;
-  box-shadow: 0px 0px 30px rgba(46, 139, 87, 0.16);
-  .bottom {
-    width: 100%;
-    display: flex;
-    .left {
-      flex: 1 1 auto;
-      text-align: center;
-    }
-    .right {
-      flex: 1 1 auto;
-      text-align: center;
-    }
-  }
 }
 
 .sidebar {
