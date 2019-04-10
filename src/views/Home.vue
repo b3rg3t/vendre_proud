@@ -11,7 +11,7 @@
           </header>
         </section>
         <section class="new-proud">
-          <InputField msg="Create new proud" />
+          <NewProud msg="Create new proud" />
         </section>
       </aside>
     </div>
@@ -33,14 +33,6 @@ export default {
     Navigation
   },
   methods: {
-    logout: function() {
-      firebase
-        .auth()
-        .signOut()
-        .then(() => {
-          this.$router.replace('login')
-        })
-    },
     showTimeline: function() {
       // document.querySelector('.hello').innerHTML = '<input type=text/>'
     }

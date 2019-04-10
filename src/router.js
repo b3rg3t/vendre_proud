@@ -3,7 +3,9 @@ import Vue from 'vue'
 import Router from 'vue-router'
 
 import Home from '@/views/Home'
+import Profile from '@/views/Profile'
 import Groups from '@/views/Groups'
+import CreateGroup from '@/views/CreateGroup'
 import Login from '@/views/Login'
 import SignUp from '@/views/SignUp'
 
@@ -41,6 +43,22 @@ const router = new Router({
       path: '/groups',
       name: 'Groups',
       component: Groups,
+      meta: {
+        requiresAuth: true
+      }
+    },
+    {
+      path: '/profile',
+      name: 'Profile',
+      component: Profile,
+      meta: {
+        requiresAuth: true
+      }
+    },
+    {
+      path: '/create-group',
+      name: 'Create Group',
+      component: CreateGroup,
       meta: {
         requiresAuth: true
       }
