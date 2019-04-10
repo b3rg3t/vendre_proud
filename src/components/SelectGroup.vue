@@ -5,7 +5,7 @@
       v-for="(group, index) in groups"
       v-bind:key="index"
     >
-      <Group :group="group" />
+      <Group :uid="uid" :group="group" />
     </section>
   </div>
 </template>
@@ -20,7 +20,8 @@ export default {
     }
   },
   props: {
-    groups: [Array, Object, Boolean]
+    groups: [Array, Object, Boolean],
+    uid: String
   },
   components: {
     Group

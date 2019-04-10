@@ -1,6 +1,9 @@
 <template>
   <div class="group">
-    <h4 class="group__name">{{ name }}</h4>
+    <div class="group__title">
+      <h4 class="group__title__name">{{ name }}</h4>
+      <i v-show="joined" class="fas fa-user group__title__joined" />
+    </div>
     <div class="group__members">
       <i class="fas fa-users group__members__icon"></i>
       <span class="group__members__badge badge">{{ memberCount }}</span>
@@ -9,16 +12,19 @@
 </template>
 
 <script>
+import { users } from '@/main'
 export default {
   name: 'Group',
   data() {
     return {
       name: '',
-      memberCount: 0
+      memberCount: 0,
+      joined: false
     }
   },
   props: {
-    group: Object
+    group: Object,
+    uid: String
   },
   methods: {
     updateState() {
@@ -34,6 +40,17 @@ export default {
         this.name = name
         this.memberCount = admins
       }
+      const groupID = this.$props.group.groupID
+      const userID = this.$props.uid
+
+      users
+        .child(userID)
+        .child('groups')
+        .on('value', snapshot => {
+          const joinedGroups = snapshot.val()
+          const joined = Object.keys(joinedGroups).includes(groupID)
+          this.joined = joined
+        })
     }
   },
   beforeMount() {
@@ -50,7 +67,13 @@ export default {
   justify-content: space-between;
   align-items: center;
   padding: 0 1rem 0 1rem;
-  &__name {
+  &__title {
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    &__name {
+      margin-right: 0.75rem;
+    }
   }
 
   &__members {
