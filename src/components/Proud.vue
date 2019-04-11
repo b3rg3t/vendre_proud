@@ -33,8 +33,8 @@ export default {
       const readDate = date.toLocaleString()
 
       users.on('value', snapshot => {
-        const ownerEmail = snapshot.val()[this.owner].email
-        this.own = ownerEmail
+        const displayName = snapshot.val()[this.owner].displayName
+        this.own = displayName
       })
       this.date = readDate
       this.msg = this.message
@@ -78,7 +78,6 @@ export default {
     flex-direction: column;
     justify-content: flex-start;
     align-items: flex-start;
-    text-align: left;
     * {
       margin: 0;
     }
