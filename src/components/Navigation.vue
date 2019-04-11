@@ -11,12 +11,12 @@
           Groups
         </router-link>
       </li>
-      <li class="navigation__list__item">
-        <a
-          href="#"
-          class="navigation__list__item__link"
-          @click="handleProfileDropDown"
-        >
+      <li
+        class="navigation__list__item navigation__list__item--has-dropdown"
+        @click="handleProfileDropDown('open')"
+        @mouseleave="handleProfileDropDown('close')"
+      >
+        <a href="#" class="navigation__list__item__link">
           <img
             class="profile-picture"
             :alt="userName"
@@ -30,7 +30,7 @@
               class="dropdown-menu__item__link"
               @click="
                 {
-                  handleProfileDropDown()
+                  handleProfileDropDown('close')
                   redirect('profile')
                 }
               "
@@ -44,7 +44,7 @@
               class="dropdown-menu__item__link"
               @click="
                 {
-                  handleProfileDropDown()
+                  handleProfileDropDown('close')
                   logout()
                 }
               "
@@ -68,8 +68,12 @@ export default {
     }
   },
   methods: {
-    handleProfileDropDown() {
-      this.profileDropdown = !this.profileDropdown
+    handleProfileDropDown(value) {
+      if (value === 'open') {
+        this.profileDropdown = true
+      } else if (value === 'close') {
+        this.profileDropdown = false
+      }
     },
     handleGroupDropDown() {
       this.groupDropdown = !this.groupDropdown
@@ -104,6 +108,10 @@ export default {
       align-items: center;
       margin-left: 2rem;
 
+      &--has-dropdown {
+        position: relative;
+      }
+
       &__link {
         text-decoration: none;
         font-weight: 600;
@@ -118,7 +126,8 @@ export default {
     border: 1px solid lightgrey;
     padding: 0;
     position: absolute;
-    top: 4rem;
+    top: 2.8rem;
+    right: 0;
   }
 }
 .profile-picture {
