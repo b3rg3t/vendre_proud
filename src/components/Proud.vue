@@ -7,6 +7,13 @@
       <h4 class="proud__content__message">{{ msg }}</h4>
       <p class="proud__content__owner">{{ own }}</p>
       <p class="proud__content__date">{{ date }}</p>
+      <button
+        v-show="uid === owner"
+        @click="removeProud(proudId)"
+        class="alert button"
+      >
+        X
+      </button>
     </div>
   </div>
 </template>
@@ -25,7 +32,10 @@ export default {
   props: {
     message: String,
     owner: String,
-    created: Number
+    created: Number,
+    uid: String,
+    removeProud: Function,
+    proudId: String
   },
   methods: {
     convertTime() {
