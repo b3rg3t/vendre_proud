@@ -1,27 +1,43 @@
 <template>
   <div class="login">
-    <h3>Sign In</h3>
-    <form class="login-form" @submit.prevent="login">
-      <input type="text" v-model="email" placeholder="Email" />
-      <input type="password" v-model="password" placeholder="Password" />
-      <button class="btn" type="submit">Connection</button>
+    <h1>#PROUD</h1>
+    <p class="text-center">Please login to your Proud account</p>
+    <form class="login__form" @submit.prevent="login">
+      <input
+        class="login__form__input"
+        type="text"
+        v-model="email"
+        placeholder="Email"
+      />
+      <input
+        class="login__form__input"
+        type="password"
+        v-model="password"
+        placeholder="Password"
+      />
+      <button class="login__form__button btn" type="submit">
+        Login
+      </button>
     </form>
-    <p>
-      You don't have an account ? You can
-      <router-link to="/sign-up">create one</router-link>
+
+    <p class="login__signup">
+      Don't have an account ? You can
+      <router-link class="login__signup__link" to="/sign-up">
+        create one
+      </router-link>
     </p>
-    <p>
-      or Sign In With Google
-      <br />
+
+    <div class="login__social">
+      <p>
+        or sign in with
+      </p>
       <button @click="googleLogin" class="social-button">
         <img src="../assets/google-logo.png" alt="Google Logo" />
       </button>
-    </p>
-    <p>
       <button @click="facebookLogin" class="social-button">
         <img src="../assets/facebook-logo.png" alt="Facebook Logo" />
       </button>
-    </p>
+    </div>
   </div>
 </template>
 
@@ -107,52 +123,67 @@ export default {
 }
 </script>
 
-<style lang="scss" scoped>
-/* "scoped" attribute limit the CSS to this component only */
+<style lang="scss">
 .login {
-  margin-top: 40px;
-}
+  width: 400px;
+  margin: 10vh auto;
+  padding: 3rem 2rem;
+  border: 1px solid lightgray;
+  border-radius: 8px;
+  .login__form {
+    width: 100%;
+    margin: 0 auto;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
 
-.login-form {
-  display: flex;
-  flex-direction: column;
-  justify-content: center;
-  align-items: center;
-}
+    &__input {
+      margin: 10px 0;
+      width: 100%;
+      padding: 15px;
+      border: 1px solid lightgrey;
+      background: none;
+      border-radius: 5px;
+    }
+    &__button {
+      margin-top: 20px;
+      width: 100%;
+      cursor: pointer;
+    }
+    &__signup {
+      margin-top: 40px;
+      font-size: 0.75em;
+      &__link {
+        text-decoration: underline;
+        cursor: pointer;
+      }
+    }
+  }
+  .social-button {
+    width: 48px;
+    height: 48px;
+    background: white;
+    padding: 0.75rem;
+    border-radius: 50%;
+    border: none;
+    outline: 0;
+    margin-right: 1rem;
 
-input {
-  margin: 10px 0;
-  width: 20%;
-  padding: 15px;
-}
-button {
-  margin-top: 20px;
-  width: 10%;
-  cursor: pointer;
-}
-p {
-  margin-top: 40px;
-  font-size: 13px;
-}
-p a {
-  text-decoration: underline;
-  cursor: pointer;
-}
-.social-button {
-  width: 75px;
-  background: white;
-  padding: 10px;
-  border-radius: 100%;
-  box-shadow: 0 2px 4px 0 rgba(0, 0, 0, 0.2);
-  outline: 0;
-  border: 0;
-}
+    &:nth-last-child() {
+      margin-right: 0;
+    }
 
-.social-button:active {
-  box-shadow: 0 2px 4px 0 rgba(0, 0, 0, 0.1);
-}
+    transition: transform 300ms;
+    cursor: pointer;
 
-.social-button img {
-  width: 100%;
+    &:hover {
+      transform: scale(1.1);
+    }
+
+    img {
+      width: 100%;
+    }
+  }
 }
 </style>

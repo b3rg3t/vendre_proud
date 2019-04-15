@@ -1,16 +1,45 @@
 <template>
-  <div class="sign-up">
+  <div class="login">
+    <h1>#PROUD</h1>
     <p>Let's create a new account !</p>
-    <form @submit.prevent="signUp">
-      <input type="text" v-model="displayName" placeholder="Display Name" />
-      <input type="text" v-model="email" placeholder="Email" />
-      <input type="password" v-model="password" placeholder="Password" />
-      <button type="submit">Sign Up</button>
+    <form class="login__form" @submit.prevent="signUp">
+      <input
+        class="login__form__input"
+        type="text"
+        v-model="displayName"
+        placeholder="Display Name"
+      />
+      <input
+        class="login__form__input"
+        type="text"
+        v-model="email"
+        placeholder="Email"
+      />
+      <input
+        class="login__form__input"
+        type="password"
+        v-model="password"
+        placeholder="Password"
+      />
+      <button class="login__form__button btn" type="submit">Sign Up</button>
     </form>
-    <span>
-      or go back to
-      <router-link to="/login">login</router-link>
-    </span>
+    <div class="login__social">
+      <p>
+        or sign in with
+      </p>
+      <button @click="googleLogin" class="social-button">
+        <img src="../assets/google-logo.png" alt="Google Logo" />
+      </button>
+      <button @click="facebookLogin" class="social-button">
+        <img src="../assets/facebook-logo.png" alt="Facebook Logo" />
+      </button>
+    </div>
+    <div class="login__back-btn">
+      <router-link to="/login">
+        <i class="fas fa-angle-left"></i>
+        <span>Login</span>
+      </router-link>
+    </div>
   </div>
 </template>
 
@@ -55,28 +84,80 @@ export default {
             throw Error(`Oops. ${err.message}`)
           }
         )
+    },
+    facebookLogin() {
+      const provider = new firebase.auth.FacebookAuthProvider()
+      firebase
+        .auth()
+        .signInWithPopup(provider)
+        .then(auth => {
+          const {
+            additionalUserInfo: { isNewUser },
+            user: { email, displayName, uid }
+          } = auth
+          if (isNewUser) {
+            const userObj = {
+              displayName,
+              email,
+              uid,
+              groups: false,
+              mentions: false,
+              prouds: false
+            }
+            users.child(uid).set(userObj)
+          }
+          this.$router.replace('home')
+        })
+        .catch(err => {
+          throw Error(`Oops. ${err.message}`)
+        })
+    },
+    googleLogin() {
+      const provider = new firebase.auth.GoogleAuthProvider()
+      firebase
+        .auth()
+        .signInWithPopup(provider)
+        .then(auth => {
+          const {
+            additionalUserInfo: { isNewUser },
+            user: { email, displayName, uid }
+          } = auth
+          if (isNewUser) {
+            const userObj = {
+              displayName,
+              email,
+              uid,
+              groups: false,
+              mentions: false,
+              prouds: false
+            }
+            users.child(uid).set(userObj)
+          }
+          this.$router.replace('home')
+        })
+        .catch(err => {
+          throw Error(`Oops. ${err.message}`)
+        })
     }
   }
 }
 </script>
 
-<style scoped>
-.sign-up {
-  margin-top: 40px;
-}
-input {
-  margin: 10px 0;
-  width: 20%;
-  padding: 15px;
-}
-button {
-  margin-top: 10px;
-  width: 10%;
-  cursor: pointer;
-}
-span {
-  display: block;
-  margin-top: 20px;
-  font-size: 11px;
+<style lang="scss" scoped>
+.login {
+  position: relative;
+  &__back-btn {
+    position: absolute;
+    bottom: 1.5rem;
+    left: 1.5rem;
+
+    i {
+      margin-right: 0.5rem;
+    }
+
+    a {
+      text-decoration: none;
+    }
+  }
 }
 </style>
