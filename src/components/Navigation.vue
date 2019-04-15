@@ -155,19 +155,6 @@ export default {
       }
     }
   }
-<<<<<<< HEAD
-=======
-
-  .dropdown-menu {
-    background: #fff;
-    border-radius: 5px;
-    border: 1px solid lightgrey;
-    padding: 0;
-    position: absolute;
-    top: 2.8rem;
-    right: 0;
-  }
->>>>>>> master
 }
 .profile-picture {
   height: 42px;

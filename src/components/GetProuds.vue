@@ -21,10 +21,9 @@
 
 <script>
 import firebase from 'firebase'
-import { users } from '@/main.js'
-import { prouds } from '@/main.js'
+import { users, user, proud, prouds, group } from '@/main.js'
 import Proud from './Proud.vue'
-import { userInfo } from 'os'
+
 export default {
   name: 'GetProuds',
   data() {
@@ -46,13 +45,20 @@ export default {
       this.uid = firebase.auth().currentUser.uid
     },
     removeProud(proudId) {
-      prouds.child(proudId).remove()
+      proud(proudId).remove()
 
-      users
-        .child(this.uid)
+      user(this.uid)
         .child('prouds')
         .child(proudId)
         .remove()
+
+      user(this.uid).once('value', snapshot => {
+        const { activeGroup } = snapshot.val()
+        group(activeGroup)
+          .child('prouds')
+          .child(proudId)
+          .remove()
+      })
     }
   },
   beforeMount() {

@@ -10,7 +10,7 @@
 
 <script>
 import firebase from 'firebase'
-import { users, groups } from '@/main'
+import { user, group, groups } from '@/main'
 export default {
   name: 'Create-Group',
   data: () => {
@@ -27,13 +27,17 @@ export default {
           admins: {
             [uid]: true
           },
-          users: {}
-        }
+          users: false
+        },
+        prouds: false
       }
       const groupPush = groups.push(groupObj)
       const groupID = groupPush.path.pieces_[1]
-      users
-        .child(uid)
+
+      group(groupID).update({ id: groupID })
+
+      user(uid).update({ activeGroup: groupID })
+      user(uid)
         .child('groups')
         .update({ [groupID]: true })
 

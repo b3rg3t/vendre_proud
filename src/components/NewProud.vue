@@ -16,9 +16,9 @@
 
 <script>
 import firebase from 'firebase'
-import { prouds, users } from '@/main.js'
+import { proud, prouds, user, group } from '@/main'
 export default {
-  name: 'CreateProud',
+  name: 'NewProud',
   data() {
     return {
       newProud: {
@@ -32,17 +32,26 @@ export default {
   methods: {
     addMessage: function() {
       const { uid } = firebase.auth().currentUser
-      const proud = {
+      const newProud = {
         message: this.newProud.message,
         mentions: false,
         owner: uid,
         created: firebase.database.ServerValue.TIMESTAMP
       }
-      const proudPush = prouds.push(proud)
+      const proudPush = prouds.push(newProud)
       this.newProud.message = ''
       const proudId = proudPush.path.pieces_[1]
-      users
-        .child(uid)
+
+      proud(proudId).update({ id: proudId })
+
+      user(uid).once('value', snapshot => {
+        const { activeGroup } = snapshot.val()
+        group(activeGroup)
+          .child('prouds')
+          .update({ [proudId]: true })
+      })
+
+      user(uid)
         .child('prouds')
         .update({ [proudId]: true })
     }

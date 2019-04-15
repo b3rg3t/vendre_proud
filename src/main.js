@@ -12,10 +12,19 @@ firebase.initializeApp(config)
 
 const db = firebase.database()
 
-// refs
+// Reference to database
+
+// Users
 export const users = db.ref('users')
+export const user = uid => db.ref(`users/${uid}`)
+
+// Groups
 export const groups = db.ref('groups')
+export const group = groupId => db.ref(`groups/${groupId}`)
+
+// Prouds
 export const prouds = db.ref('prouds')
+export const proud = proudId => db.ref(`prouds/${proudId}`)
 
 firebase.auth().onAuthStateChanged(() => {
   if (!app) {
