@@ -7,6 +7,13 @@
       <h4 class="proud__content__message">{{ msg }}</h4>
       <p class="proud__content__owner">{{ own }}</p>
       <p class="proud__content__date">{{ date }}</p>
+      <button
+        v-show="uid === owner"
+        @click="removeProud(proudId)"
+        class="alert button"
+      >
+        X
+      </button>
     </div>
   </div>
 </template>
@@ -25,7 +32,10 @@ export default {
   props: {
     message: String,
     owner: String,
-    created: Number
+    created: Number,
+    uid: String,
+    removeProud: Function,
+    proudId: String
   },
   methods: {
     convertTime() {
@@ -33,8 +43,8 @@ export default {
       const readDate = date.toLocaleString()
 
       users.on('value', snapshot => {
-        const ownerEmail = snapshot.val()[this.owner].email
-        this.own = ownerEmail
+        const displayName = snapshot.val()[this.owner].displayName
+        this.own = displayName
       })
       this.date = readDate
       this.msg = this.message
@@ -78,7 +88,6 @@ export default {
     flex-direction: column;
     justify-content: flex-start;
     align-items: flex-start;
-    text-align: left;
     * {
       margin: 0;
     }

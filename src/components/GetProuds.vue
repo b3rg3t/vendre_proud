@@ -1,10 +1,13 @@
 <template>
   <div class="prouds">
-    <div v-show="prouds" v-for="(proud, key) in prouds" :key="key">
+    <div v-show="prouds" v-for="(proud, key, index) in prouds" :key="key">
       <Proud
         :owner="proud.owner"
         :message="proud.message"
         :created="proud.created"
+        :uid="uid"
+        :removeProud="removeProud"
+        :proudId="Object.keys(prouds)[index]"
       />
     </div>
     <div v-show="!prouds" class="no-prouds callout secondary">
@@ -17,13 +20,17 @@
 </template>
 
 <script>
+import firebase from 'firebase'
+import { users } from '@/main.js'
 import { prouds } from '@/main.js'
 import Proud from './Proud.vue'
+import { userInfo } from 'os'
 export default {
   name: 'GetProuds',
   data() {
     return {
-      prouds: null
+      prouds: null,
+      uid: ''
     }
   },
   components: {
@@ -34,10 +41,23 @@ export default {
       prouds.on('value', snapshot => {
         this.prouds = snapshot.val()
       })
+    },
+    getUid() {
+      this.uid = firebase.auth().currentUser.uid
+    },
+    removeProud(proudId) {
+      prouds.child(proudId).remove()
+
+      users
+        .child(this.uid)
+        .child('prouds')
+        .child(proudId)
+        .remove()
     }
   },
   beforeMount() {
     this.getProuds()
+    this.getUid()
   }
 }
 </script>

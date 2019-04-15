@@ -11,12 +11,12 @@
           Groups
         </router-link>
       </li>
-      <li class="navigation__list__item">
-        <a
-          href="#"
-          class="navigation__list__item__link"
-          @click="handleProfileDropDown"
-        >
+      <li
+        class="navigation__list__item navigation__list__item--has-dropdown"
+        @click="handleProfileDropDown('open')"
+        @mouseleave="handleProfileDropDown('close')"
+      >
+        <a href="#" class="navigation__list__item__link">
           <img
             class="profile-picture"
             :alt="userName"
@@ -24,32 +24,30 @@
           />
         </a>
         <ul class="dropdown-menu menu vertical" v-show="profileDropdown">
-          <li class="dropdown-menu__item">
-            <a
+          <li class="dropdown-menu__item dropdown-menu__item--with-icon">
+            <router-link
+              to="profile"
               href="#"
               class="dropdown-menu__item__link"
-              @click="
-                {
-                  handleProfileDropDown()
-                  redirect('profile')
-                }
-              "
+              @click="handleProfileDropDown('close')"
             >
-              Profile
-            </a>
+              <i class="fas fa-user"></i>
+              <span>Profile</span>
+            </router-link>
           </li>
-          <li class="dropdown-menu__item">
+          <li class="dropdown-menu__item dropdown-menu__item--with-icon">
             <a
               href="#"
               class="dropdown-menu__item__link"
               @click="
                 {
-                  handleProfileDropDown()
+                  handleProfileDropDown('close')
                   logout()
                 }
               "
             >
-              Logout
+              <i class="fas fa-sign-out-alt"></i>
+              <span>Logout</span>
             </a>
           </li>
         </ul>
@@ -68,14 +66,18 @@ export default {
     }
   },
   methods: {
-    handleProfileDropDown() {
-      this.profileDropdown = !this.profileDropdown
+    handleProfileDropDown(value) {
+      if (value === 'open') {
+        this.profileDropdown = true
+      } else if (value === 'close') {
+        this.profileDropdown = false
+      }
     },
     handleGroupDropDown() {
       this.groupDropdown = !this.groupDropdown
     },
-    redirect(route) {
-      this.$router.replace(route)
+    redirect(route = String) {
+      this.$router.push(route)
     }
   },
   props: {
@@ -102,7 +104,49 @@ export default {
       flex-direction: column;
       justify-content: center;
       align-items: center;
-      margin-left: 2rem;
+      padding: 1rem;
+      &:nth-last-child() {
+        margin-right: -1rem;
+      }
+      &--has-dropdown {
+        position: relative;
+
+        .dropdown-menu {
+          background: #fff;
+          border-radius: 5px;
+          border: 1px solid lightgrey;
+          padding: 0;
+
+          position: absolute;
+          top: 4rem;
+          right: 0;
+
+          width: 200px;
+          &__item {
+            width: 100%;
+            padding: 0.5rem 0;
+            &:hover {
+              background: darken(#fff, 5%);
+            }
+            &--with-icon {
+              a {
+                display: flex;
+                flex-direction: row;
+              }
+              span {
+                padding-left: 0.5rem;
+              }
+              i {
+                padding-top: 2px;
+              }
+            }
+          }
+        }
+      }
+
+      &--has-dropdown {
+        position: relative;
+      }
 
       &__link {
         text-decoration: none;
@@ -111,6 +155,8 @@ export default {
       }
     }
   }
+<<<<<<< HEAD
+=======
 
   .dropdown-menu {
     background: #fff;
@@ -118,8 +164,10 @@ export default {
     border: 1px solid lightgrey;
     padding: 0;
     position: absolute;
-    top: 4rem;
+    top: 2.8rem;
+    right: 0;
   }
+>>>>>>> master
 }
 .profile-picture {
   height: 42px;

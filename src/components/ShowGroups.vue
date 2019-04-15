@@ -13,7 +13,7 @@
 <script>
 import Group from '@/components/Group'
 export default {
-  name: 'SelectGroups',
+  name: 'ShowGroups',
   data: () => {
     return {
       memberCount: 0

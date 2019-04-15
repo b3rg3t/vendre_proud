@@ -1,21 +1,17 @@
 <template>
   <div id="app" class="grid-container full">
-    <header class="main-header">
+    <header v-show="user" class="main-header">
       <div class="main-header__wrapper grid-container">
         <div class="logo">
           <h2 class="logo__text">#PROUD</h2>
         </div>
-        <Navigation
-          v-show="user"
-          :userName="user.displayName"
-          :logout="logout"
-        />
+        <Navigation :userName="user.displayName" :logout="logout" />
       </div>
     </header>
     <div class="content-wrapper grid-container">
       <router-view />
     </div>
-    <footer class="footer">
+    <footer v-show="user" class="footer">
       <div class="bottom">
         <span>Copywright PROUD</span>
       </div>
