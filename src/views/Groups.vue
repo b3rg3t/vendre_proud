@@ -3,7 +3,7 @@
     <h2>Groups</h2>
     <div class="groups">
       <h3>Avaliable groups</h3>
-      <SelectGroup :uid="userId" v-show="groups" :groups="groups" />
+      <ShowGroups :uid="userId" v-show="groups" :groups="groups" />
       <p v-show="message">
         No groups exsists, please create a new group
         <router-link to="create-group">here</router-link>
@@ -17,8 +17,8 @@
 
 <script>
 import firebase from 'firebase'
-import { groups } from '@/main.js'
-import SelectGroup from '@/components/SelectGroup.vue'
+import { groups } from '@/main'
+import ShowGroups from '@/components/ShowGroups'
 export default {
   name: 'Groups',
   data: () => {
@@ -55,7 +55,7 @@ export default {
     }
   },
   components: {
-    SelectGroup
+    ShowGroups
   },
   beforeMount() {
     this.getGroups()
