@@ -1,10 +1,11 @@
 <template>
   <div class="group">
     <div class="group__title">
-      <h4 class="group__title__name">{{ name }}</h4>
+      <h4 class="group__title__name">{{ group.name }}</h4>
       <i v-show="joined" class="fas fa-user group__title__joined" />
     </div>
     <div class="group__members">
+      <a href="#" v-show="!joined" @click="joinGroup()">Join</a>
       <i class="fas fa-users group__members__icon"></i>
       <span class="group__members__badge badge">{{ memberCount }}</span>
     </div>
@@ -12,12 +13,11 @@
 </template>
 
 <script>
-import { users } from '@/main'
+import { user, group } from '@/main'
 export default {
   name: 'Group',
   data() {
     return {
-      name: '',
       memberCount: 0,
       joined: false
     }
@@ -28,32 +28,43 @@ export default {
   },
   methods: {
     updateState() {
-      const { name, members } = this.$props.group
+      const { name, members } = this.group
       if (members.users) {
         const users = Object.keys(members.users).length
         const admins = Object.keys(members.admins).length
         const total = users + admins
-        this.name = name
         this.memberCount = total
       } else {
         const admins = Object.keys(members.admins).length
-        this.name = name
         this.memberCount = admins
       }
-      const groupID = this.$props.group.groupID
-      const userID = this.$props.uid
+      const groupID = this.group.id
 
-      users
-        .child(userID)
+      user(this.uid)
         .child('groups')
         .on('value', snapshot => {
-          const joinedGroups = snapshot.val()
-          const joined = Object.keys(joinedGroups).includes(groupID)
-          this.joined = joined
+          if (snapshot.val()) {
+            const joinedGroups = snapshot.val()
+            const joined = Object.keys(joinedGroups).includes(groupID)
+            this.joined = joined
+          }
         })
+    },
+    joinGroup() {
+      user(this.uid)
+        .child('groups')
+        .update({ [this.group.id]: true })
+
+      group(this.group.id)
+        .child('members')
+        .child('users')
+        .update({ [this.uid]: true })
     }
   },
   beforeMount() {
+    this.updateState()
+  },
+  beforeUpdate() {
     this.updateState()
   }
 }

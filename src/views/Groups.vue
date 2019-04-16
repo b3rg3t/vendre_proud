@@ -19,6 +19,7 @@
 import firebase from 'firebase'
 import { groups } from '@/main'
 import ShowGroups from '@/components/ShowGroups'
+
 export default {
   name: 'Groups',
   data: () => {
