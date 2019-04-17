@@ -34,17 +34,7 @@ export default {
       groups.on('value', snapshot => {
         const groups = snapshot.val()
         if (groups) {
-          var newGroups
-          Object.keys(groups).forEach(groupID => {
-            newGroups = {
-              ...newGroups,
-              [groupID]: {
-                ...groups[groupID],
-                groupID: groupID
-              }
-            }
-          })
-          this.groups = newGroups
+          this.groups = groups
           this.message = false
         } else {
           this.message = true
