@@ -5,7 +5,7 @@
         <div class="logo">
           <h2 class="logo__text">#PROUD</h2>
         </div>
-        <Navigation :userName="user.displayName" :logout="logout" />
+        <Navigation v-if="user" :user="user" :logout="logout" />
       </div>
     </header>
     <div class="content-wrapper grid-container">
@@ -49,7 +49,6 @@ export default {
     },
     checkUser() {
       firebase.auth().onAuthStateChanged(user => {
-        console.log(user)
         if (user) {
           this.getCurrentUser(user.uid)
         } else {

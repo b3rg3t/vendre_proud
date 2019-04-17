@@ -6,38 +6,65 @@
           Home
         </router-link>
       </li>
-      <li class="navigation__list__item">
+      <li
+        class="navigation__list__item navigation__list__item--has-dropdown"
+        @mouseover="handleGroupDropDown('open')"
+        @mouseleave="handleGroupDropDown('close')"
+      >
         <router-link class="navigation__list__item__link" to="groups">
           Groups
         </router-link>
+        <ul class="dropdown-menu menu vertical" v-show="groupDropdown">
+          <li
+            class="dropdown-menu__item dropdown-menu__item--with-icon"
+            v-for="(group, index) in groups"
+            v-bind:key="index"
+          >
+            <a class="dropdown-menu__item__link" @click="selectGroup(group.id)">
+              {{ group.name }}
+            </a>
+          </li>
+          <div class="divider"></div>
+          <li class="dropdown-menu__item dropdown-menu__item--with-icon">
+            <a class="dropdown-menu__item__link">
+              <i class="fas fa-user-plus"></i>
+              <span>Join</span>
+            </a>
+          </li>
+        </ul>
       </li>
       <li
         class="navigation__list__item navigation__list__item--has-dropdown"
-        @click="handleProfileDropDown('open')"
+        @mouseover="handleProfileDropDown('open')"
         @mouseleave="handleProfileDropDown('close')"
       >
-        <a href="#" class="navigation__list__item__link">
+        <a class="navigation__list__item__link extra-margin">
+          {{ user.displayName }}
+        </a>
+        <a class="navigation__list__item__link">
           <img
             class="profile-picture"
-            :alt="userName"
+            :alt="user.displayName"
             src="../assets/logo.png"
           />
         </a>
         <ul class="dropdown-menu menu vertical" v-show="profileDropdown">
           <li class="dropdown-menu__item dropdown-menu__item--with-icon">
-            <router-link
-              to="profile"
-              href="#"
+            <a
               class="dropdown-menu__item__link"
-              @click="handleProfileDropDown('close')"
+              @click="
+                {
+                  handleProfileDropDown('close')
+                  redirect('groups')
+                }
+              "
             >
               <i class="fas fa-user"></i>
               <span>Profile</span>
-            </router-link>
+            </a>
           </li>
           <li class="dropdown-menu__item dropdown-menu__item--with-icon">
             <a
-              href="#"
               class="dropdown-menu__item__link"
               @click="
                 {
@@ -57,12 +84,14 @@
 </template>
 
 <script>
+import { user, group } from '@/main'
 export default {
   name: 'Navigation',
   data: () => {
     return {
       profileDropdown: false,
-      groupDropdown: false
+      groupDropdown: false,
+      groups: []
     }
   },
   methods: {
@@ -73,21 +102,64 @@ export default {
         this.profileDropdown = false
       }
     },
-    handleGroupDropDown() {
-      this.groupDropdown = !this.groupDropdown
+    handleGroupDropDown(value) {
+      if (value === 'open') {
+        this.groupDropdown = true
+      } else if (value === 'close') {
+        this.groupDropdown = false
+      }
     },
     redirect(route = String) {
       this.$router.push(route)
+    },
+    getJoinedGroups() {
+      // Get the signed in user's groups
+      user(this.user.uid)
+        .child('groups')
+        .on('value', snapshot => {
+          // If any group has been joined
+          if (snapshot.val()) {
+            // Convert to array of keys
+            const joinedGroups = Object.keys(snapshot.val())
+            // Loop through keys
+            joinedGroups.forEach(g => {
+              // Get the group object and push it to state
+              group([g])
+                .once('value', snapshot => {
+                  const res = snapshot.val()
+                  this.groups.push(res)
+                })
+                .catch(err => {
+                  throw Error(`Could not find group. ${err}`)
+                })
+            })
+          }
+        })
+    },
+    selectGroup(id) {
+      console.log(id)
+      user(this.user.uid)
+        .child('activeGroup')
+        .set(id)
     }
   },
-  props: {
-    logout: Function,
-    userName: String
+  props: { user: Object, logout: Function },
+  beforeMount() {
+    this.getJoinedGroups()
   }
 }
 </script>
 
 <style lang="scss" scoped>
+.extra-margin {
+  margin-right: 1rem;
+}
+
+.divider {
+  height: 1px;
+  background: lightgray;
+}
+
 .navigation {
   margin: 0;
   &__list {
@@ -96,21 +168,20 @@ export default {
     margin: 0;
     display: flex;
     flex-direction: row;
-    justify-content: flex-end;
-    align-items: center;
 
     &__item {
+      height: 50px;
       display: flex;
-      flex-direction: column;
+      flex-direction: row;
       justify-content: center;
       align-items: center;
       padding: 1rem;
+
       &:nth-last-child() {
         margin-right: -1rem;
       }
       &--has-dropdown {
         position: relative;
-
         .dropdown-menu {
           background: #fff;
           border-radius: 5px;
@@ -118,8 +189,8 @@ export default {
           padding: 0;
 
           position: absolute;
-          top: 4rem;
           right: 0;
+          top: 3rem;
 
           width: 200px;
           &__item {
@@ -132,6 +203,7 @@ export default {
               a {
                 display: flex;
                 flex-direction: row;
+                cursor: pointer;
               }
               span {
                 padding-left: 0.5rem;
@@ -144,14 +216,11 @@ export default {
         }
       }
 
-      &--has-dropdown {
-        position: relative;
-      }
-
       &__link {
         text-decoration: none;
         font-weight: 600;
         color: rgb(44, 62, 80);
+        cursor: pointer;
       }
     }
   }
