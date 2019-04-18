@@ -155,8 +155,6 @@ export default {
       }
     }
   }
-<<<<<<< HEAD
-=======
 
   .dropdown-menu {
     background: #fff;
@@ -167,7 +165,6 @@ export default {
     top: 2.8rem;
     right: 0;
   }
->>>>>>> master
 }
 .profile-picture {
   height: 42px;
