@@ -28,7 +28,7 @@
           <li class="dropdown-menu__item dropdown-menu__item--with-icon">
             <a class="dropdown-menu__item__link">
               <i class="fas fa-user-plus"></i>
-              <span>Join</span>
+              <span>Join group</span>
             </a>
           </li>
         </ul>
@@ -55,7 +55,7 @@
               @click="
                 {
                   handleProfileDropDown('close')
-                  redirect('groups')
+                  redirect('profile')
                 }
               "
             >
@@ -114,27 +114,33 @@ export default {
     },
     getJoinedGroups() {
       // Get the signed in user's groups
-      user(this.user.uid)
-        .child('groups')
-        .on('value', snapshot => {
-          // If any group has been joined
-          if (snapshot.val()) {
-            // Convert to array of keys
-            const joinedGroups = Object.keys(snapshot.val())
-            // Loop through keys
-            joinedGroups.forEach(g => {
-              // Get the group object and push it to state
-              group([g])
-                .once('value', snapshot => {
-                  const res = snapshot.val()
-                  this.groups.push(res)
-                })
-                .catch(err => {
+      user(this.user.uid).on('value', snapshot => {
+        // If any group has been joined
+        if (snapshot.val()) {
+          // Convert to array of keys
+          const joinedGroups = Object.keys(snapshot.val().groups)
+          const array = []
+          // Loop through keys
+          joinedGroups.forEach(g => {
+            // Get the group object and push it to state
+            group([g])
+              .once('value', snapshot => {
+                const res = snapshot.val()
+                if (res) {
+                  array.push(res)
+                } else {
                   throw Error(`Could not find group. ${err}`)
-                })
-            })
-          }
-        })
+                }
+              })
+              .catch(err => {
+                throw Error(
+                  `[Navigation(getJoinedGroups)]Something went wrong. ${err}`
+                )
+              })
+          })
+          this.groups = array
+        }
+      })
     },
     selectGroup(id) {
       console.log(id)

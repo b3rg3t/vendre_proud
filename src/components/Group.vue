@@ -1,25 +1,45 @@
 <template>
   <div class="group">
-    <div class="group__title">
-      <h4 class="group__title__name">{{ group.name }}</h4>
-      <i v-show="joined" class="fas fa-user group__title__joined" />
+    <div class="group__section">
+      <div class="group__title">
+        <i
+          v-if="activeGroup === group.id"
+          class="group__title__active-group fas fa-caret-right"
+        ></i>
+        <h4 class="group__title__name">{{ group.name }}</h4>
+        <i v-if="joined" class="fas fa-user group__title__joined" />
+      </div>
+      <div class="group__members">
+        <a
+          href="#"
+          v-show="!joined"
+          @click="joinGroup()"
+          class="group__members__joined"
+        >
+          Join
+        </a>
+        <i class="fas fa-users group__members__icon"></i>
+        <span class="group__members__badge badge">{{ memberCount }}</span>
+      </div>
     </div>
-    <div class="group__members">
-      <a href="#" v-show="!joined" @click="joinGroup()">Join</a>
-      <i class="fas fa-users group__members__icon"></i>
-      <span class="group__members__badge badge">{{ memberCount }}</span>
+    <div class="group__section">
+      <div class="btn--small btn--with-icon" @click="handleLeaveGroup()">
+        <i class="fas fa-sign-out-alt" />
+        <span>Leave</span>
+      </div>
     </div>
   </div>
 </template>
 
 <script>
-import { user, group } from '@/main'
+import { user, group, groups } from '@/main'
 export default {
   name: 'Group',
   data() {
     return {
       memberCount: 0,
-      joined: false
+      joined: null,
+      activeGroup: null
     }
   },
   props: {
@@ -27,6 +47,15 @@ export default {
     uid: String
   },
   methods: {
+    handleLeaveGroup() {
+      user(this.uid)
+        .child('groups')
+        .update({ [this.group.id]: null })
+      group(this.group.id)
+        .child('members')
+        .child('users')
+        .update({ [this.uid]: null })
+    },
     updateState() {
       const { name, members } = this.group
       if (members.users) {
@@ -39,16 +68,16 @@ export default {
         this.memberCount = admins
       }
       const groupID = this.group.id
-
-      user(this.uid)
-        .child('groups')
-        .on('value', snapshot => {
-          if (snapshot.val()) {
-            const joinedGroups = snapshot.val()
-            const joined = Object.keys(joinedGroups).includes(groupID)
-            this.joined = joined
-          }
-        })
+      user(this.uid).on('value', snapshot => {
+        if (snapshot.val()) {
+          const joinedGroups = snapshot.val().groups
+          const activeGroup = snapshot.val().activeGroup
+          if (this.activeGroup === groupID) this.activeGroup = true
+          const joined = Object.keys(joinedGroups).includes(groupID)
+          this.joined = joined
+          this.activeGroup = activeGroup
+        }
+      })
     },
     joinGroup() {
       user(this.uid)
@@ -73,16 +102,21 @@ export default {
 <style lang="scss" scoped>
 .group {
   border-top: 1px solid lightgray;
-  display: flex;
-  flex-direction: row;
-  justify-content: space-between;
-  align-items: center;
   padding: 0 1rem 0 1rem;
+  &__section {
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+    align-items: center;
+  }
   &__title {
     display: flex;
     flex-direction: row;
     align-items: center;
     &__name {
+      margin-right: 0.75rem;
+    }
+    &__active-group {
       margin-right: 0.75rem;
     }
   }
@@ -91,6 +125,9 @@ export default {
     display: flex;
     flex-direction: row;
     align-items: center;
+    &__joined {
+      margin-right: 0.75rem;
+    }
     &__icon {
       color: rgb(34, 100, 63);
     }

@@ -7,7 +7,7 @@
         :created="proud.created"
         :uid="uid"
         :removeProud="removeProud"
-        :proudId="Object.keys(prouds)[index]"
+        :proudId="proud.id"
       />
     </div>
     <div v-show="!prouds" class="no-prouds callout secondary">
@@ -21,28 +21,50 @@
 
 <script>
 import firebase from 'firebase'
-import { users, user, proud, prouds, group } from '@/main.js'
+import {
+  users,
+  user,
+  proud,
+  prouds,
+  group,
+  filterProudsByGroupId
+} from '@/main.js'
 import Proud from './Proud.vue'
 
 export default {
   name: 'GetProuds',
   data() {
     return {
-      prouds: null,
-      uid: ''
+      prouds: [],
+      uid: '',
+      groupId: null
     }
   },
   components: {
     Proud
   },
   methods: {
-    getProuds() {
-      prouds.on('value', snapshot => {
-        this.prouds = snapshot.val()
-      })
+    readProuds() {},
+
+    getProuds(groupId) {
+      group(groupId)
+        .child('prouds')
+        .on('value', snap => {
+          const prouds = Object.keys(snap.key)
+        })
     },
     getUid() {
       this.uid = firebase.auth().currentUser.uid
+    },
+    getGroupId() {
+      return user(this.uid).once('value', snapshot => {
+        const { activeGroup } = snapshot.val()
+        if (activeGroup) {
+          this.groupId = activeGroup
+        } else {
+          return false
+        }
+      })
     },
     removeProud(proudId) {
       proud(proudId).remove()
@@ -52,18 +74,21 @@ export default {
         .child(proudId)
         .remove()
 
-      user(this.uid).once('value', snapshot => {
-        const { activeGroup } = snapshot.val()
-        group(activeGroup)
-          .child('prouds')
-          .child(proudId)
-          .remove()
-      })
+      group(this.groupId)
+        .child('prouds')
+        .child(proudId)
+        .remove()
     }
   },
   beforeMount() {
-    this.getProuds()
     this.getUid()
+    this.getGroupId().then(res => {
+      if (res) {
+        this.getProuds(this.groupId)
+      } else {
+        throw Error(`User has no active group.`)
+      }
+    })
   }
 }
 </script>

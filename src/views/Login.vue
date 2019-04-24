@@ -2,32 +2,32 @@
   <div class="login">
     <h1>#PROUD</h1>
     <p class="text-center">Please login to your Proud account</p>
-    <form class="login__form" @submit.prevent="login">
+    <form class="form" @submit.prevent="login">
       <input
-        class="login__form__input"
+        class="form__input"
         type="text"
         v-model="email"
         placeholder="Email"
       />
       <input
-        class="login__form__input"
+        class="form__input"
         type="password"
         v-model="password"
         placeholder="Password"
       />
-      <button class="login__form__button btn" type="submit">
+      <button class="form__button btn" type="submit">
         Login
       </button>
     </form>
 
-    <p class="login__signup">
+    <p class="signup">
       Don't have an account ? You can
-      <router-link class="login__signup__link" to="/sign-up">
+      <router-link class="signup__link" to="/sign-up">
         create one
       </router-link>
     </p>
 
-    <div class="login__social">
+    <div class="social">
       <p>
         or sign in with
       </p>
@@ -130,7 +130,7 @@ export default {
   padding: 3rem 2rem;
   border: 1px solid lightgray;
   border-radius: 8px;
-  .login__form {
+  .form {
     width: 100%;
     margin: 0 auto;
     display: flex;

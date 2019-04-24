@@ -40,7 +40,7 @@ export default {
       }
       const proudPush = prouds.push(newProud)
       this.newProud.message = ''
-      const proudId = proudPush.path.pieces_[1]
+      const proudId = proudPush.key
 
       proud(proudId).update({ id: proudId })
 
