@@ -2,28 +2,22 @@
   <div class="group">
     <div class="group__section">
       <div class="group__title">
-        <i
-          v-if="activeGroup === group.id"
-          class="group__title__active-group fas fa-caret-right"
-        ></i>
+        <i class="group__title__active-group fas fa-caret-right"></i>
         <h4 class="group__title__name">{{ group.name }}</h4>
-        <i v-if="joined" class="fas fa-user group__title__joined" />
+        <i class="fas fa-user group__title__joined" />
       </div>
       <div class="group__members">
-        <a
-          href="#"
-          v-show="!joined"
-          @click="joinGroup()"
-          class="group__members__joined"
-        >
+        <a href="#" class="group__members__joined">
           Join
         </a>
         <i class="fas fa-users group__members__icon"></i>
-        <span class="group__members__badge badge">{{ memberCount }}</span>
+        <span class="group__members__badge badge">
+          {{ memberCount }}
+        </span>
       </div>
     </div>
     <div class="group__section">
-      <div class="btn--small btn--with-icon" @click="handleLeaveGroup()">
+      <div class="btn--small btn--with-icon">
         <i class="fas fa-sign-out-alt" />
         <span>Leave</span>
       </div>
@@ -32,69 +26,29 @@
 </template>
 
 <script>
-import { user, group, groups } from '@/main'
+import { mapGetters } from 'vuex'
 export default {
   name: 'Group',
   data() {
-    return {
-      memberCount: 0,
-      joined: null,
-      activeGroup: null
-    }
+    return {}
   },
   props: {
     group: Object,
     uid: String
   },
-  methods: {
-    handleLeaveGroup() {
-      user(this.uid)
-        .child('groups')
-        .update({ [this.group.id]: null })
-      group(this.group.id)
-        .child('members')
-        .child('users')
-        .update({ [this.uid]: null })
-    },
-    updateState() {
-      const { name, members } = this.group
-      if (members.users) {
-        const users = Object.keys(members.users).length
-        const admins = Object.keys(members.admins).length
-        const total = users + admins
-        this.memberCount = total
-      } else {
-        const admins = Object.keys(members.admins).length
-        this.memberCount = admins
-      }
-      const groupID = this.group.id
-      user(this.uid).on('value', snapshot => {
-        if (snapshot.val()) {
-          const joinedGroups = snapshot.val().groups
-          const activeGroup = snapshot.val().activeGroup
-          if (this.activeGroup === groupID) this.activeGroup = true
-          const joined = Object.keys(joinedGroups).includes(groupID)
-          this.joined = joined
-          this.activeGroup = activeGroup
-        }
-      })
-    },
-    joinGroup() {
-      user(this.uid)
-        .child('groups')
-        .update({ [this.group.id]: true })
+  methods: {},
+  computed: {
+    ...mapGetters('groups', {
+      memberCount: getGroupMemberCount(group.id)
+    })
 
-      group(this.group.id)
-        .child('members')
-        .child('users')
-        .update({ [this.uid]: true })
-    }
-  },
-  beforeMount() {
-    this.updateState()
-  },
-  beforeUpdate() {
-    this.updateState()
+    // isMember() {
+    //   const {
+    //     members: { users, admin }
+    //   } = this.$store.group.getters.getGroup(this.group.id)
+    //   const { groups } = this.$store.getters.getUser(this.uid)
+    //   const groupKeys = Object.keys(groups)
+    // }
   }
 }
 </script>
@@ -138,3 +92,28 @@ export default {
   }
 }
 </style>
+
+<script>
+// export default {
+//   handleLeaveGroup() {
+//     user(this.uid)
+//       .child('groups')
+//       .update({ [this.group.id]: null })
+//     group(this.group.id)
+//       .child('members')
+//       .child('users')
+//       .update({ [this.uid]: null })
+//   },
+
+//   joinGroup() {
+//     user(this.uid)
+//       .child('groups')
+//       .update({ [this.group.id]: true })
+
+//     group(this.group.id)
+//       .child('members')
+//       .child('users')
+//       .update({ [this.uid]: true })
+//   }
+// }
+</script>

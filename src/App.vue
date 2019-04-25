@@ -1,17 +1,17 @@
 <template>
   <div id="app" class="grid-container full">
-    <header v-show="getUser" class="main-header">
+    <header v-show="user" class="main-header">
       <div class="main-header__wrapper grid-container">
         <div class="logo">
           <h2 class="logo__text">#PROUD</h2>
         </div>
-        <Navigation v-if="getUser" :user="getUser" :logout="logout" />
+        <Navigation v-if="user" :user="user" :logout="logout" />
       </div>
     </header>
     <div class="content-wrapper grid-container">
       <router-view />
     </div>
-    <footer v-show="getUser" class="footer">
+    <footer v-show="user" class="footer">
       <div class="bottom">
         <span>Copywright PROUD</span>
       </div>
@@ -23,6 +23,7 @@
 import firebase from 'firebase'
 import { users } from '@/main'
 import Navigation from '@/components/Navigation'
+import { mapGetters } from 'vuex'
 export default {
   name: 'App',
   data() {
@@ -32,11 +33,6 @@ export default {
     Navigation
   },
   methods: {
-    // getCurrentUser(uid) {
-    //   users.child(uid).on('value', snapshot => {
-    //     this.user = snapshot.val()
-    //   })
-    // },
     logout() {
       firebase
         .auth()
@@ -45,20 +41,11 @@ export default {
           this.$router.replace('login')
         })
     }
-    // checkUser() {
-    //   firebase.auth().onAuthStateChanged(user => {
-    //     if (user) {
-    //       this.getCurrentUser(user.uid)
-    //     } else {
-    //       this.user = false
-    //     }
-    //   })
-    // }
   },
   computed: {
-    getUser() {
-      return this.$store.getters.getUser
-    }
+    ...mapGetters('users', {
+      user: 'getUser'
+    })
   }
 }
 </script>

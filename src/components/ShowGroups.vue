@@ -1,27 +1,31 @@
 <template>
   <div>
-    <section
-      class="choose-group"
-      v-for="(group, index) in groups"
-      v-bind:key="index"
-    >
-      <Group :uid="uid" :group="group" />
+    <section class="choose-group">
+      <Group
+        v-for="(group, index) in groups"
+        v-bind:key="index"
+        :uid="user.uid"
+        :group="group"
+      />
     </section>
   </div>
 </template>
 
 <script>
 import Group from '@/components/Group'
+import { mapGetters } from 'vuex'
 export default {
   name: 'ShowGroups',
   data: () => {
-    return {
-      memberCount: 0
-    }
+    return {}
   },
-  props: {
-    groups: [Array, Object, Boolean],
-    uid: String
+  computed: {
+    ...mapGetters('groups', {
+      groups: 'getAllGroups'
+    }),
+    ...mapGetters('users', {
+      user: 'getUser'
+    })
   },
   components: {
     Group

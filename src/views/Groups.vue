@@ -5,7 +5,7 @@
     <div class="groups">
       <h3>Avaliable groups</h3>
 
-      <ShowGroups :uid="userId" v-show="groups" :groups="groups" />
+      <ShowGroups />
 
       <p v-show="message">
         No groups exsists, please create a new group
@@ -19,7 +19,7 @@
         Join group
       </button>
 
-      <router-link v-show="groups" to="create-group">
+      <router-link to="create-group">
         Create new group
       </router-link>
     </div>
@@ -30,40 +30,21 @@
 import firebase from 'firebase'
 import { groups } from '@/main'
 import ShowGroups from '@/components/ShowGroups'
+import { mapGetters } from 'vuex'
 
 export default {
   name: 'Groups',
   data: () => {
     return {
-      groups: false,
       message: false,
       userId: ''
     }
   },
-  methods: {
-    getGroups() {
-      groups.on('value', snapshot => {
-        const groups = snapshot.val()
-        if (groups) {
-          this.groups = groups
-          this.message = false
-        } else {
-          this.message = true
-        }
-      })
-    },
-    getUserId() {
-      this.userId = firebase.auth().currentUser.uid
-    },
-    handleOpenJoinGroups() {}
-  },
+
   components: {
     ShowGroups
   },
-  beforeMount() {
-    this.getGroups()
-    this.getUserId()
-  }
+  beforeMount() {}
 }
 </script>
 
