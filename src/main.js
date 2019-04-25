@@ -3,6 +3,7 @@ import firebase from 'firebase'
 import App from './App.vue'
 import router from './router'
 import config from './config'
+import { store } from '@/store'
 
 Vue.config.productionTip = false
 
@@ -27,10 +28,15 @@ export const prouds = db.ref('prouds')
 export const proud = proudId => db.ref(`prouds/${proudId}`)
 
 firebase.auth().onAuthStateChanged(() => {
+  store.dispatch('getProudsFromDb')
+  store.dispatch('getUserFromDb')
+  store.dispatch('getGroupsFromDb')
+
   if (!app) {
     /* eslint-disable no-new */
     app = new Vue({
       router,
+      store,
       render: h => h(App)
     }).$mount('#app')
   }

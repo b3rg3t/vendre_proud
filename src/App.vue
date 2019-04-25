@@ -1,17 +1,17 @@
 <template>
   <div id="app" class="grid-container full">
-    <header v-show="user" class="main-header">
+    <header v-show="getUser" class="main-header">
       <div class="main-header__wrapper grid-container">
         <div class="logo">
           <h2 class="logo__text">#PROUD</h2>
         </div>
-        <Navigation v-if="user" :user="user" :logout="logout" />
+        <Navigation v-if="getUser" :user="getUser" :logout="logout" />
       </div>
     </header>
     <div class="content-wrapper grid-container">
       <router-view />
     </div>
-    <footer v-show="user" class="footer">
+    <footer v-show="getUser" class="footer">
       <div class="bottom">
         <span>Copywright PROUD</span>
       </div>
@@ -26,19 +26,17 @@ import Navigation from '@/components/Navigation'
 export default {
   name: 'App',
   data() {
-    return {
-      user: false
-    }
+    return {}
   },
   components: {
     Navigation
   },
   methods: {
-    getCurrentUser(uid) {
-      users.child(uid).on('value', snapshot => {
-        this.user = snapshot.val()
-      })
-    },
+    // getCurrentUser(uid) {
+    //   users.child(uid).on('value', snapshot => {
+    //     this.user = snapshot.val()
+    //   })
+    // },
     logout() {
       firebase
         .auth()
@@ -46,19 +44,21 @@ export default {
         .then(() => {
           this.$router.replace('login')
         })
-    },
-    checkUser() {
-      firebase.auth().onAuthStateChanged(user => {
-        if (user) {
-          this.getCurrentUser(user.uid)
-        } else {
-          this.user = false
-        }
-      })
     }
+    // checkUser() {
+    //   firebase.auth().onAuthStateChanged(user => {
+    //     if (user) {
+    //       this.getCurrentUser(user.uid)
+    //     } else {
+    //       this.user = false
+    //     }
+    //   })
+    // }
   },
-  beforeMount() {
-    this.checkUser()
+  computed: {
+    getUser() {
+      return this.$store.getters.getUser
+    }
   }
 }
 </script>

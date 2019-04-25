@@ -1,6 +1,6 @@
 <template>
   <div class="prouds">
-    <div v-show="prouds" v-for="(proud, key, index) in prouds" :key="key">
+    <div v-show="prouds" v-for="(proud, index) in prouds" :key="index">
       <Proud
         :owner="proud.owner"
         :message="proud.message"
