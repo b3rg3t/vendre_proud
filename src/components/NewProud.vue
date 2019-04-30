@@ -16,7 +16,14 @@
 
 <script>
 import firebase from 'firebase'
-import { prouds, users } from '@/main.js'
+import { prouds, users, slack } from '@/main.js'
+
+import Vue from 'vue'
+import axios from 'axios'
+import VueAxios from 'vue-axios'
+
+Vue.use(VueAxios, axios)
+
 export default {
   name: 'CreateProud',
   data() {
@@ -45,7 +52,62 @@ export default {
         .child(uid)
         .child('prouds')
         .update({ [proudId]: true })
+      this.sendToSlack(proud)
+    },
+    sendToSlack: function(proud) {
+      console.log('========' + firebase.auth().currentUser.uid)
+      users.child(firebase.auth().currentUser.uid).once('value', snapshot => {
+        const temp = snapshot.val()
+        this.slack_data = {
+          access_token: temp.slack_data.access_token,
+          user_id: temp.slack_data.user_id
+        }
+      })
+      console.log(this.slack_data)
+      var postData = {
+        channel: 'proud',
+        text: proud.message
+      }
+
+      let axiosConfig = {
+        headers: {
+          'Content-Type': 'application/x-www-form-urlencoded',
+          Authorization: 'Bearer ' + this.slack_data.access_token,
+          'X-Slack-User': this.slack_data.user_id
+        }
+      }
+
+      axios
+        .post('https://slack.com/api/chat.postMessage', postData, axiosConfig)
+        .then(res => {
+          console.log('RESPONSE RECEIVED: ', res)
+        })
+        .catch(err => {
+          console.log('AXIOS ERROR: ', err)
+        })
+        .then(response => {
+          dispatch({ type: FOUND_USER, data: response.data[0] })
+        })
+        .catch(error => {
+          dispatch({ type: ERROR_FINDING_USER })
+        })
     }
+    // sendToSlack: function(proud) {
+    //   const url =
+    //     'https://hooks.slack.com/services/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'
+    //   const data = {
+    //     text: proud.message
+    //   }
+    //   axios.post(url, JSON.stringify(data), {
+    //     withCredentials: false,
+    //     transformRequest: [
+    //       (data, headers) => {
+    //         delete headers.post['Content-Type']
+    //         return data
+    //       }
+    //     ]
+    //   })
+    // }
   }
 }
 </script>

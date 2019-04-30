@@ -29,14 +29,28 @@
 
     <div class="login__social">
       <p>
-        or sign in with
+        or
       </p>
-      <button @click="googleLogin" class="social-button">
+      <!-- <button @click="googleLogin" class="social-button">
         <img src="../assets/google-logo.png" alt="Google Logo" />
       </button>
       <button @click="facebookLogin" class="social-button">
         <img src="../assets/facebook-logo.png" alt="Facebook Logo" />
-      </button>
+      </button> -->
+      <a
+        href="https://slack.com/oauth/authorize?scope=identity.basic,identity.email,identity.team,identity.avatar&client_id=230513850368.604545361031"
+      >
+        <img
+          alt="Sign in with Slack"
+          height="40"
+          width="172"
+          src="https://platform.slack-edge.com/img/sign_in_with_slack.png"
+          srcset="
+            https://platform.slack-edge.com/img/sign_in_with_slack.png    1x,
+            https://platform.slack-edge.com/img/sign_in_with_slack@2x.png 2x
+          "
+        />
+      </a>
     </div>
   </div>
 </template>

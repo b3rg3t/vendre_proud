@@ -20,6 +20,7 @@
 
 <script>
 import { users } from '@/main.js'
+
 export default {
   name: 'Proud',
   data() {
