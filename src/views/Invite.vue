@@ -42,6 +42,7 @@
 <script>
 import firebase from 'firebase'
 import { user, group, groups } from '@/main'
+import { mapGetters } from 'vuex'
 export default {
   name: 'Invite',
   data: () => {
