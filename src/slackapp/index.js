@@ -1,6 +1,10 @@
 // Import express and request modules
 var express = require('express')
 var request = require('request')
+var bodyParser = require('body-parser')
+var cors = require('cors')
+
+const { WebClient } = require('@slack/web-api')
 
 // Store our app's ID and Secret. These we got from Step 1.
 // For this tutorial, we'll keep your API credentials right here. But for an actual app, you'll want to  store them securely in environment variables.
@@ -9,6 +13,10 @@ var clientSecret = 'ece45a81b8946cf3b95e53250315a152'
 
 // Instantiates Express and assigns our app variable to it
 var app = express()
+app.use(bodyParser.json())
+app.use(cors())
+
+var globalToken = null
 
 // Again, we define a port we want to listen to
 const PORT = 4390
@@ -53,9 +61,16 @@ app.get('/oauth', function(req, res) {
           console.log(error)
         } else {
           console.log(
-            'accesstoken: ' + body.access_token + ' userid_ ' + body.user_id
+            'accesstoken: ' +
+              body.access_token +
+              ' userid_ ' +
+              body.user_id +
+              ' full body: ' +
+              body
           )
           var newBody = JSON.parse(body)
+          globalToken = newBody.access_token
+          globalUser = newBody.user_id
           res.redirect(
             'http://localhost:8080/#/home?access_token=' +
               newBody.access_token +
@@ -72,4 +87,36 @@ app.get('/oauth', function(req, res) {
 // Route the endpoint that our slash command will point to and send back a simple response to indicate that ngrok is working
 app.post('/command', function(req, res) {
   res.send('Your ngrok tunnel is up and running!')
+})
+
+app.post('/sendMessage', function(req, res) {
+  // console.log(post)
+  //const token = process.env.SLACK_TOKEN
+  // kolla om token fanns i post-requestet. isf använd den. samma med userID
+  if (req.body.token) {
+    console.log('globaltoken exist: __' + req.body.token + '__')
+    globalToken = req.body.token
+  } else {
+    console.log('no global token')
+    console.log(req.body.token)
+  }
+  const web = new WebClient(globalToken)
+
+  // This argument can be a channel ID, a DM ID, a MPDM ID, or a group ID
+  const conversationId = 'GHGLPKJRF' // default convo ID
+
+  ;(async () => {
+    // See: https://api.slack.com/methods/chat.postMessage
+    if (!!globalToken) {
+      const result = await web.chat.postMessage({
+        channel: conversationId,
+        text: req.body.text
+      })
+      //console.log('Message sent: ', res.ts)
+      res.send({ success: true, data: result })
+    } else {
+      res.send({ success: false, error: 'Please authorize and try again' })
+    }
+    // `res` contains information about the posted message
+  })()
 })

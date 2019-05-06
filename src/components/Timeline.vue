@@ -2,7 +2,9 @@
   <section class="timeline">
     <header>
       <h2>Timeline</h2>
-      <button @click="saveToken" class="social-button">Save dat shit</button>
+      <button @click="saveToken" class="social-button">
+        Save user to Firebase
+      </button>
     </header>
     <GetProuds />
   </section>
@@ -33,6 +35,7 @@ export default {
           })
       }
       // om det finns, dunka in i rätt(inloggad) user i firebase
+      //this.$route.router.go('/#/home')
     }
   },
   components: {
