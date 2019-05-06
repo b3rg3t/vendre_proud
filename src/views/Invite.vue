@@ -47,20 +47,21 @@ export default {
   data: () => {
     return {
       input: '',
-      invites: [],
-      group: {
-        id: null,
-        name: ''
-      }
+      invites: []
+    }
+  },
+  computed: {
+    ...mapGetters({
+      user: 'users/getUser',
+      activeGroup: 'users/getActiveGroup'
+    }),
+    group() {
+      return this.$store.getters['groups/getGroupById'](activeGroup)
     }
   },
   methods: {
     handleSendInvites() {
-      group(this.group.id)
-        .child('members')
-        .on('value', snapshot => {
-          const dude = snapshot.val()
-        })
+      // Todo: Invite all email adresses from array
     },
     handleSubmit() {
       this.input = this.input.toLowerCase()
@@ -77,18 +78,6 @@ export default {
         this.invites.splice(index, 1)
       }
     }
-  },
-  beforeMount() {
-    const uid = firebase.auth().currentUser.uid
-    user(uid)
-      .child('activeGroup')
-      .on('value', snapshot => {
-        const res = snapshot.val()
-        this.group.id = res
-        group(res).once('value', snapshot => {
-          this.group.name = snapshot.val().name
-        })
-      })
   }
 }
 </script>

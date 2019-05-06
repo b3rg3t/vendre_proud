@@ -21,18 +21,28 @@ export const user = uid => db.ref(`users/${uid}`)
 
 // Groups
 export const groups = db.ref('groups')
-export const group = groupId => db.ref(`groups/${groupId}`)
+export const group = gid => db.ref(`groups/${gid}`)
 
 // Prouds
 export const prouds = db.ref('prouds')
-export const proud = proudId => db.ref(`prouds/${proudId}`)
+export const proud = pid => db.ref(`prouds/${pid}`)
 
-firebase.auth().onAuthStateChanged(() => {
-  ;(async function() {
-    await store.dispatch('prouds/getProudsFromDb')
-    await store.dispatch('users/getUserFromDb')
-    await store.dispatch('groups/getGroupsFromDb')
-  })()
+firebase.auth().onAuthStateChanged(user => {
+  if (user) {
+    ;(async function() {
+      console.log('User login detected!')
+      await store.dispatch('users/startListeningToUser')
+      await store.dispatch('prouds/startListeningToProuds')
+      await store.dispatch('groups/startListeningToGroups')
+    })()
+  } else {
+    ;(async function() {
+      console.log('User logout detected!')
+      await store.dispatch('groups/stopListeningToGroups')
+      await store.dispatch('prouds/stopListeningToProuds')
+      await store.dispatch('users/stopListeningToUser')
+    })()
+  }
 
   if (!app) {
     /* eslint-disable no-new */

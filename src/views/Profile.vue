@@ -7,23 +7,16 @@
 <script>
 import firebase from 'firebase'
 import { users } from '@/main'
+import { mapGetters } from 'vuex'
 export default {
   name: 'Profile',
   data() {
-    return {
-      user: ''
-    }
+    return {}
   },
-  methods: {
-    getUser() {
-      const uid = firebase.auth().currentUser.uid
-      users.child(uid).on('value', snapshot => {
-        this.user = snapshot.val()
-      })
-    }
-  },
-  beforeMount() {
-    this.getUser()
+  computed: {
+    ...mapGetters('users', {
+      user: 'getUser'
+    })
   }
 }
 </script>

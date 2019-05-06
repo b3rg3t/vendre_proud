@@ -1,14 +1,8 @@
 <template>
-  <div class="form-wrapper sign-up">
+  <div class="form-wrapper sign-in">
     <h1>#PROUD</h1>
-    <p>Let's create a new account !</p>
-    <form class="form" @submit.prevent="signUp">
-      <input
-        class="form__input"
-        type="text"
-        v-model="displayName"
-        placeholder="Display Name"
-      />
+    <p class="text-center">Please login to your Proud account</p>
+    <form class="form" @submit.prevent="login()">
       <input
         class="form__input"
         type="text"
@@ -21,14 +15,25 @@
         v-model="password"
         placeholder="Password"
       />
-      <button class="form__button btn" type="submit">Sign Up</button>
+      <button class="form__button btn" type="submit">
+        Login
+      </button>
     </form>
+
     <error-message
       v-show="error.display"
+      @close-error="error = { message: '', display: false }"
       :title="error.title"
       :message="error.message"
-      @close-error="error.display = false"
     />
+
+    <p class="signup">
+      Don't have an account ? You can
+      <router-link class="signup__link" to="/sign-up">
+        create one
+      </router-link>
+    </p>
+
     <div class="social">
       <p>
         or sign in with
@@ -40,29 +45,22 @@
         <img src="../assets/facebook-logo.png" alt="Facebook Logo" />
       </button>
     </div>
-    <div class="sign-up__back-btn">
-      <router-link to="/login">
-        <i class="fas fa-angle-left"></i>
-        <span>Login</span>
-      </router-link>
-    </div>
   </div>
 </template>
 
 <script>
 import firebase from 'firebase'
-import { users } from '../main.js'
 import ErrorMessage from '@/components/ErrorMessage'
+import { users } from '@/main'
 
 export default {
-  name: 'SignUp',
+  name: 'signin',
   data() {
     return {
-      displayName: '',
       email: '',
       password: '',
       error: {
-        title: 'Problem with sign up',
+        title: 'Problem with sign in',
         message: '',
         display: false
       }
@@ -72,17 +70,15 @@ export default {
     'error-message': ErrorMessage
   },
   methods: {
-    signUp: function() {
+    login() {
+      const credentials = {
+        email: this.email,
+        password: this.password
+      }
       this.$store
-        .dispatch('users/signUpUser', {
-          email: this.email,
-          password: this.password,
-          displayName: this.displayName
-        })
+        .dispatch('users/signInUser', credentials)
         .then(auth => {
-          if (auth) {
-            this.$router.replace('groups')
-          }
+          this.$router.replace('home')
         })
         .catch(err => {
           this.error.message = err
@@ -119,21 +115,67 @@ export default {
 }
 </script>
 
-<style lang="scss" scoped>
-.sign-up {
-  position: relative;
-  &__back-btn {
-    position: absolute;
-    bottom: 1.5rem;
-    left: 1.5rem;
+<style lang="scss">
+.form-wrapper {
+  width: 400px;
+  margin: 10vh auto;
+  padding: 3rem 2rem;
+  border: 1px solid lightgray;
+  border-radius: 8px;
+}
+.form {
+  width: 100%;
+  margin: 0 auto;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
 
-    i {
-      margin-right: 0.5rem;
+  &__input {
+    margin: 10px 0;
+    width: 100%;
+    padding: 15px;
+    border: 1px solid lightgrey;
+    background: none;
+    border-radius: 5px;
+  }
+  &__button {
+    margin-top: 20px;
+    width: 100%;
+    cursor: pointer;
+  }
+  &__signup {
+    margin-top: 40px;
+    font-size: 0.75em;
+    &__link {
+      text-decoration: underline;
+      cursor: pointer;
     }
+  }
+}
+.social-button {
+  width: 48px;
+  height: 48px;
+  background: white;
+  padding: 0.75rem;
+  border-radius: 50%;
+  border: none;
+  outline: 0;
+  margin-right: 1rem;
 
-    a {
-      text-decoration: none;
-    }
+  &:nth-last-child() {
+    margin-right: 0;
+  }
+
+  transition: transform 300ms;
+  cursor: pointer;
+
+  &:hover {
+    transform: scale(1.1);
+  }
+
+  img {
+    width: 100%;
   }
 }
 </style>

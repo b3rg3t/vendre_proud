@@ -31,11 +31,6 @@ export default {
     NewProud,
     Timeline,
     Navigation
-  },
-  methods: {
-    showTimeline: function() {
-      // document.querySelector('.hello').innerHTML = '<input type=text/>'
-    }
   }
 }
 </script>

@@ -5,7 +5,8 @@
         <div class="logo">
           <h2 class="logo__text">#PROUD</h2>
         </div>
-        <Navigation v-if="user" :user="user" :logout="logout" />
+        <Navigation v-if="user" :user="user" />
+        <div v-else class="placeholder-menu"></div>
       </div>
     </header>
     <div class="content-wrapper grid-container">
@@ -32,16 +33,7 @@ export default {
   components: {
     Navigation
   },
-  methods: {
-    logout() {
-      firebase
-        .auth()
-        .signOut()
-        .then(() => {
-          this.$router.replace('login')
-        })
-    }
-  },
+  methods: {},
   computed: {
     ...mapGetters('users', {
       user: 'getUser'
@@ -138,6 +130,12 @@ body {
         margin: 0;
       }
     }
+  }
+
+  .placeholder-menu {
+    background: lightgray;
+    border-radius: 5px;
+    width: 100%;
   }
 }
 

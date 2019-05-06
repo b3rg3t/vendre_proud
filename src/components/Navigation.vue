@@ -17,10 +17,13 @@
         <ul class="dropdown-menu menu vertical" v-show="groupDropdown">
           <li
             class="dropdown-menu__item dropdown-menu__item--with-icon"
-            v-for="(group, index) in groups"
+            v-for="(group, index) in joinedGroups"
             v-bind:key="index"
           >
-            <a class="dropdown-menu__item__link" @click="selectGroup(group.id)">
+            <a
+              class="dropdown-menu__item__link"
+              @click="setActiveGroup(group.uid)"
+            >
               {{ group.name }}
             </a>
           </li>
@@ -85,13 +88,18 @@
 
 <script>
 import { user, group } from '@/main'
+import { mapGetters, mapState } from 'vuex'
 export default {
   name: 'Navigation',
   data: () => {
     return {
       profileDropdown: false,
-      groupDropdown: false,
-      groups: []
+      groupDropdown: false
+    }
+  },
+  computed: {
+    joinedGroups() {
+      return this.$store.getters['groups/getJoinedGroups'](this.user.uid)
     }
   },
   methods: {
@@ -112,47 +120,17 @@ export default {
     redirect(route = String) {
       this.$router.push(route)
     },
-    getJoinedGroups() {
-      // Get the signed in user's groups
-      user(this.user.uid).on('value', snapshot => {
-        // If any group has been joined
-        if (snapshot.val()) {
-          // Convert to array of keys
-          const joinedGroups = Object.keys(snapshot.val().groups)
-          const array = []
-          // Loop through keys
-          joinedGroups.forEach(g => {
-            // Get the group object and push it to state
-            group([g])
-              .once('value', snapshot => {
-                const res = snapshot.val()
-                if (res) {
-                  array.push(res)
-                } else {
-                  throw Error(`Could not find group. ${err}`)
-                }
-              })
-              .catch(err => {
-                throw Error(
-                  `[Navigation(getJoinedGroups)]Something went wrong. ${err}`
-                )
-              })
-          })
-          this.groups = array
-        }
-      })
+    setActiveGroup(id) {
+      this.$store.dispatch('users/setActiveGroup', id)
     },
-    selectGroup(id) {
-      console.log(id)
-      user(this.user.uid)
-        .child('activeGroup')
-        .set(id)
+    logout() {
+      this.$store.dispatch('users/logOutUser').then(res => {
+        this.$store.commit('users/LOG_OUT_USER')
+        this.$router.replace('login')
+      })
     }
   },
-  props: { user: Object, logout: Function },
-  beforeMount() {
-    this.getJoinedGroups()
-  }
+  props: { user: Object }
 }
 </script>
 

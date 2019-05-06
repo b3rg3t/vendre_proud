@@ -17,6 +17,7 @@
 <script>
 import firebase from 'firebase'
 import { proud, prouds, user, group } from '@/main'
+import { mapState, mapGetters } from 'vuex'
 export default {
   name: 'NewProud',
   data() {
@@ -29,29 +30,28 @@ export default {
   props: {
     msg: String
   },
+  computed: {
+    ...mapGetters({
+      user: 'users/getUser'
+    })
+  },
   methods: {
     addMessage: function() {
-      const { uid } = firebase.auth().currentUser
       const newProud = {
         message: this.newProud.message,
-        mentions: false,
-        owner: uid,
-        created: firebase.database.ServerValue.TIMESTAMP
+        mentions: null, // Todo: Add a way to mention someone
+        owner: this.user.uid,
+        created: firebase.database.ServerValue.TIMESTAMP,
+        group: this.user.activeGroup
       }
-      const proudPush = prouds.push(newProud)
+      const proudId = prouds.push(newProud).key
       this.newProud.message = ''
-      const proudId = proudPush.key
 
-      proud(proudId).update({ id: proudId })
+      group(this.user.activeGroup)
+        .child('prouds')
+        .update({ [proudId]: true })
 
-      user(uid).once('value', snapshot => {
-        const { activeGroup } = snapshot.val()
-        group(activeGroup)
-          .child('prouds')
-          .update({ [proudId]: true })
-      })
-
-      user(uid)
+      user(this.user.uid)
         .child('prouds')
         .update({ [proudId]: true })
     }

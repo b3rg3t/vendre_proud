@@ -1,6 +1,5 @@
 import Vue from 'vue'
 import Vuex from 'vuex'
-import firebase from 'firebase'
 
 import users from './modules/users'
 import prouds from './modules/prouds'
@@ -13,7 +12,8 @@ const store = new Vuex.Store({
     users,
     prouds,
     groups
-  }
+  },
+  actions: {}
 })
 
 export default store

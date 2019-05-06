@@ -50,28 +50,16 @@ export default {
   },
   methods: {
     createGroup() {
-      const uid = firebase.auth().currentUser.uid
-      const groupObj = {
-        name: this.name,
-        members: {
-          admins: {
-            [uid]: true
-          }
-        }
-      }
-      const groupPush = groups.push(groupObj)
-      const groupID = groupPush.path.pieces_[1]
-
-      group(groupID).update({ id: groupID })
-
-      user(uid).update({ activeGroup: groupID })
-      user(uid)
-        .child('groups')
-        .update({ [groupID]: true })
-
       // reset inputfield
-      this.name = ''
-      this.$router.replace('groups')
+      this.$store
+        .dispatch('groups/createNewGroup', this.name)
+        .then(res => {
+          this.name = ''
+          this.$router.replace('groups')
+        })
+        .catch(err => {
+          throw Error(err)
+        })
     }
   }
 }
