@@ -12,11 +12,11 @@
     <div class="content-wrapper grid-container">
       <router-view />
     </div>
-    <footer v-show="user" class="footer">
+    <!-- <footer v-show="user" class="footer">
       <div class="bottom">
         <span>Copywright PROUD</span>
       </div>
-    </footer>
+    </footer> -->
   </div>
 </template>
 

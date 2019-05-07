@@ -10,11 +10,9 @@
             <h4>FeedBack</h4>
           </header>
         </section>
-        <section class="new-proud">
-          <NewProud msg="Create new proud" />
-        </section>
       </aside>
     </div>
+    <NewProud msg="Create new proud" />
   </div>
 </template>
 
@@ -24,13 +22,11 @@ import firebase, { functions } from 'firebase'
 // @ is an alias to /src
 import NewProud from '@/components/NewProud.vue'
 import Timeline from '@/components/Timeline.vue'
-import Navigation from '@/components/Navigation.vue'
 export default {
   name: 'Home',
   components: {
     NewProud,
-    Timeline,
-    Navigation
+    Timeline
   }
 }
 </script>
@@ -42,6 +38,7 @@ export default {
 }
 
 .wrapper {
+  position: relative;
   display: grid;
   grid-template-columns: 1fr;
 
