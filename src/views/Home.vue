@@ -25,7 +25,6 @@ import firebase, { functions } from 'firebase'
 import NewProud from '@/components/NewProud.vue'
 import Timeline from '@/components/Timeline.vue'
 import Navigation from '@/components/Navigation.vue'
-console.log('Hej')
 
 export default {
   name: 'Home',

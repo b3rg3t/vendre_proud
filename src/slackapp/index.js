@@ -30,8 +30,8 @@ app.listen(PORT, function() {
 // This route handles GET requests to our root ngrok address and responds with the same "Ngrok is working message" we used before
 app.get('/', function(req, res) {
   res.send(
-    'Ngrok is working! Path Hit: ' +
-      '<a href="https://slack.com/oauth/authorize?scope=incoming-webhook&client_id=230513850368.604545361031"><img alt=""Add to Slack"" height="40" width="139" src="https://platform.slack-edge.com/img/add_to_slack.png" srcset="https://platform.slack-edge.com/img/add_to_slack.png 1x, https://platform.slack-edge.com/img/add_to_slack@2x.png 2x" /></a>'
+    'Ngrok is working! Path Hit: '
+    // '<a href="https://slack.com/oauth/authorize?scope=incoming-webhook&client_id=230513850368.604545361031"><img alt=""Add to Slack"" height="40" width="139" src="https://platform.slack-edge.com/img/add_to_slack.png" srcset="https://platform.slack-edge.com/img/add_to_slack.png 1x, https://platform.slack-edge.com/img/add_to_slack@2x.png 2x" /></a>'
   )
 })
 
@@ -92,9 +92,8 @@ app.post('/command', function(req, res) {
 app.post('/sendMessage', function(req, res) {
   // console.log(post)
   //const token = process.env.SLACK_TOKEN
-  // kolla om token fanns i post-requestet. isf använd den. samma med userID
   if (req.body.token) {
-    console.log('globaltoken exist: __' + req.body.token + '__')
+    console.log('globaltoken exist: ' + req.body.token)
     globalToken = req.body.token
   } else {
     console.log('no global token')
@@ -108,10 +107,14 @@ app.post('/sendMessage', function(req, res) {
   ;(async () => {
     // See: https://api.slack.com/methods/chat.postMessage
     if (!!globalToken) {
-      const result = await web.chat.postMessage({
-        channel: conversationId,
-        text: req.body.text
-      })
+      const result = await web.chat
+        .postMessage({
+          channel: conversationId,
+          text: req.body.text
+        })
+        .catch(err => {
+          res.send({ success: false, error: err })
+        })
       //console.log('Message sent: ', res.ts)
       res.send({ success: true, data: result })
     } else {
