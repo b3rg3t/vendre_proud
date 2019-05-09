@@ -16,10 +16,18 @@
 
 <script>
 import firebase from 'firebase'
-import { proud, prouds, user, group } from '@/main'
+import { proud, prouds, user, group, slack, users } from '@/main'
 import { mapState, mapGetters } from 'vuex'
+
+Vue.use(VueAxios, axios)
+import Vue from 'vue'
+import axios from 'axios'
+import VueAxios from 'vue-axios'
+
 export default {
   name: 'NewProud',
+  post: 'postData',
+
   data() {
     return {
       newProud: {
@@ -54,6 +62,28 @@ export default {
       user(this.user.uid)
         .child('prouds')
         .update({ [proudId]: true })
+      this.sendToSlack(newProud)
+    },
+    sendToSlack: function(proud) {
+      users.child(firebase.auth().currentUser.uid).once('value', snapshot => {
+        const temp = snapshot.val()
+        this.slack_data = {
+          access_token: temp.slack_data.access_token,
+          user_id: temp.slack_data.user_id
+        }
+      })
+      var url = 'http://localhost:4390/sendMessage'
+
+      var postData = {
+        channel: 'proud',
+        text: proud.message,
+        token: this.slack_data.access_token,
+        userId: this.slack_data.user_id
+      }
+
+      axios.post(url, postData).then(function(response) {
+        console.log(response.data)
+      })
     }
   }
 }

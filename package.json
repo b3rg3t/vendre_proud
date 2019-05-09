@@ -9,10 +9,16 @@
     "lint-autofix": "eslint --ext .js,.vue src test --fix"
   },
   "dependencies": {
+    "auth0-js": "^9.10.2",
+    "axios": "^0.18.0",
     "core-js": "^2.6.5",
+    "express": "^4.16.4",
     "firebase": "^5.9.2",
     "foundation-sites": "^6.5.3",
+    "request": "^2.88.0",
+    "slack-webhook": "^1.0.0",
     "vue": "^2.6.6",
+    "vue-axios": "^2.1.4",
     "vue-router": "^3.0.1",
     "vuex": "^3.1.0"
   },
