@@ -16,16 +16,16 @@
 
 <script>
 import firebase from 'firebase'
-import { prouds, users, slack } from '@/main.js'
+import { proud, prouds, user, group, slack, users } from '@/main'
+import { mapState, mapGetters } from 'vuex'
 
+Vue.use(VueAxios, axios)
 import Vue from 'vue'
 import axios from 'axios'
 import VueAxios from 'vue-axios'
 
-Vue.use(VueAxios, axios)
-
 export default {
-  name: 'CreateProud',
+  name: 'NewProud',
   post: 'postData',
 
   data() {
@@ -38,23 +38,31 @@ export default {
   props: {
     msg: String
   },
+  computed: {
+    ...mapGetters({
+      user: 'users/getUser'
+    })
+  },
   methods: {
     addMessage: function() {
-      const { uid } = firebase.auth().currentUser
-      const proud = {
+      const newProud = {
         message: this.newProud.message,
-        mentions: false,
-        owner: uid,
-        created: firebase.database.ServerValue.TIMESTAMP
+        mentions: null, // Todo: Add a way to mention someone
+        owner: this.user.uid,
+        created: firebase.database.ServerValue.TIMESTAMP,
+        group: this.user.activeGroup
       }
-      const proudPush = prouds.push(proud)
+      const proudId = prouds.push(newProud).key
       this.newProud.message = ''
-      const proudId = proudPush.path.pieces_[1]
-      users
-        .child(uid)
+
+      group(this.user.activeGroup)
         .child('prouds')
         .update({ [proudId]: true })
-      this.sendToSlack(proud)
+
+      user(this.user.uid)
+        .child('prouds')
+        .update({ [proudId]: true })
+      this.sendToSlack(newProud)
     },
     sendToSlack: function(proud) {
       users.child(firebase.auth().currentUser.uid).once('value', snapshot => {

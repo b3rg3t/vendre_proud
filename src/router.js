@@ -6,8 +6,9 @@ import Home from '@/views/Home'
 import Profile from '@/views/Profile'
 import Groups from '@/views/Groups'
 import CreateGroup from '@/views/CreateGroup'
-import Login from '@/views/Login'
+import SignIn from '@/views/SignIn'
 import SignUp from '@/views/SignUp'
+import Invite from '@/views/Invite'
 
 Vue.use(Router)
 
@@ -15,26 +16,34 @@ const router = new Router({
   routes: [
     {
       path: '*',
-      redirect: '/login'
+      redirect: '/sign-in'
     },
     {
       path: '/',
-      redirect: '/login'
+      redirect: '/sign-in'
     },
     {
-      path: '/login',
-      name: 'Login',
-      component: Login
+      path: '/sign-in',
+      name: 'Sign in',
+      component: SignIn
     },
     {
       path: '/sign-up',
-      name: 'SignUp',
+      name: 'Sign up',
       component: SignUp
     },
     {
       path: '/home',
       name: 'Home',
       component: Home,
+      meta: {
+        requiresAuth: true
+      }
+    },
+    {
+      path: '/invite-members',
+      name: 'Invite',
+      component: Invite,
       meta: {
         requiresAuth: true
       }
@@ -57,7 +66,7 @@ const router = new Router({
     },
     {
       path: '/create-group',
-      name: 'Create Group',
+      name: 'Create group',
       component: CreateGroup,
       meta: {
         requiresAuth: true
