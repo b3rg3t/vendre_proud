@@ -8,6 +8,7 @@ const mutations = {
   SET_USER(state, data) {
     state.user = data
   },
+  // Todo: Check this again
   SET_ACTIVE_GROUP(state, data) {
     state.user.activeGroup = data
   },
@@ -31,6 +32,7 @@ const actions = {
   stopListeningToUser({ commit }) {
     user(user.uid).off()
   },
+
   setActiveGroup({ commit }, uid) {
     commit('SET_ACTIVE_GROUP', uid)
   },
@@ -55,12 +57,8 @@ const actions = {
 
         const userObj = {
           displayName,
-          email,
-          groups: false,
-          prouds: false,
-          mentions: false
+          email
         }
-
         users.child(uid).set(userObj)
       })
     return auth
@@ -84,10 +82,7 @@ const actions = {
       const userObj = {
         displayName,
         email,
-        uid,
-        groups: false,
-        mentions: false,
-        prouds: false
+        uid
       }
       users.child(uid).set(userObj)
     } else {
@@ -111,12 +106,10 @@ const actions = {
       // If true, create userobject and push to database
       const userObj = {
         displayName,
-        email,
-        groups: false,
-        mentions: false,
-        prouds: false
+        email
       }
       users.child(uid).set(userObj)
+      return auth
     } else {
       // If false, continue login
       return auth

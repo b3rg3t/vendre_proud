@@ -85,6 +85,8 @@ const actions = {
           )
     } else if (users) {
       // if uid is user
+
+      // Todo: add some kind of confirmation
       console.log('auth is User')
       group(gid)
         .child(`members/users/${uid}`)
@@ -105,6 +107,7 @@ const actions = {
       const input = confirm(`Do you really want to delete ${localGroup.name}? `)
       if (input) {
         group(gid).remove()
+        // Todo: Remove group from all users that are members
       } else {
         return
       }
@@ -143,9 +146,7 @@ const getters = {
   },
 
   getGroupMemberCount: state => gid => {
-    const group = state.groups.find(group => {
-      return group.uid === gid
-    })
+    const group = state.groups.find(group => group.uid === gid)
     const { members } = group
     const users = members.hasOwnProperty('users')
       ? Object.keys(members.users).length

@@ -29,6 +29,7 @@ const actions = {
     prouds.off()
   },
   createProud(proud) {
+    // Todo: Add proud under user and active group
     prouds.push(proud)
   },
   removeProud({ rootState }, proudID) {
@@ -42,13 +43,11 @@ const actions = {
     proud(proudID).remove()
     // ...users...
     user(uid)
-      .child('prouds')
-      .child(proudID)
+      .child(`prouds/${proudID}`)
       .remove()
     // ...groups.
     group(activeGroup)
-      .child('prouds')
-      .child(proudID)
+      .child(`prouds/${proudID}`)
       .remove()
   }
 }
@@ -58,6 +57,7 @@ const getters = {
   getAllProuds: state => state.prouds,
   getProudById: state => uid => state.prouds.find(proud => proud.uid === uid), // CheckAgain: Is this needed?
   getProudsByGroup: (state, getters, { users: { user } }) =>
+    // Todo: Take a look at this again
     state.prouds
       .filter(proud => {
         if (user) {
