@@ -21,3 +21,9 @@ yarn-error.log*
 
 # Config 
 config.js
+
+# Test folder
+/test
+
+# Todo list
+Todo.txt
