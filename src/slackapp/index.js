@@ -90,7 +90,7 @@ app.post('/command', function(req, res) {
 })
 
 app.post('/sendMessage', function(req, res) {
-  // console.log(post)
+  console.log(req.body)
   //const token = process.env.SLACK_TOKEN
   if (req.body.token) {
     console.log('globaltoken exist: ' + req.body.token)
