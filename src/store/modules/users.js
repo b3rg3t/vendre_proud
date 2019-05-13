@@ -1,12 +1,17 @@
 import firebase from 'firebase'
 import { users, user } from '@/main'
+import { GET_KEY } from '@/helpers'
 
 const state = {
-  user: null
+  user: null,
+  users: []
 }
 const mutations = {
   SET_USER(state, data) {
     state.user = data
+  },
+  SET_USERS(state, data) {
+    state.users = data
   },
   SET_ACTIVE_GROUP(state, data) {
     state.user.activeGroup = data
@@ -31,6 +36,34 @@ const actions = {
   stopListeningToUser({ commit }) {
     user(user.uid).off()
   },
+
+  startListeningToUsers({ commit, rootState, rootGetters }) {
+    const userActiveGroup = GET_KEY(['users', 'user', 'activeGroup'], rootState)
+    if (userActiveGroup) {
+      users.on('value', snapshot => {
+        const dbUsers = snapshot.val()
+        const localGroup = rootGetters['groups/getGroupById'](userActiveGroup)
+        const admins = GET_KEY(['members', 'admins'], localGroup)
+        const users = GET_KEY(['members', 'users'], localGroup)
+
+        const stateUsers = []
+
+        Object.keys(admins).forEach(admin => {
+          if (dbUsers[admin]) {
+            stateUsers.push(dbUsers[admin])
+          }
+        })
+
+        Object.keys(users).forEach(user => {
+          if (dbUsers[user]) {
+            stateUsers.push(dbUsers[user])
+          }
+        })
+        commit('SET_USERS', [...stateUsers])
+      })
+    }
+  },
+
   setActiveGroup({ commit, rootState }, gid) {
     const uid = rootState.users.user.uid
     user(uid).update({ activeGroup: gid })

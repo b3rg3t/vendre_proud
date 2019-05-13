@@ -55,10 +55,12 @@ export default {
       const proudId = prouds.push(newProud).key
       this.newProud.message = ''
       if (this.user.activeGroup) {
-        newProud.group = this.user.activeGroup
+        console.log('This ran')
+        console.log(this.user.activeGroup, proudId)
         group(this.user.activeGroup)
           .child('prouds')
           .update({ [proudId]: true })
+        proud(proudId).update({ group: this.user.activeGroup })
       }
       user(this.user.uid)
         .child('prouds')

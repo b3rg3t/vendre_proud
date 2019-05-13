@@ -62,9 +62,16 @@
         </a>
         <a class="navigation__list__item__link">
           <img
+            v-if="getProfilePicture"
             class="profile-picture"
             :alt="user.displayName"
-            :src="user.slack_data.userpic || '../assets/logo.png'"
+            :src="getProfilePicture"
+          />
+          <img
+            v-else
+            class="profile-picture"
+            alt="Placeholder profile picture"
+            src="../assets/logo.png"
           />
         </a>
         <ul class="dropdown-menu menu vertical" v-show="profileDropdown">
@@ -105,6 +112,7 @@
 <script>
 import { user, group } from '@/main'
 import { mapGetters, mapState } from 'vuex'
+import { GET_KEY } from '@/helpers'
 export default {
   name: 'Navigation',
   data: () => {
@@ -117,6 +125,14 @@ export default {
   computed: {
     joinedGroups() {
       return this.$store.getters['groups/getJoinedGroups'](this.user.uid)
+    },
+    getProfilePicture() {
+      const userProfilePic = GET_KEY(['slack_data', 'userpic'], this.user)
+      if (userProfilePic) {
+        return userProfilePic
+      } else {
+        return false
+      }
     }
   },
   methods: {

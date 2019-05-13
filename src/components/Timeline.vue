@@ -8,7 +8,12 @@
       <div class="prouds" v-if="prouds.length >= 1">
         <div class="proud" v-for="(proud, index) in prouds" :key="index">
           <div class="proud__profile">
-            <img src="../assets/logo.png" class="proud__profile__img" />
+            <img
+              v-if="getUserProfilePicture(proud.owner)"
+              :src="getUserProfilePicture(proud.owner)"
+              class="proud__profile__img"
+            />
+            <img v-else src="../assets/logo.png" class="proud__profile__img" />
           </div>
           <div class="proud__content">
             <h4 class="proud__content__message">{{ proud.message }}</h4>
@@ -67,6 +72,17 @@ export default {
       })
       return displayName
     },
+    getUserProfilePicture(uid) {
+      const profilePicutre = GET_KEY(
+        [uid, 'slack_data', 'userpic'],
+        this.$store.users
+      )
+      if (profilePicutre) {
+        return profilePicutre
+      } else {
+        return false
+      }
+    },
     convertTime(time) {
       const date = new Date(time)
       return date.toLocaleString()
@@ -113,6 +129,10 @@ export default {
     if (this.$route.query.access_token && this.$route.query.user_id) {
       this.saveToken()
     }
+  },
+
+  beforeUpdate() {
+    this.$store.dispatch('users/startListeningToUsers')
   }
 }
 </script>
