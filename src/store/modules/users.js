@@ -1,5 +1,5 @@
 import firebase from 'firebase'
-import { user } from '@/main'
+import { users, user } from '@/main'
 
 const state = {
   user: null
@@ -31,8 +31,9 @@ const actions = {
   stopListeningToUser({ commit }) {
     user(user.uid).off()
   },
-  setActiveGroup({ commit }, uid) {
-    commit('SET_ACTIVE_GROUP', uid)
+  setActiveGroup({ commit, rootState }, gid) {
+    const uid = rootState.users.user.uid
+    user(uid).update({ activeGroup: gid })
   },
 
   // Sign in User => Takes payload user: { email, password }
@@ -44,7 +45,7 @@ const actions = {
   },
 
   async signUpUser({ commit }, user) {
-    const auth = await firebase
+    return await firebase
       .auth()
       .createUserWithEmailAndPassword(user.email, user.password)
       .then(auth => {
@@ -55,15 +56,11 @@ const actions = {
 
         const userObj = {
           displayName,
-          email,
-          groups: false,
-          prouds: false,
-          mentions: false
+          email
         }
 
         users.child(uid).set(userObj)
       })
-    return auth
   },
 
   // Social logins
@@ -84,10 +81,7 @@ const actions = {
       const userObj = {
         displayName,
         email,
-        uid,
-        groups: false,
-        mentions: false,
-        prouds: false
+        uid
       }
       users.child(uid).set(userObj)
     } else {
@@ -111,10 +105,7 @@ const actions = {
       // If true, create userobject and push to database
       const userObj = {
         displayName,
-        email,
-        groups: false,
-        mentions: false,
-        prouds: false
+        email
       }
       users.child(uid).set(userObj)
     } else {

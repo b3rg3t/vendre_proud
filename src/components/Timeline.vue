@@ -38,15 +38,18 @@
 
 <script>
 import firebase from 'firebase'
-import { user, group, proud } from '@/main.js'
+import { user, group, proud, users } from '@/main.js'
 import { mapGetters, mapState } from 'vuex'
+import axios from 'axios'
+import { GET_KEY } from '@/helpers'
 
 export default {
   name: 'Timeline',
   data() {
-    return {}
+    return {
+      userpic: null
+    }
   },
-
   computed: {
     ...mapGetters({
       prouds: 'prouds/getProudsByGroup',
@@ -70,6 +73,45 @@ export default {
     },
     removeProud(proudID) {
       this.$store.dispatch('prouds/removeProud', proudID)
+    },
+    saveToken() {
+      if (!GET_KEY(['slack_data'], this.user)) {
+        const uid = firebase.auth().currentUser.uid
+        const access_token = this.$route.query.access_token
+        const user_id = this.$route.query.user_id
+        if (access_token && user_id) {
+          console.log('push to firebase')
+          users
+            .child(uid)
+            .child('slack_data')
+            .set({
+              user_id,
+              access_token
+            })
+        }
+        this.getPicFromSlack(access_token, user_id, uid)
+      }
+    },
+
+    getPicFromSlack(access_token, user_id, uid) {
+      const API = 'https://slack.com/api/users.info'
+      const query = '?token=' + access_token + '&user=' + user_id
+      axios.get(API + query).then(response => {
+        console.log(response)
+        this.userpic = response.data.user.profile.image_192
+        users
+          .child(uid)
+          .child('slack_data')
+          .update({
+            userpic: this.userpic
+          })
+      })
+    }
+  },
+
+  beforeMount() {
+    if (this.$route.query.access_token && this.$route.query.user_id) {
+      this.saveToken()
     }
   }
 }

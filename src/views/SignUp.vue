@@ -80,9 +80,7 @@ export default {
           displayName: this.displayName
         })
         .then(auth => {
-          if (auth) {
-            this.$router.replace('groups')
-          }
+          this.$router.replace('groups')
         })
         .catch(err => {
           this.error.message = err

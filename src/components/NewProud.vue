@@ -16,15 +16,24 @@
 
 <script>
 import firebase from 'firebase'
-import { proud, prouds, user, group } from '@/main'
+import { proud, prouds, user, group, slack, users } from '@/main'
 import { mapState, mapGetters } from 'vuex'
+
+Vue.use(VueAxios, axios)
+import Vue from 'vue'
+import axios from 'axios'
+import VueAxios from 'vue-axios'
+
 export default {
   name: 'NewProud',
+  post: 'postData',
+
   data() {
     return {
       newProud: {
         message: ''
-      }
+      },
+      slack_data: null
     }
   },
   props: {
@@ -41,19 +50,45 @@ export default {
         message: this.newProud.message,
         mentions: null, // Todo: Add a way to mention someone
         owner: this.user.uid,
-        created: firebase.database.ServerValue.TIMESTAMP,
-        group: this.user.activeGroup
+        created: firebase.database.ServerValue.TIMESTAMP
       }
       const proudId = prouds.push(newProud).key
       this.newProud.message = ''
-
-      group(this.user.activeGroup)
-        .child('prouds')
-        .update({ [proudId]: true })
-
+      if (this.user.activeGroup) {
+        newProud.group = this.user.activeGroup
+        group(this.user.activeGroup)
+          .child('prouds')
+          .update({ [proudId]: true })
+      }
       user(this.user.uid)
         .child('prouds')
         .update({ [proudId]: true })
+      this.sendToSlack(newProud)
+    },
+    sendToSlack: function(proud) {
+      if (!this.slack_data) {
+        users.child(this.user.uid).once('value', snapshot => {
+          const temp = snapshot.val()
+          this.slack_data = {
+            access_token: temp.slack_data.access_token,
+            user_id: temp.slack_data.user_id
+          }
+        })
+        var url = 'http://localhost:4390/sendMessage'
+
+        var postData = {
+          channel: 'proud',
+          text: proud.message,
+          token: this.slack_data.access_token,
+          userId: this.slack_data.user_id
+        }
+
+        axios.post(url, postData).then(function(response) {
+          console.log(response.data)
+        })
+      } else {
+        console.log('No slack access')
+      }
     }
   }
 }
