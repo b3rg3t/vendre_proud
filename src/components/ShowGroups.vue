@@ -92,8 +92,10 @@ export default {
       this.$store.commit('users/SET_ACTIVE_GROUP', id)
     },
     isMember(gid) {
-      const joinedGroups = Object.keys(this.user.groups)
-      return joinedGroups.find(group => group === gid)
+      if (this.user.groups) {
+        const joinedGroups = Object.keys(this.user.groups)
+        return joinedGroups.find(group => group === gid)
+      }
     },
     isAdmin(gid, uid) {
       return this.$store.getters['groups/getAdminStatus'](gid, uid)

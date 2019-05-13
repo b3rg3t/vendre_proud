@@ -1,6 +1,22 @@
 <template>
   <nav class="navigation">
     <ul class="navigation__list">
+      <li v-if="isHidden" class="navigation__list__item">
+        <a
+          href="https://slack.com/oauth/authorize?scope=incoming-webhook,chat:write:user&client_id=230513850368.604545361031&redirect_uri=https://0280eaf7.ngrok.io/oauth"
+        >
+          <img
+            alt="Add to Slack"
+            height="40"
+            width="139"
+            src="https://platform.slack-edge.com/img/add_to_slack.png"
+            srcset="
+              https://platform.slack-edge.com/img/add_to_slack.png    1x,
+              https://platform.slack-edge.com/img/add_to_slack@2x.png 2x
+            "
+          />
+        </a>
+      </li>
       <li class="navigation__list__item">
         <router-link class="navigation__list__item__link" to="home">
           Home
@@ -94,7 +110,8 @@ export default {
   data: () => {
     return {
       profileDropdown: false,
-      groupDropdown: false
+      groupDropdown: false,
+      isHidden: true
     }
   },
   computed: {
@@ -207,6 +224,16 @@ export default {
         cursor: pointer;
       }
     }
+  }
+
+  .dropdown-menu {
+    background: #fff;
+    border-radius: 5px;
+    border: 1px solid lightgrey;
+    padding: 0;
+    position: absolute;
+    top: 2.8rem;
+    right: 0;
   }
 }
 .profile-picture {
