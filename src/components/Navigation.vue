@@ -5,6 +5,7 @@
         <a
           href="https://slack.com/oauth/authorize?scope=incoming-webhook,chat:write:user&client_id=230513850368.604545361031&redirect_uri=https://0280eaf7.ngrok.io/oauth"
         >
+          <!-- href="https://slack.com/oauth/authorize?scope=incoming-webhook,chat:write:user,users:read&client_id=230513850368.604545361031&redirect_uri=https://111f4eaf.ngrok.io/oauth" -->
           <img
             alt="Add to Slack"
             height="40"
@@ -64,7 +65,7 @@
           <img
             class="profile-picture"
             :alt="user.displayName"
-            src="../assets/logo.png"
+            :src="user.slack_data.userpic || '../assets/logo.png'"
           />
         </a>
         <ul class="dropdown-menu menu vertical" v-show="profileDropdown">
