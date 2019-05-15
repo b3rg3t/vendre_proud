@@ -54,17 +54,24 @@ import { GET_KEY } from '@/helpers'
 export default {
   name: 'Timeline',
   data() {
-    return {
-      userpic: null
-    }
+    return {}
   },
   computed: {
     ...mapGetters({
-      prouds: 'prouds/getProudsByGroup',
       user: 'users/getUser',
       activeGroup: 'groups/getActiveGroup'
-    })
+    }),
+    prouds() {
+      if (this.options.timeline === 'user') {
+        return this.$store.getters['prouds/getProudsByUser']
+      } else if (this.options.timeline === 'group') {
+        return this.$store.getters['prouds/getProudsByGroup']
+      } else {
+        console.log('No timeline options are set.')
+      }
+    }
   },
+  props: ['options'],
   methods: {
     getProudOwner(uid) {
       return this.$store.getters['users/getUserName'](uid)
@@ -111,7 +118,6 @@ export default {
       const query = '?token=' + access_token + '&user=' + user_id
       axios.get(API + query).then(response => {
         console.log(response)
-        this.userpic = response.data.user.profile.image_192
         users
           .child(uid)
           .child('slack_data')
@@ -132,6 +138,7 @@ export default {
 
 <style lang="scss" scoped>
 .timeline__body {
+  max-width: 600px;
   padding: 1rem;
   .no-prouds {
     color: hsl(54, 100%, 10%);

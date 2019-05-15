@@ -107,7 +107,6 @@ const actions = {
           displayName,
           email
         }
-
         users.child(uid).set(userObj)
       })
   },
@@ -157,6 +156,7 @@ const actions = {
         email
       }
       users.child(uid).set(userObj)
+      return auth
     } else {
       // If false, continue login
       return auth

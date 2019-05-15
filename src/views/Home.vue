@@ -2,7 +2,7 @@
   <div class="home">
     <div class="wrapper">
       <main class="main">
-        <Timeline />
+        <Timeline :options="{ timeline: 'group' }" />
       </main>
       <aside class="sidebar">
         <section v-if="state">
