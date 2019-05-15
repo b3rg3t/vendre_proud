@@ -19,7 +19,7 @@
             <button
               v-show="user.uid === proud.owner"
               @click="removeProud(proud.uid)"
-              class="button small medium-expanded hollow button alert proud__content__btn"
+              class="button alert proud__content__btn"
             >
               X
             </button>
@@ -131,7 +131,8 @@ export default {
       font-size: rem-calc(11.3);
     }
     &__btn {
-      border-radius: rem-calc(5 5 5 5);
+      border-radius: rem-calc(25 10 25 0);
+      margin: rem-calc(18 0 0 0);
     }
   }
 }
