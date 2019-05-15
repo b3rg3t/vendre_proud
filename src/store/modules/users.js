@@ -38,30 +38,46 @@ const actions = {
   },
 
   startListeningToUsers({ commit, rootState, rootGetters }) {
-    const userActiveGroup = GET_KEY(['users', 'user', 'activeGroup'], rootState)
-    if (userActiveGroup) {
-      users.on('value', snapshot => {
+    users.on('value', snapshot => {
+      // Check if user has an active group
+      const userActiveGroup = GET_KEY(
+        ['users', 'user', 'activeGroup'],
+        rootState
+      )
+      if (userActiveGroup) {
+        // If all good, then get response from firebase...
         const dbUsers = snapshot.val()
+        // ...get the group object from client state...
         const localGroup = rootGetters['groups/getGroupById'](userActiveGroup)
+        // ...check if there are admins and users
         const admins = GET_KEY(['members', 'admins'], localGroup)
         const users = GET_KEY(['members', 'users'], localGroup)
 
         const stateUsers = []
-
-        Object.keys(admins).forEach(admin => {
-          if (dbUsers[admin]) {
-            stateUsers.push(dbUsers[admin])
-          }
-        })
-
-        Object.keys(users).forEach(user => {
-          if (dbUsers[user]) {
-            stateUsers.push(dbUsers[user])
-          }
-        })
+        // If there are admins push the user object (for that admin) into the array stateUsers
+        if (admins) {
+          Object.keys(admins).forEach(admin => {
+            if (dbUsers[admin]) {
+              stateUsers.push(dbUsers[admin])
+            }
+          })
+        }
+        // Same for users
+        if (users) {
+          Object.keys(users).forEach(user => {
+            if (dbUsers[user]) {
+              stateUsers.push(dbUsers[user])
+            }
+          })
+        }
+        // Commit the array to rootState with SET_USERS
         commit('SET_USERS', [...stateUsers])
-      })
-    }
+      }
+    })
+  },
+
+  stopListeningToUsers() {
+    users.off()
   },
 
   setActiveGroup({ commit, rootState }, gid) {
@@ -156,9 +172,15 @@ const getters = {
   getActiveGroup: state => {
     if (!state.user) return
     else return state.user.activeGroup
+  },
+  getUserName: state => uid => {
+    console.log(state.users)
+    if (uid && state.users) {
+      const user = state.users.find(user => user.uid === uid)
+      return user.displayName
+    }
   }
 }
-
 export default {
   namespaced: true,
   state,

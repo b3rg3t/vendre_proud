@@ -1,7 +1,9 @@
 <template>
   <section class="timeline">
     <header class="timeline__header">
-      <h2 class="timeline__header__title">Timeline</h2>
+      <h2 class="timeline__header__title" v-if="activeGroup">
+        Timeline {{ activeGroup.name }}
+      </h2>
     </header>
 
     <div class="timeline__body">
@@ -58,19 +60,13 @@ export default {
   computed: {
     ...mapGetters({
       prouds: 'prouds/getProudsByGroup',
-      user: 'users/getUser'
-    }),
-    group() {
-      return this.$store.getters['groups/getGroupById'](user.activeGroup)
-    }
+      user: 'users/getUser',
+      activeGroup: 'groups/getActiveGroup'
+    })
   },
   methods: {
     getProudOwner(uid) {
-      let displayName
-      user(uid).once('value', snapshot => {
-        displayName = snapshot.val().displayName
-      })
-      return displayName
+      return this.$store.getters['users/getUserName'](uid)
     },
     getUserProfilePicture(uid) {
       const profilePicutre = GET_KEY(
@@ -129,10 +125,6 @@ export default {
     if (this.$route.query.access_token && this.$route.query.user_id) {
       this.saveToken()
     }
-  },
-
-  beforeUpdate() {
-    this.$store.dispatch('users/startListeningToUsers')
   }
 }
 </script>
