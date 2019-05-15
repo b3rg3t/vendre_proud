@@ -56,17 +56,17 @@ const actions = {
         const stateUsers = []
         // If there are admins push the user object (for that admin) into the array stateUsers
         if (admins) {
-          Object.keys(admins).forEach(admin => {
-            if (dbUsers[admin]) {
-              stateUsers.push({ ...dbUsers[admin], uid: user })
+          Object.keys(admins).forEach(uid => {
+            if (dbUsers[uid]) {
+              stateUsers.push({ ...dbUsers[uid], uid: uid })
             }
           })
         }
         // Same for users
         if (users) {
-          Object.keys(users).forEach(user => {
-            if (dbUsers[user]) {
-              stateUsers.push({ ...dbUsers[user], uid: user })
+          Object.keys(users).forEach(uid => {
+            if (dbUsers[uid]) {
+              stateUsers.push({ ...dbUsers[uid], uid: uid })
             }
           })
         }
@@ -169,6 +169,13 @@ const actions = {
 
 const getters = {
   getUser: state => state.user,
+  getUserById: state => uid => state.users.find(user => user.uid === uid),
+  getUserProfilePicture: state => uid => {
+    if (uid && state.users) {
+      const usr = state.users.find(user => user.uid === uid)
+      return GET_KEY(['slack_data', 'userpic'], usr)
+    }
+  },
   getActiveGroup: state => {
     if (!state.user) return
     else return state.user.activeGroup
