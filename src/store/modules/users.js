@@ -58,7 +58,7 @@ const actions = {
         if (admins) {
           Object.keys(admins).forEach(admin => {
             if (dbUsers[admin]) {
-              stateUsers.push(dbUsers[admin])
+              stateUsers.push({ ...dbUsers[admin], uid: user })
             }
           })
         }
@@ -66,7 +66,7 @@ const actions = {
         if (users) {
           Object.keys(users).forEach(user => {
             if (dbUsers[user]) {
-              stateUsers.push(dbUsers[user])
+              stateUsers.push({ ...dbUsers[user], uid: user })
             }
           })
         }
@@ -174,10 +174,13 @@ const getters = {
     else return state.user.activeGroup
   },
   getUserName: state => uid => {
-    console.log(state.users)
     if (uid && state.users) {
       const user = state.users.find(user => user.uid === uid)
-      return user.displayName
+      if (user && user.displayName) {
+        return user.displayName
+      } else if (user && !user.displayName) {
+        console.log('User has no displayName')
+      }
     }
   }
 }

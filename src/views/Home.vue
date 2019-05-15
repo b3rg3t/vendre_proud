@@ -5,10 +5,8 @@
         <Timeline />
       </main>
       <aside class="sidebar">
-        <section>
-          <header>
-            <h4>Group members</h4>
-          </header>
+        <section v-if="state">
+          <h4>Group members</h4>
 
           <div class="users">
             <div
@@ -90,7 +88,7 @@ export default {
 }
 
 .users {
-  padding: 1rem;
+  padding: 0.5rem 1rem 1rem;
   width: 100%;
   &__row {
     display: flex;

@@ -1,8 +1,9 @@
 <template>
   <section class="timeline">
     <header class="timeline__header">
-      <h2 class="timeline__header__title" v-if="activeGroup">
-        Timeline {{ activeGroup.name }}
+      <h2 class="timeline__header__title">
+        <span v-if="activeGroup">{{ activeGroup.name }}</span>
+        <span v-else>Loading...</span>
       </h2>
     </header>
 
