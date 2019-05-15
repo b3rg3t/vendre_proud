@@ -26,18 +26,18 @@ export default {
 .error {
   position: relative;
   max-width: 100%;
-  padding: 1.5rem;
+  padding: rem-calc(24);
   background: #fff9c6;
-  border-radius: 5px;
+  border-radius: rem-calc(5);
 
   color: #050504;
   &__content {
     &__title {
-      font-size: 1em;
-      margin: 0 0 0.5rem;
+      font-size: rem-calc(16);
+      margin: 0 0 rem-calc(8);
     }
     &__message {
-      font-size: 0.85em;
+      font-size: rem-calc(6);
       margin: 0;
       padding: 0;
     }
@@ -47,9 +47,9 @@ export default {
 .close-btn {
   color: #161612;
   position: absolute;
-  top: 1rem;
-  right: 1rem;
-  padding: 0.5rem;
+  top: rem-calc(16);
+  right: rem-calc(16);
+  padding: rem-calc(8);
   cursor: pointer;
 }
 </style>

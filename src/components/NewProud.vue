@@ -61,16 +61,17 @@ export default {
 
 <!-- Add "scoped" attribute to limit CSS to this component only -->
 <style lang="scss" scoped>
+@import '~foundation-sites/scss/foundation.scss';
 .create-proud {
-  padding: 1rem;
+  padding: rem-calc(16);
   display: flex;
   flex-direction: column;
   justify-content: flex-start;
-
-  border: 1px solid grey;
+  border-radius: rem-calc(11);
+  border: rem-calc(2) solid grey;
 
   &__title {
-    margin: 0.5rem 0 1rem;
+    margin: rem-calc(8 0 16 0);
   }
   .input-container {
     padding: 0;
@@ -81,13 +82,16 @@ export default {
     justify-content: flex-start;
 
     &__input {
-      padding: 10px;
+      padding: rem-calc(10 10 10 10);
       width: 100%;
-      margin-bottom: 1rem;
+      margin-bottom: rem-calc(16);
+      border: rem-calc(2) solid grey;
+      border-radius: rem-calc(11);
     }
   }
   .btn {
-    margin-bottom: 0.5rem;
+    margin-bottom: rem-calc(8);
+    border-radius: rem-calc(11);
   }
 }
 </style>

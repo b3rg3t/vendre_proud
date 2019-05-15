@@ -19,7 +19,7 @@
             <button
               v-show="user.uid === proud.owner"
               @click="removeProud(proud.uid)"
-              class="alert button"
+              class="button small medium-expanded hollow button alert proud__content__btn"
             >
               X
             </button>
@@ -76,42 +76,43 @@ export default {
 </script>
 
 <style lang="scss" scoped>
+@import '~foundation-sites/scss/foundation.scss';
 .timeline__body {
   padding: 1rem;
   .no-prouds {
     color: hsl(54, 100%, 10%);
-    padding: 1rem;
+    padding: rem-calc(16) 1rem;
     background: rgb(255, 249, 198);
-    border-radius: 8px;
+    border-radius: rem-calc(8);
   }
 }
 .proud {
-  padding: 1rem;
-  border: 1px solid seagreen;
+  padding: rem-calc(16);
+  border: rem-calc(1) solid seagreen;
 
-  border-radius: 8px;
+  border-radius: rem-calc(8);
   display: flex;
   flex-direction: row;
   justify-content: flex-start;
 
-  max-height: 400px;
-  margin-bottom: 1rem;
+  max-height: rem-calc(400);
+  margin-bottom: rem-calc(16);
 
   &__profile {
     display: flex;
     flex-direction: column;
     justify-content: center;
     align-items: center;
-    margin-right: 1rem;
+    margin-right: rem-calc(16);
     &__img {
-      height: 80px;
+      height: rem-calc(80);
       border-radius: 50%;
-      border: 1px lightgrey solid;
+      border: rem-calc(1) lightgrey solid;
     }
   }
 
   &__content {
-    padding: 0.25rem;
+    padding: rem-calc(4);
     display: flex;
     flex-direction: column;
     justify-content: flex-start;
@@ -120,14 +121,17 @@ export default {
       margin: 0;
     }
     &__message {
-      margin-bottom: 0.35rem;
+      margin-bottom: rem-calc(5);
     }
     &__owner {
-      margin-bottom: 0.2rem;
+      margin-bottom: rem-calc(3.5);
     }
 
     &__date {
-      font-size: 0.75em;
+      font-size: rem-calc(11.3);
+    }
+    &__btn {
+      border-radius: rem-calc(5 5 5 5);
     }
   }
 }
