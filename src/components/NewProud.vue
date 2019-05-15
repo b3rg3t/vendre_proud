@@ -68,9 +68,9 @@ export default {
         .update({ [proudId]: true })
       this.sendToSlack(newProud)
     },
-    sendToSlack: function(proud) {
+    sendToSlack: async function(proud) {
       if (!this.slack_data) {
-        users.child(this.user.uid).once('value', snapshot => {
+        await users.child(this.user.uid).once('value', snapshot => {
           const temp = snapshot.val()
           if (GET_KEY(['slack_data', 'access_token'], temp)) {
             this.slack_data = {
@@ -81,7 +81,7 @@ export default {
         })
 
         if (this.slack_data) {
-          var url = 'http://localhost:4390/sendMessage'
+          var url = 'https://evening-temple-56525.herokuapp.com/sendMessage'
 
           var postData = {
             channel: 'proud',
@@ -90,7 +90,7 @@ export default {
             userId: this.slack_data.user_id
           }
 
-          axios.post(url, postData).then(function(response) {
+          await axios.post(url, postData).then(function(response) {
             console.log(response.data)
           })
         } else {

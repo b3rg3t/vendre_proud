@@ -118,7 +118,6 @@ export default {
       const API = 'https://slack.com/api/users.info'
       const query = '?token=' + access_token + '&user=' + user_id
       axios.get(API + query).then(response => {
-        console.log(response)
         const userPic = response.data.user.profile.image_192
         users
           .child(uid)

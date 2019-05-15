@@ -60,7 +60,6 @@ const getters = {
     state.prouds
       .filter(proud => {
         if (user) {
-          console.log(proud.owner === user.uid)
           return proud.owner === user.uid
         }
       })
