@@ -3,7 +3,7 @@
     <ul class="navigation__list">
       <li v-if="isHidden" class="navigation__list__item">
         <a
-          href="https://slack.com/oauth/authorize?scope=incoming-webhook,chat:write:user,users:read&client_id=230513850368.604545361031&redirect_uri=https://111f4eaf.ngrok.io/oauth"
+          href="https://slack.com/oauth/authorize?scope=incoming-webhook,chat:write:user,users:read&client_id=230513850368.604545361031&redirect_uri=https://evening-temple-56525.herokuapp.com/oauth"
         >
           <img
             alt="Add to Slack"
