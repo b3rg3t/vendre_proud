@@ -155,6 +155,24 @@ const getters = {
       ? Object.keys(members.admins).length
       : 0
     return users + admins
+  },
+
+  getActiveGroup: (state, getters, rootState) => {
+    if (!rootState.users.user) {
+      return
+    } else {
+      const activeGroup = GET_KEY(['users', 'user', 'activeGroup'], rootState)
+      if (activeGroup) {
+        const foundGroup = state.groups.find(group => group.uid === activeGroup)
+        if (foundGroup) {
+          return foundGroup
+        } else {
+          throw Error(`Did not find a group with ID: ${activeGroup} `)
+        }
+      } else {
+        throw Error(`User has no active group.`)
+      }
+    }
   }
 }
 

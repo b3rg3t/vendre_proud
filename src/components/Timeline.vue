@@ -1,14 +1,22 @@
 <template>
   <section class="timeline">
     <header class="timeline__header">
-      <h2 class="timeline__header__title">Timeline</h2>
+      <h2 class="timeline__header__title">
+        <span v-if="activeGroup">{{ activeGroup.name }}</span>
+        <span v-else>Loading...</span>
+      </h2>
     </header>
 
     <div class="timeline__body">
       <div class="prouds" v-if="prouds.length >= 1">
         <div class="proud" v-for="(proud, index) in prouds" :key="index">
           <div class="proud__profile">
-            <img src="../assets/logo.png" class="proud__profile__img" />
+            <img
+              v-if="getUserProfilePicture(proud.owner)"
+              :src="getUserProfilePicture(proud.owner)"
+              class="proud__profile__img"
+            />
+            <img v-else src="../assets/logo.png" class="proud__profile__img" />
           </div>
           <div class="proud__content">
             <h4 class="proud__content__message">{{ proud.message }}</h4>
@@ -41,6 +49,7 @@ import firebase from 'firebase'
 import { user, group, proud, users } from '@/main.js'
 import { mapGetters, mapState } from 'vuex'
 import axios from 'axios'
+import { GET_KEY } from '@/helpers'
 
 export default {
   name: 'Timeline',
@@ -52,19 +61,24 @@ export default {
   computed: {
     ...mapGetters({
       prouds: 'prouds/getProudsByGroup',
-      user: 'users/getUser'
-    }),
-    group() {
-      return this.$store.getters['groups/getGroupById'](user.activeGroup)
-    }
+      user: 'users/getUser',
+      activeGroup: 'groups/getActiveGroup'
+    })
   },
   methods: {
     getProudOwner(uid) {
-      let displayName
-      user(uid).once('value', snapshot => {
-        displayName = snapshot.val().displayName
-      })
-      return displayName
+      return this.$store.getters['users/getUserName'](uid)
+    },
+    getUserProfilePicture(uid) {
+      const profilePicutre = GET_KEY(
+        [uid, 'slack_data', 'userpic'],
+        this.$store.users
+      )
+      if (profilePicutre) {
+        return profilePicutre
+      } else {
+        return false
+      }
     },
     convertTime(time) {
       const date = new Date(time)
@@ -74,28 +88,30 @@ export default {
       this.$store.dispatch('prouds/removeProud', proudID)
     },
     saveToken() {
-      const { uid } = firebase.auth().currentUser
-      const access_token = this.$route.query.access_token
-      const user_id = this.$route.query.user_id
-      if (access_token && user_id) {
-        console.log('push to firebase')
-        users
-          .child(uid)
-          .child('slack_data')
-          .set({
-            user_id,
-            access_token
-          })
+      if (!GET_KEY(['slack_data'], this.user)) {
+        const uid = firebase.auth().currentUser.uid
+        const access_token = this.$route.query.access_token
+        const user_id = this.$route.query.user_id
+        if (access_token && user_id) {
+          console.log('push to firebase')
+          users
+            .child(uid)
+            .child('slack_data')
+            .set({
+              user_id,
+              access_token
+            })
+        }
+        this.getPicFromSlack(access_token, user_id, uid)
       }
-      this.getPicFromSlack(access_token, user_id, uid)
-      this.$router.replace('home')
     },
+
     getPicFromSlack(access_token, user_id, uid) {
       const API = 'https://slack.com/api/users.info'
       const query = '?token=' + access_token + '&user=' + user_id
       axios.get(API + query).then(response => {
-        this.userpic = response.data.user.profile.image_192
         console.log(response)
+        this.userpic = response.data.user.profile.image_192
         users
           .child(uid)
           .child('slack_data')
@@ -107,7 +123,9 @@ export default {
   },
 
   beforeMount() {
-    this.saveToken()
+    if (this.$route.query.access_token && this.$route.query.user_id) {
+      this.saveToken()
+    }
   }
 }
 </script>

@@ -3,7 +3,7 @@
     <ul class="navigation__list">
       <li v-if="isHidden" class="navigation__list__item">
         <a
-          href="https://slack.com/oauth/authorize?scope=incoming-webhook,chat:write:user&client_id=230513850368.604545361031&redirect_uri=https://0280eaf7.ngrok.io/oauth"
+          href="https://slack.com/oauth/authorize?scope=incoming-webhook,chat:write:user,users:read&client_id=230513850368.604545361031&redirect_uri=https://111f4eaf.ngrok.io/oauth"
         >
           <img
             alt="Add to Slack"
@@ -62,8 +62,15 @@
         </a>
         <a class="navigation__list__item__link">
           <img
+            v-if="getProfilePicture"
             class="profile-picture"
             :alt="user.displayName"
+            :src="getProfilePicture"
+          />
+          <img
+            v-else
+            class="profile-picture"
+            alt="Placeholder profile picture"
             src="../assets/logo.png"
           />
         </a>
@@ -105,6 +112,7 @@
 <script>
 import { user, group } from '@/main'
 import { mapGetters, mapState } from 'vuex'
+import { GET_KEY } from '@/helpers'
 export default {
   name: 'Navigation',
   data: () => {
@@ -117,6 +125,14 @@ export default {
   computed: {
     joinedGroups() {
       return this.$store.getters['groups/getJoinedGroups'](this.user.uid)
+    },
+    getProfilePicture() {
+      const userProfilePic = GET_KEY(['slack_data', 'userpic'], this.user)
+      if (userProfilePic) {
+        return userProfilePic
+      } else {
+        return false
+      }
     }
   },
   methods: {

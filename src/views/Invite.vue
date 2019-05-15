@@ -3,6 +3,7 @@
     <div class="card">
       <i class="icon-large fas fa-paper-plane"></i>
       <h2 v-if="group">Invite to {{ group.name }}</h2>
+      <h2 v-else>No group selected</h2>
       <div class="input">
         <form class="form" @submit.prevent="handleSubmit()">
           <input
@@ -59,15 +60,21 @@ export default {
       activeGroup: 'users/getActiveGroup'
     }),
     group() {
-      return this.$store.getters['groups/getGroupById'](this.activeGroup)
+      if (this.activeGroup) {
+        return this.$store.getters['groups/getGroupById'](this.activeGroup)
+      }
     }
   },
   methods: {
     handleSendInvites() {
       // Todo: Invite all email adresses from array
-      // Loop through array
-      this.invites.forEach(email => {})
-      // Add each email to as key under group => members => invites
+      this.invites.forEach(invite => {
+        group(this.group.uid)
+          .child(`members/invites`)
+          .push(invite)
+      })
+
+      console.log('Added all invites')
     },
     handleSubmit() {
       const input = this.input.toLowerCase()
