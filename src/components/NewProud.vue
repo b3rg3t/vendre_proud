@@ -16,35 +16,89 @@
 
 <script>
 import firebase from 'firebase'
-import { prouds, users } from '@/main.js'
+import { proud, prouds, user, group, slack, users } from '@/main'
+import { mapState, mapGetters } from 'vuex'
+import { GET_KEY } from '@/helpers'
+
+Vue.use(VueAxios, axios)
+import Vue from 'vue'
+import axios from 'axios'
+import VueAxios from 'vue-axios'
+
 export default {
-  name: 'CreateProud',
+  name: 'NewProud',
+  post: 'postData',
+
   data() {
     return {
       newProud: {
         message: ''
-      }
+      },
+      slack_data: null
     }
   },
   props: {
     msg: String
   },
+  computed: {
+    ...mapGetters({
+      user: 'users/getUser'
+    })
+  },
   methods: {
     addMessage: function() {
-      const { uid } = firebase.auth().currentUser
-      const proud = {
+      const newProud = {
         message: this.newProud.message,
-        mentions: false,
-        owner: uid,
+        mentions: null, // Todo: Add a way to mention someone
+        owner: this.user.uid,
         created: firebase.database.ServerValue.TIMESTAMP
       }
-      const proudPush = prouds.push(proud)
+      const proudId = prouds.push(newProud).key
       this.newProud.message = ''
-      const proudId = proudPush.path.pieces_[1]
-      users
-        .child(uid)
+      if (this.user.activeGroup) {
+        console.log('This ran')
+        console.log(this.user.activeGroup, proudId)
+        group(this.user.activeGroup)
+          .child('prouds')
+          .update({ [proudId]: true })
+        proud(proudId).update({ group: this.user.activeGroup })
+      }
+      user(this.user.uid)
         .child('prouds')
         .update({ [proudId]: true })
+      this.sendToSlack(newProud)
+    },
+    sendToSlack: function(proud) {
+      if (!this.slack_data) {
+        users.child(this.user.uid).once('value', snapshot => {
+          const temp = snapshot.val()
+          if (GET_KEY(['slack_data', 'access_token'], temp)) {
+            this.slack_data = {
+              access_token: temp.slack_data.access_token,
+              user_id: temp.slack_data.user_id
+            }
+          }
+        })
+
+        if (this.slack_data) {
+          var url = 'http://localhost:4390/sendMessage'
+
+          var postData = {
+            channel: 'proud',
+            text: proud.message,
+            token: this.slack_data.access_token,
+            userId: this.slack_data.user_id
+          }
+
+          axios.post(url, postData).then(function(response) {
+            console.log(response.data)
+          })
+        } else {
+          console.log('User has no slack data')
+        }
+      } else {
+        console.log('No slack access')
+      }
     }
   }
 }
