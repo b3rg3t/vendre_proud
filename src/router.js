@@ -8,6 +8,7 @@ import CreateGroup from '@/views/CreateGroup'
 import SignIn from '@/views/SignIn'
 import SignUp from '@/views/SignUp'
 import Invite from '@/views/Invite'
+import Profile from '@/views/Profile'
 
 Vue.use(Router)
 
@@ -55,7 +56,14 @@ const router = new Router({
         requiresAuth: true
       }
     },
-
+    {
+      path: '/profile',
+      name: 'Profile',
+      component: Profile,
+      meta: {
+        requiresAuth: true
+      }
+    },
     {
       path: '/create-group',
       name: 'Create group',

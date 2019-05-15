@@ -56,6 +56,15 @@ const actions = {
 const getters = {
   getAllProuds: state => state.prouds,
   getProudById: state => uid => state.prouds.find(proud => proud.uid === uid), // CheckAgain: Is this needed?
+  getProudsByUser: (state, getters, { users: { user } }) =>
+    state.prouds
+      .filter(proud => {
+        if (user) {
+          console.log(proud.owner === user.uid)
+          return proud.owner === user.uid
+        }
+      })
+      .sort((next, prev) => prev.created - next.created),
   getProudsByGroup: (state, getters, { users: { user } }) =>
     // Todo: Take a look at this again
     state.prouds
