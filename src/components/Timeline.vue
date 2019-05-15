@@ -110,6 +110,7 @@ export default {
             })
         }
         this.getPicFromSlack(access_token, user_id, uid)
+        this.$router.replace('/home')
       }
     },
 
@@ -118,11 +119,12 @@ export default {
       const query = '?token=' + access_token + '&user=' + user_id
       axios.get(API + query).then(response => {
         console.log(response)
+        const userPic = response.data.user.profile.image_192
         users
           .child(uid)
           .child('slack_data')
           .update({
-            userpic: this.userpic
+            userpic: userPic
           })
       })
     }
