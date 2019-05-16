@@ -1,12 +1,17 @@
 import firebase from 'firebase'
 import { users, user } from '@/main'
+import { GET_KEY } from '@/helpers'
 
 const state = {
-  user: null
+  user: null,
+  users: []
 }
 const mutations = {
   SET_USER(state, data) {
     state.user = data
+  },
+  SET_USERS(state, data) {
+    state.users = data
   },
   SET_ACTIVE_GROUP(state, data) {
     state.user.activeGroup = data
@@ -31,6 +36,50 @@ const actions = {
   stopListeningToUser({ commit }) {
     user(user.uid).off()
   },
+
+  startListeningToUsers({ commit, rootState, rootGetters }) {
+    users.on('value', snapshot => {
+      // Check if user has an active group
+      const userActiveGroup = GET_KEY(
+        ['users', 'user', 'activeGroup'],
+        rootState
+      )
+      if (userActiveGroup) {
+        // If all good, then get response from firebase...
+        const dbUsers = snapshot.val()
+        // ...get the group object from client state...
+        const localGroup = rootGetters['groups/getGroupById'](userActiveGroup)
+        // ...check if there are admins and users
+        const admins = GET_KEY(['members', 'admins'], localGroup)
+        const users = GET_KEY(['members', 'users'], localGroup)
+
+        const stateUsers = []
+        // If there are admins push the user object (for that admin) into the array stateUsers
+        if (admins) {
+          Object.keys(admins).forEach(uid => {
+            if (dbUsers[uid]) {
+              stateUsers.push({ ...dbUsers[uid], uid: uid })
+            }
+          })
+        }
+        // Same for users
+        if (users) {
+          Object.keys(users).forEach(uid => {
+            if (dbUsers[uid]) {
+              stateUsers.push({ ...dbUsers[uid], uid: uid })
+            }
+          })
+        }
+        // Commit the array to rootState with SET_USERS
+        commit('SET_USERS', [...stateUsers])
+      }
+    })
+  },
+
+  stopListeningToUsers() {
+    users.off()
+  },
+
   setActiveGroup({ commit, rootState }, gid) {
     const uid = rootState.users.user.uid
     user(uid).update({ activeGroup: gid })
@@ -58,7 +107,6 @@ const actions = {
           displayName,
           email
         }
-
         users.child(uid).set(userObj)
       })
   },
@@ -108,6 +156,7 @@ const actions = {
         email
       }
       users.child(uid).set(userObj)
+      return auth
     } else {
       // If false, continue login
       return auth
@@ -120,12 +169,28 @@ const actions = {
 
 const getters = {
   getUser: state => state.user,
+  getUserById: state => uid => state.users.find(user => user.uid === uid),
+  getUserProfilePicture: state => uid => {
+    if (uid && state.users) {
+      const usr = state.users.find(user => user.uid === uid)
+      return GET_KEY(['slack_data', 'userpic'], usr)
+    }
+  },
   getActiveGroup: state => {
     if (!state.user) return
     else return state.user.activeGroup
+  },
+  getUserName: state => uid => {
+    if (uid && state.users) {
+      const user = state.users.find(user => user.uid === uid)
+      if (user && user.displayName) {
+        return user.displayName
+      } else if (user && !user.displayName) {
+        console.log('User has no displayName')
+      }
+    }
   }
 }
-
 export default {
   namespaced: true,
   state,

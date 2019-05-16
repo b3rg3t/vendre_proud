@@ -43,8 +43,6 @@ export default {
   data: () => {
     return {
       name: '',
-      invite: '',
-      invitees: [],
       privateGroup: false
     }
   },
@@ -55,7 +53,7 @@ export default {
         .dispatch('groups/createNewGroup', this.name)
         .then(res => {
           this.name = ''
-          this.$router.replace('groups')
+          this.$router.replace('invite-members')
         })
         .catch(err => {
           throw Error(err)

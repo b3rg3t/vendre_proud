@@ -39,6 +39,7 @@ firebase.auth().onAuthStateChanged(user => {
       await store.dispatch('users/startListeningToUser')
       await store.dispatch('prouds/startListeningToProuds')
       await store.dispatch('groups/startListeningToGroups')
+      await store.dispatch('users/startListeningToUsers')
     })()
   } else {
     ;(async function() {
@@ -46,6 +47,7 @@ firebase.auth().onAuthStateChanged(user => {
       await store.dispatch('groups/stopListeningToGroups')
       await store.dispatch('prouds/stopListeningToProuds')
       await store.dispatch('users/stopListeningToUser')
+      await store.dispatch('users/stopListeningToUsers')
     })()
   }
 

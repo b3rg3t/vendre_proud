@@ -18,6 +18,7 @@
 import firebase from 'firebase'
 import { proud, prouds, user, group, slack, users } from '@/main'
 import { mapState, mapGetters } from 'vuex'
+import { GET_KEY } from '@/helpers'
 
 Vue.use(VueAxios, axios)
 import Vue from 'vue'
@@ -55,37 +56,46 @@ export default {
       const proudId = prouds.push(newProud).key
       this.newProud.message = ''
       if (this.user.activeGroup) {
-        newProud.group = this.user.activeGroup
+        console.log('This ran')
+        console.log(this.user.activeGroup, proudId)
         group(this.user.activeGroup)
           .child('prouds')
           .update({ [proudId]: true })
+        proud(proudId).update({ group: this.user.activeGroup })
       }
       user(this.user.uid)
         .child('prouds')
         .update({ [proudId]: true })
       this.sendToSlack(newProud)
     },
-    sendToSlack: function(proud) {
+    sendToSlack: async function(proud) {
       if (!this.slack_data) {
-        users.child(this.user.uid).once('value', snapshot => {
+        await users.child(this.user.uid).once('value', snapshot => {
           const temp = snapshot.val()
-          this.slack_data = {
-            access_token: temp.slack_data.access_token,
-            user_id: temp.slack_data.user_id
+          if (GET_KEY(['slack_data', 'access_token'], temp)) {
+            this.slack_data = {
+              access_token: temp.slack_data.access_token,
+              user_id: temp.slack_data.user_id
+            }
           }
         })
-        var url = 'http://localhost:4390/sendMessage'
 
-        var postData = {
-          channel: 'proud',
-          text: proud.message,
-          token: this.slack_data.access_token,
-          userId: this.slack_data.user_id
+        if (this.slack_data) {
+          var url = 'https://evening-temple-56525.herokuapp.com/sendMessage'
+
+          var postData = {
+            channel: 'proud',
+            text: proud.message,
+            token: this.slack_data.access_token,
+            userId: this.slack_data.user_id
+          }
+
+          await axios.post(url, postData).then(function(response) {
+            console.log(response.data)
+          })
+        } else {
+          console.log('User has no slack data')
         }
-
-        axios.post(url, postData).then(function(response) {
-          console.log(response.data)
-        })
       } else {
         console.log('No slack access')
       }

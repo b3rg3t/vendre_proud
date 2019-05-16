@@ -1,28 +1,37 @@
 <template>
   <section class="timeline">
     <header class="timeline__header">
-      <h2 class="timeline__header__title">Timeline</h2>
+      <h2 class="timeline__header__title" v-if="options.timeline === 'group'">
+        <span v-if="activeGroup">{{ activeGroup.name }}</span>
+        <span v-else>Loading...</span>
+      </h2>
+      <h2 class="timeline__header__title" v-if="options.timeline === 'user'">
+        Your #PROUD's
+      </h2>
     </header>
 
     <div class="timeline__body">
       <div class="prouds" v-if="prouds.length >= 1">
         <div class="proud" v-for="(proud, index) in prouds" :key="index">
           <div class="proud__profile">
-            <img src="../assets/logo.png" class="proud__profile__img" />
+            <img
+              v-if="getUserProfilePicture(proud.owner)"
+              :src="getUserProfilePicture(proud.owner)"
+              class="proud__profile__img"
+            />
+            <img v-else src="../assets/logo.png" class="proud__profile__img" />
           </div>
           <div class="proud__content">
-            <h4 class="proud__content__message">{{ proud.message }}</h4>
             <p class="proud__content__owner">
-              {{ getProudOwner(proud.owner) }}
+              @{{ getProudOwner(proud.owner) }}
             </p>
+            <h4 class="proud__content__message">{{ proud.message }}</h4>
             <p class="proud__content__date">{{ convertTime(proud.created) }}</p>
-            <button
+            <context-menu
+              :menuitems="contextMenuItems"
               v-show="user.uid === proud.owner"
-              @click="removeProud(proud.uid)"
-              class="alert button"
-            >
-              X
-            </button>
+              :id="proud.uid"
+            />
           </div>
         </div>
       </div>
@@ -42,30 +51,46 @@ import { user, group, proud, users } from '@/main.js'
 import { mapGetters, mapState } from 'vuex'
 import axios from 'axios'
 import { GET_KEY } from '@/helpers'
+import ContextMenu from './ContextMenu'
 
 export default {
   name: 'Timeline',
+  components: {
+    'context-menu': ContextMenu
+  },
   data() {
     return {
-      userpic: null
+      contextMenuItems: {
+        delete: {
+          label: 'Delete proud',
+          action: this.removeProud
+        }
+      }
     }
   },
   computed: {
     ...mapGetters({
-      prouds: 'prouds/getProudsByGroup',
-      user: 'users/getUser'
+      user: 'users/getUser',
+      activeGroup: 'groups/getActiveGroup'
     }),
-    group() {
-      return this.$store.getters['groups/getGroupById'](user.activeGroup)
+    prouds() {
+      if (this.options.timeline === 'user') {
+        return this.$store.getters['prouds/getProudsByUser']
+      } else if (this.options.timeline === 'group') {
+        return this.$store.getters['prouds/getProudsByGroup']
+      } else {
+        console.log('No timeline options are set.')
+      }
     }
   },
+  props: ['options'],
   methods: {
     getProudOwner(uid) {
-      let displayName
-      user(uid).once('value', snapshot => {
-        displayName = snapshot.val().displayName
-      })
-      return displayName
+      return this.$store.getters['users/getUserName'](uid)
+    },
+    getUserProfilePicture(uid) {
+      const localUser = this.$store.getters['users/getUserProfilePicture'](uid)
+      return localUser
     },
     convertTime(time) {
       const date = new Date(time)
@@ -88,8 +113,9 @@ export default {
               user_id,
               access_token
             })
+          this.getPicFromSlack(access_token, user_id, uid)
+          this.$router.replace('/home')
         }
-        this.getPicFromSlack(access_token, user_id, uid)
       }
     },
 
@@ -97,13 +123,12 @@ export default {
       const API = 'https://slack.com/api/users.info'
       const query = '?token=' + access_token + '&user=' + user_id
       axios.get(API + query).then(response => {
-        console.log(response)
-        this.userpic = response.data.user.profile.image_192
+        const userPic = response.data.user.profile.image_192
         users
           .child(uid)
           .child('slack_data')
           .update({
-            userpic: this.userpic
+            userpic: userPic
           })
       })
     }
@@ -123,6 +148,7 @@ export default {
 
 <style lang="scss" scoped>
 .timeline__body {
+  max-width: 600px;
   padding: 1rem;
   .no-prouds {
     color: hsl(54, 100%, 10%);
@@ -132,10 +158,12 @@ export default {
   }
 }
 .proud {
-  padding: 1rem;
-  border: 1px solid seagreen;
+  padding: 0.5rem;
+  border: 1px solid rgb(211, 211, 211);
 
-  border-radius: 8px;
+  position: relative;
+
+  border-radius: 5px;
   display: flex;
   flex-direction: row;
   justify-content: flex-start;
@@ -150,7 +178,7 @@ export default {
     align-items: center;
     margin-right: 1rem;
     &__img {
-      height: 80px;
+      height: 56px;
       border-radius: 50%;
       border: 1px lightgrey solid;
     }
@@ -170,6 +198,7 @@ export default {
     }
     &__owner {
       margin-bottom: 0.2rem;
+      font-size: 0.75rem;
     }
 
     &__date {

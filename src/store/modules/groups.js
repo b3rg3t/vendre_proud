@@ -85,6 +85,8 @@ const actions = {
           )
     } else if (users) {
       // if uid is user
+
+      // Todo: add some kind of confirmation
       console.log('auth is User')
       group(gid)
         .child(`members/users/${uid}`)
@@ -105,6 +107,7 @@ const actions = {
       const input = confirm(`Do you really want to delete ${localGroup.name}? `)
       if (input) {
         group(gid).remove()
+        // Todo: Remove group from all users that are members
       } else {
         return
       }
@@ -143,9 +146,7 @@ const getters = {
   },
 
   getGroupMemberCount: state => gid => {
-    const group = state.groups.find(group => {
-      return group.uid === gid
-    })
+    const group = state.groups.find(group => group.uid === gid)
     const { members } = group
     const users = members.hasOwnProperty('users')
       ? Object.keys(members.users).length
@@ -154,6 +155,24 @@ const getters = {
       ? Object.keys(members.admins).length
       : 0
     return users + admins
+  },
+
+  getActiveGroup: (state, getters, rootState) => {
+    if (!rootState.users.user) {
+      return
+    } else {
+      const activeGroup = GET_KEY(['users', 'user', 'activeGroup'], rootState)
+      if (activeGroup) {
+        const foundGroup = state.groups.find(group => group.uid === activeGroup)
+        if (foundGroup) {
+          return foundGroup
+        } else {
+          throw Error(`Did not find a group with ID: ${activeGroup} `)
+        }
+      } else {
+        throw Error(`User has no active group.`)
+      }
+    }
   }
 }
 
