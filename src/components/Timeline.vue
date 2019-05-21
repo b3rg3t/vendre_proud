@@ -1,6 +1,8 @@
 <template>
   <section class="timeline">
     <header class="timeline__header">
+      <button @click="getProudsFromSlack">Get prouds</button>
+      <!-- <button @click="pushProudsToFirebaseFromSlack">Push to firebase</button> -->
       <h2 class="timeline__header__title" v-if="options.timeline === 'group'">
         <span v-if="activeGroup">{{ activeGroup.name }}</span>
         <span v-else>Loading...</span>
@@ -50,7 +52,7 @@
 
 <script>
 import firebase from 'firebase'
-import { user, group, proud, users } from '@/main.js'
+import { user, group, proud, users, prouds } from '@/main.js'
 import { mapGetters, mapState } from 'vuex'
 import axios from 'axios'
 import { GET_KEY } from '@/helpers'
@@ -76,6 +78,12 @@ export default {
       user: 'users/getUser',
       activeGroup: 'groups/getActiveGroup'
     }),
+    ...mapGetters('groups', {
+      groups: 'getAllGroups'
+    }),
+    ...mapState({
+      state: 'users'
+    }),
     prouds() {
       if (this.options.timeline === 'user') {
         return this.$store.getters['prouds/getProudsByUser']
@@ -96,8 +104,15 @@ export default {
       return localUser
     },
     convertTime(time) {
-      const date = new Date(time)
-      return date.toLocaleString()
+      const date = new Date(0)
+      console.log('time: ' + parseInt(Math.floor(time)))
+
+      if (time.length > 14) {
+        date.setUTCMilliseconds(Math.floor(time) * 1000)
+      } else {
+        date.setUTCMilliseconds(time)
+      }
+      return date.toLocaleString('sv')
     },
     removeProud(proudID) {
       this.$store.dispatch('prouds/removeProud', proudID)
@@ -117,7 +132,7 @@ export default {
               access_token
             })
           this.getPicFromSlack(access_token, user_id, uid)
-          this.$router.replace('/home')
+          // this.$router.replace('/home')
         }
       }
     },
@@ -134,6 +149,64 @@ export default {
             userpic: userPic
           })
       })
+    },
+    getProudsFromSlack() {
+      const API = 'https://slack.com/api/groups.history'
+      const access_token = '?token=' + this.user.slack_data.access_token
+      const channel = '&channel=' + 'GHGLPKJRF'
+      const count = '&count' + '=100'
+      axios.get(API + access_token + channel + count).then(response => {
+        if (response.data.messages) {
+          // console.log(response.data.messages)
+          var filteredProuds = response.data.messages.filter(
+            proud => !proud.hasOwnProperty('subtype')
+          )
+        } else {
+          console.error('there is no messages')
+        }
+        const usersId = this.state.users.map(user => {
+          // console.log(user.displayName + ' : ' + user.slack_data.user_id)
+          return user.slack_data ? user.slack_data.user_id : null
+        })
+        // console.log(usersId)
+        // message.text.substr(0, message.text.indexOf(' '))
+        let flag, newFilteredProuds
+        if (filteredProuds) {
+          newFilteredProuds = filteredProuds.filter(message => {
+            flag = false
+            usersId.forEach(user => {
+              if (user === message.user) {
+                flag = true
+              }
+            })
+            if (!message.text.includes('PROUD')) {
+              flag = false
+            }
+            return flag
+          })
+        }
+        let firebaseFilteredProuds = newFilteredProuds.map(proud => {
+          let newUser = this.state.users.find(
+            user => user.slack_data.user_id === proud.user
+          )
+          // console.log(newUser)
+          return {
+            created: proud.ts,
+            group: newUser.activeGroup,
+            message: proud.text,
+            owner: newUser.uid,
+            slack_user: proud.user
+          }
+        })
+        console.log(firebaseFilteredProuds)
+        firebaseFilteredProuds.forEach(proud => {
+          const proudKey = prouds.push(proud).key
+          group(proud.group).update({ [proudKey]: true })
+          user(proud.owner)
+            .child('prouds')
+            .update({ [proudKey]: true })
+        })
+      })
     }
   },
 
@@ -141,6 +214,10 @@ export default {
     if (this.$route.query.access_token && this.$route.query.user_id) {
       this.saveToken()
     }
+  },
+
+  beforeMount() {
+    this.saveToken()
   }
 }
 </script>
