@@ -106,6 +106,8 @@ export default {
 
 <!-- Add "scoped" attribute to limit CSS to this component only -->
 <style lang="scss" scoped>
+@import '~foundation-sites/scss/foundation.scss';
+@include foundation-button;
 .create-proud {
   padding: 1rem;
   display: flex;

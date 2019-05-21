@@ -58,6 +58,8 @@ const actions = {
         if (admins) {
           Object.keys(admins).forEach(uid => {
             if (dbUsers[uid]) {
+              dbUsers[uid].groups[localGroup.uid] = 'admin'
+
               stateUsers.push({ ...dbUsers[uid], uid: uid })
             }
           })

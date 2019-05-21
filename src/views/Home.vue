@@ -14,6 +14,23 @@
               v-for="(user, index) in state.users"
               :key="index"
             >
+              <div v-if="getAdminStatus(activeGroup.uid, state.user.uid)">
+                <button
+                  v-if="user.groups[activeGroup.uid] !== 'admin'"
+                  class="makeAdminBtn"
+                  @click="
+                    makeAdmin(user.uid, activeGroup.uid, user.displayName)
+                  "
+                >
+                  <i class="fas fa-users-cog"></i>
+                </button>
+                <button
+                  v-else-if="user.groups[activeGroup.uid] === 'admin'"
+                  @click="removeAdmin(user.uid, activeGroup.uid)"
+                >
+                  remove
+                </button>
+              </div>
               <div class="users__row__left">
                 <img
                   class="user-picture"
@@ -42,6 +59,7 @@ import firebase, { functions } from 'firebase'
 import NewProud from '@/components/NewProud.vue'
 import Timeline from '@/components/Timeline.vue'
 import Navigation from '@/components/Navigation.vue'
+import { group, users, user } from '@/main.js'
 
 import { mapState, mapGetters } from 'vuex'
 
@@ -52,12 +70,53 @@ export default {
     Timeline,
     Navigation
   },
+
+  methods: {
+    makeAdmin(uid, gid, displayName) {
+      const conf = confirm(
+        'Do you want to add ' + displayName + ' to admin for this group?'
+      )
+      if (conf == true) {
+        group(gid)
+          .child('members/users')
+          .update({
+            [uid]: null
+          })
+        group(gid)
+          .child('members/admins')
+          .update({
+            [uid]: true
+          })
+        user(uid)
+          .child('groups')
+          .update({ [gid]: 'admin' })
+      } else {
+        //You pressed Cancel! Do nothing
+      }
+    },
+    removeAdmin(uid, gid) {
+      group(gid)
+        .child('members/users')
+        .update({
+          [uid]: true
+        })
+      group(gid)
+        .child('members/admins')
+        .update({
+          [uid]: null
+        })
+      user(uid)
+        .child('groups')
+        .update({ [gid]: true })
+    }
+  },
   computed: {
     ...mapState({
       state: 'users'
     }),
     ...mapGetters({
-      activeGroup: 'groups/getActiveGroup'
+      activeGroup: 'groups/getActiveGroup',
+      getAdminStatus: 'groups/getAdminStatus'
     })
   }
 }
@@ -111,11 +170,15 @@ export default {
         margin-right: 1rem;
       }
     }
-
     h4,
     p {
       margin: 0;
       padding: 0;
+    }
+    .makeAdminBtn {
+      background-color: white;
+      border: 0px solid lightgray;
+      border-radius: 3px;
     }
   }
 }
