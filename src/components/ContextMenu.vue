@@ -11,7 +11,11 @@
         :key="index"
         class="context-menu__list__item"
       >
-        <a @click="item.action(id)" class="context-menu__list__item__link">
+        <a
+          @click="item.action(id)"
+          class="context-menu__list__item__link"
+          :style="`color: ${item.color}`"
+        >
           {{ item.label }}
         </a>
       </li>
@@ -43,7 +47,8 @@ export default {
   cursor: pointer;
 
   .context-menu__list {
-    min-width: 120px;
+    z-index: 9999;
+    min-width: 130px;
     position: absolute;
     right: 0;
     top: 1rem;
