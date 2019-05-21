@@ -93,8 +93,15 @@ export default {
       return localUser
     },
     convertTime(time) {
-      const date = new Date(time)
-      return date.toLocaleString()
+      const date = new Date(0)
+      console.log('time: ' + parseInt(Math.floor(time)))
+
+      if (time.length > 14) {
+        date.setUTCMilliseconds(Math.floor(time) * 1000)
+      } else {
+        date.setUTCMilliseconds(time)
+      }
+      return date.toLocaleString('sv')
     },
     removeProud(proudID) {
       this.$store.dispatch('prouds/removeProud', proudID)
