@@ -73,16 +73,18 @@ const actions = {
     if (admins) {
       // if uid is admin
       console.log('auth is admin')
-      Object.keys(admins).length > 1
-        ? group(gid)
-            .child(`members/admins/${uid}`)
-            .remove() &&
+      if (Object.keys(admins).length > 1) {
+        group(gid)
+          .child(`members/admins/${uid}`)
+          .remove() &&
           user(uid)
             .child(`groups/`)
             .update({ [gid]: null })
-        : alert(
-            'Dude, you are the only admin in this group. Remove the group or transfer the admin status to another user to leave.'
-          )
+      } else {
+        alert(
+          'Dude, you are the only admin in this group. Remove the group or transfer the admin status to another user to leave.'
+        )
+      }
     } else if (users) {
       // if uid is user
 

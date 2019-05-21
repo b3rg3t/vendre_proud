@@ -14,6 +14,24 @@
               v-for="(user, index) in state.users"
               :key="index"
             >
+              <div
+                class="users__row__actions"
+                v-if="
+                  getAdminStatus(activeGroup.uid, state.user.uid) &&
+                    user.uid !== state.user.uid
+                "
+              >
+                <context-menu
+                  v-if="user.groups[activeGroup.uid] !== 'admin'"
+                  :menuitems="usersMenuItems"
+                  :id="user.uid"
+                />
+                <context-menu
+                  v-else
+                  :menuitems="adminsMenuItems"
+                  :id="user.uid"
+                />
+              </div>
               <div class="users__row__left">
                 <img
                   class="user-picture"
@@ -23,7 +41,6 @@
                 <img class="user-picture" v-else src="../assets/logo.png" />
                 <h4>{{ user.displayName || user.email || 'No info' }}</h4>
               </div>
-              <p>{{ user.prouds ? Object.keys(user.prouds).length : 0 }}</p>
             </div>
           </div>
         </section>
@@ -42,7 +59,9 @@ import firebase, { functions } from 'firebase'
 import NewProud from '@/components/NewProud.vue'
 import Timeline from '@/components/Timeline.vue'
 import Navigation from '@/components/Navigation.vue'
+import ContextMenuVue from '../components/ContextMenu.vue'
 
+import { group, users, user } from '@/main.js'
 import { mapState, mapGetters } from 'vuex'
 
 export default {
@@ -50,14 +69,90 @@ export default {
   components: {
     NewProud,
     Timeline,
-    Navigation
+    Navigation,
+    'context-menu': ContextMenuVue
+  },
+  data() {
+    return {
+      usersMenuItems: {
+        makeAdmin: {
+          label: 'Promote to admin',
+          action: this.makeAdmin
+        },
+        removeFromGroup: {
+          label: 'Remove user',
+          action: this.removeUser,
+          color: 'red'
+        }
+      },
+      adminsMenuItems: {
+        removeAdmin: {
+          label: 'Demote to user',
+          action: this.removeAdmin
+        }
+      }
+    }
+  },
+  methods: {
+    makeAdmin(uid) {
+      const conf = confirm(
+        'Do you want to add ' +
+          this.getUserById(uid).displayName +
+          ' to admin for this group?'
+      )
+      if (conf == true) {
+        group(this.activeGroup.uid)
+          .child('members/users')
+          .update({
+            [uid]: null
+          })
+        group(this.activeGroup.uid)
+          .child('members/admins')
+          .update({
+            [uid]: true
+          })
+        user(uid)
+          .child('groups')
+          .update({ [this.activeGroup.uid]: 'admin' })
+      } else {
+        //You pressed Cancel! Do nothing
+      }
+    },
+    removeAdmin(uid) {
+      group(this.activeGroup.uid)
+        .child('members/users')
+        .update({
+          [uid]: true
+        })
+      group(this.activeGroup.uid)
+        .child('members/admins')
+        .update({
+          [uid]: null
+        })
+      user(uid)
+        .child('groups')
+        .update({ [this.activeGroup.uid]: true })
+    },
+    removeUser(uid) {
+      group(this.activeGroup.uid)
+        .child('members/users')
+        .update({
+          [uid]: null
+        })
+
+      user(uid)
+        .child('groups')
+        .update({ [this.activeGroup.uid]: null })
+    }
   },
   computed: {
     ...mapState({
       state: 'users'
     }),
     ...mapGetters({
-      activeGroup: 'groups/getActiveGroup'
+      activeGroup: 'groups/getActiveGroup',
+      getAdminStatus: 'groups/getAdminStatus',
+      getUserById: 'users/getUserById'
     })
   }
 }
@@ -91,6 +186,7 @@ export default {
   padding: 0.5rem 1rem 1rem;
   width: 100%;
   &__row {
+    position: relative;
     display: flex;
     flex-direction: row;
     justify-content: space-between;
@@ -99,10 +195,18 @@ export default {
     margin-bottom: 0.5rem;
     border: 1px solid lightgray;
     border-radius: 5px;
+
+    &__actions {
+      position: absolute;
+      top: 0;
+      right: 0;
+    }
+
     &__left {
       display: flex;
       min-width: 50%;
       align-items: center;
+      flex-grow: 1;
       flex-direction: row;
       .user-picture {
         height: 48px;
@@ -111,11 +215,15 @@ export default {
         margin-right: 1rem;
       }
     }
-
     h4,
     p {
       margin: 0;
       padding: 0;
+    }
+    .makeAdminBtn {
+      background-color: white;
+      border: 0px solid lightgray;
+      border-radius: 3px;
     }
   }
 }
