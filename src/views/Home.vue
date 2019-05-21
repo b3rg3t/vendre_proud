@@ -14,22 +14,23 @@
               v-for="(user, index) in state.users"
               :key="index"
             >
-              <div v-if="getAdminStatus(activeGroup.uid, state.user.uid)">
-                <button
+              <div
+                class="users__row__actions"
+                v-if="
+                  getAdminStatus(activeGroup.uid, state.user.uid) &&
+                    user.uid !== state.user.uid
+                "
+              >
+                <context-menu
                   v-if="user.groups[activeGroup.uid] !== 'admin'"
-                  class="makeAdminBtn"
-                  @click="
-                    makeAdmin(user.uid, activeGroup.uid, user.displayName)
-                  "
-                >
-                  <i class="fas fa-users-cog"></i>
-                </button>
-                <button
-                  v-else-if="user.groups[activeGroup.uid] === 'admin'"
-                  @click="removeAdmin(user.uid, activeGroup.uid)"
-                >
-                  remove
-                </button>
+                  :menuitems="usersMenuItems"
+                  :id="user.uid"
+                />
+                <context-menu
+                  v-else
+                  :menuitems="adminsMenuItems"
+                  :id="user.uid"
+                />
               </div>
               <div class="users__row__left">
                 <img
@@ -40,7 +41,6 @@
                 <img class="user-picture" v-else src="../assets/logo.png" />
                 <h4>{{ user.displayName || user.email || 'No info' }}</h4>
               </div>
-              <p>{{ user.prouds ? Object.keys(user.prouds).length : 0 }}</p>
             </div>
           </div>
         </section>
@@ -59,8 +59,9 @@ import firebase, { functions } from 'firebase'
 import NewProud from '@/components/NewProud.vue'
 import Timeline from '@/components/Timeline.vue'
 import Navigation from '@/components/Navigation.vue'
-import { group, users, user } from '@/main.js'
+import ContextMenuVue from '../components/ContextMenu.vue'
 
+import { group, users, user } from '@/main.js'
 import { mapState, mapGetters } from 'vuex'
 
 export default {
@@ -68,47 +69,71 @@ export default {
   components: {
     NewProud,
     Timeline,
-    Navigation
+    Navigation,
+    'context-menu': ContextMenuVue
   },
-
+  data() {
+    return {
+      usersMenuItems: {
+        makeAdmin: {
+          label: 'Promote to admin',
+          action: this.makeAdmin
+        },
+        removeFromGroup: {
+          label: 'Remove user',
+          action: this.removeUser,
+          color: 'red'
+        }
+      },
+      adminsMenuItems: {
+        removeAdmin: {
+          label: 'Demote to user',
+          action: this.removeAdmin
+        }
+      }
+    }
+  },
   methods: {
-    makeAdmin(uid, gid, displayName) {
+    makeAdmin(uid) {
       const conf = confirm(
-        'Do you want to add ' + displayName + ' to admin for this group?'
+        'Do you want to add ' +
+          this.getUserById(uid).displayName +
+          ' to admin for this group?'
       )
       if (conf == true) {
-        group(gid)
+        group(this.activeGroup.uid)
           .child('members/users')
           .update({
             [uid]: null
           })
-        group(gid)
+        group(this.activeGroup.uid)
           .child('members/admins')
           .update({
             [uid]: true
           })
         user(uid)
           .child('groups')
-          .update({ [gid]: 'admin' })
+          .update({ [this.activeGroup.uid]: 'admin' })
       } else {
         //You pressed Cancel! Do nothing
       }
     },
-    removeAdmin(uid, gid) {
-      group(gid)
+    removeAdmin(uid) {
+      group(this.activeGroup.uid)
         .child('members/users')
         .update({
           [uid]: true
         })
-      group(gid)
+      group(this.activeGroup.uid)
         .child('members/admins')
         .update({
           [uid]: null
         })
       user(uid)
         .child('groups')
-        .update({ [gid]: true })
-    }
+        .update({ [this.activeGroup.uid]: true })
+    },
+    removeUser() {}
   },
   computed: {
     ...mapState({
@@ -116,7 +141,8 @@ export default {
     }),
     ...mapGetters({
       activeGroup: 'groups/getActiveGroup',
-      getAdminStatus: 'groups/getAdminStatus'
+      getAdminStatus: 'groups/getAdminStatus',
+      getUserById: 'users/getUserById'
     })
   }
 }
@@ -150,6 +176,7 @@ export default {
   padding: 0.5rem 1rem 1rem;
   width: 100%;
   &__row {
+    position: relative;
     display: flex;
     flex-direction: row;
     justify-content: space-between;
@@ -158,10 +185,18 @@ export default {
     margin-bottom: 0.5rem;
     border: 1px solid lightgray;
     border-radius: 5px;
+
+    &__actions {
+      position: absolute;
+      top: 0;
+      right: 0;
+    }
+
     &__left {
       display: flex;
       min-width: 50%;
       align-items: center;
+      flex-grow: 1;
       flex-direction: row;
       .user-picture {
         height: 48px;
