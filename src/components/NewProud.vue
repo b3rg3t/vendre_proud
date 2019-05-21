@@ -1,7 +1,7 @@
 <template>
   <div>
     <form
-      v-if="user.slack_data"
+      v-if="user && user.slack_data"
       class="create-proud"
       v-on:submit.prevent="addMessage"
     >
