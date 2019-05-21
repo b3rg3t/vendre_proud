@@ -1,7 +1,7 @@
 <template>
   <div class="form-wrapper sign-up">
     <h1>#PROUD</h1>
-    <p>Let's create a new account !</p>
+    <p>Let's create a new account!</p>
     <form class="form" @submit.prevent="signUp">
       <input
         class="form__input"

@@ -2,14 +2,15 @@
   <div class="page-wrapper">
     <div class="card">
       <i class="icon-large fas fa-paper-plane"></i>
-      <h2>Invite to {{ group.name }}</h2>
+      <h2 v-if="group">Invite to {{ group.name }}</h2>
+      <h2 v-else>No group selected</h2>
       <div class="input">
         <form class="form" @submit.prevent="handleSubmit()">
           <input
             class="form__input--text"
             type="email"
             v-model="input"
-            placeholder="Invite person"
+            placeholder="Input email"
           />
         </form>
       </div>
@@ -43,12 +44,14 @@
 import firebase from 'firebase'
 import { user, group, groups } from '@/main'
 import { mapGetters } from 'vuex'
+import { GET_KEY } from '@/helpers'
 export default {
   name: 'Invite',
   data: () => {
     return {
       input: '',
-      invites: []
+      invites: [],
+      message: ''
     }
   },
   computed: {
@@ -57,19 +60,34 @@ export default {
       activeGroup: 'users/getActiveGroup'
     }),
     group() {
-      return this.$store.getters['groups/getGroupById'](activeGroup)
+      if (this.activeGroup) {
+        return this.$store.getters['groups/getGroupById'](this.activeGroup)
+      }
     }
   },
   methods: {
     handleSendInvites() {
       // Todo: Invite all email adresses from array
+      this.invites.forEach(invite => {
+        group(this.group.uid)
+          .child(`members/invites`)
+          .push(invite)
+      })
+
+      console.log('Added all invites')
     },
     handleSubmit() {
-      this.input = this.input.toLowerCase()
-      if (this.invites.includes(this.input)) {
-        return
+      const input = this.input.toLowerCase()
+
+      const isUser = GET_KEY(['members', 'users', input], this.group)
+      const isAdmin = GET_KEY(['members', 'admins', input], this.group)
+
+      if (this.invites.includes(input)) {
+        this.message = `Dude, ${input} is allready in your list.`
+      } else if (isAdmin || isUser) {
+        this.message = `${input} is already a user or admin. Try again dude.`
       } else {
-        this.invites.push(this.input)
+        this.invites.push(input)
       }
       this.input = ''
     },
