@@ -114,7 +114,7 @@ export default {
               access_token
             })
           this.getPicFromSlack(access_token, user_id, uid)
-          this.$router.replace('/home')
+          // this.$router.replace('/home')
         }
       }
     },

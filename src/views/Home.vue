@@ -91,6 +91,7 @@ export default {
   padding: 0.5rem 1rem 1rem;
   width: 100%;
   &__row {
+    position: relative;
     display: flex;
     flex-direction: row;
     justify-content: space-between;
