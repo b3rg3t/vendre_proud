@@ -29,7 +29,10 @@
             <p class="proud__content__date">{{ convertTime(proud.created) }}</p>
             <context-menu
               :menuitems="contextMenuItems"
-              v-show="user.uid === proud.owner"
+              v-show="
+                user.uid === proud.owner ||
+                  user.groups[activeGroup.uid] === 'admin'
+              "
               :id="proud.uid"
             />
           </div>
