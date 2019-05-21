@@ -133,7 +133,17 @@ export default {
         .child('groups')
         .update({ [this.activeGroup.uid]: true })
     },
-    removeUser() {}
+    removeUser(uid) {
+      group(this.activeGroup.uid)
+        .child('members/users')
+        .update({
+          [uid]: null
+        })
+
+      user(uid)
+        .child('groups')
+        .update({ [this.activeGroup.uid]: null })
+    }
   },
   computed: {
     ...mapState({
