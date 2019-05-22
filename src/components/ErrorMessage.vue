@@ -23,6 +23,7 @@ export default {
 </script>
 
 <style lang="scss" scoped>
+@import '~foundation-sites/scss/foundation.scss';
 .error {
   position: relative;
   max-width: 100%;

@@ -1,27 +1,32 @@
 <template>
-  <div class="profile" v-show="user !== ''">
-    <h2>This is {{ user.displayName }}'s profile</h2>
-  </div>
+  <section class="user-profile">
+    <h2 v-if="user">Hi, {{ user.displayName || user.email }}!</h2>
+    <p>This is your profile</p>
+    <Timeline :options="{ timeline: 'user' }" />
+  </section>
 </template>
 
 <script>
-import firebase from 'firebase'
-import { users } from '@/main'
 import { mapGetters } from 'vuex'
+import Timeline from '@/components/Timeline'
 export default {
   name: 'Profile',
-  data() {
+  data: () => {
     return {}
   },
   computed: {
-    ...mapGetters('users', {
-      user: 'getUser'
+    ...mapGetters({
+      user: 'users/getUser'
     })
+  },
+  components: {
+    Timeline
   }
 }
 </script>
 
 <style lang="scss" scoped>
-.profile {
+@import '~foundation-sites/scss/foundation.scss';
+.user-profile {
 }
 </style>

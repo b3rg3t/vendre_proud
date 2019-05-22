@@ -48,27 +48,28 @@ export default {
 </script>
 
 <style lang="scss" scoped>
+@import '~foundation-sites/scss/foundation.scss';
 section {
-  max-width: 500px;
+  max-width: rem-calc(430);
   margin-left: auto;
   margin-right: auto;
 }
 
 .groups {
-  margin-bottom: 1rem;
-  border: 1px solid lightgray;
-  border-radius: 8px;
+  margin-bottom: rem-calc(16);
+  border: rem-calc(1) solid lightgray;
+  border-radius: (8);
 }
 
 .groups-buttons {
-  padding: 1rem 0;
+  padding: rem-calc(16 0);
   display: flex;
   flex-direction: row;
   justify-content: flex-start;
   align-items: center;
   button {
     margin-bottom: 0;
-    margin-right: 1rem;
+    margin-right: rem-calc(16);
   }
 }
 </style>

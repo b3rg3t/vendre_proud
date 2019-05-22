@@ -1,7 +1,7 @@
 <template>
   <div class="form-wrapper sign-up">
     <h1>#PROUD</h1>
-    <p>Let's create a new account !</p>
+    <p>Let's create a new account!</p>
     <form class="form" @submit.prevent="signUp">
       <input
         class="form__input"
@@ -80,9 +80,7 @@ export default {
           displayName: this.displayName
         })
         .then(auth => {
-          if (auth) {
-            this.$router.replace('groups')
-          }
+          this.$router.replace('groups')
         })
         .catch(err => {
           this.error.message = err
@@ -120,15 +118,16 @@ export default {
 </script>
 
 <style lang="scss" scoped>
+@import '~foundation-sites/scss/foundation.scss';
 .sign-up {
   position: relative;
   &__back-btn {
     position: absolute;
-    bottom: 1.5rem;
-    left: 1.5rem;
+    bottom: rem-calc(24);
+    left: rem-calc(24);
 
     i {
-      margin-right: 0.5rem;
+      margin-right: rem-calc(8);
     }
 
     a {

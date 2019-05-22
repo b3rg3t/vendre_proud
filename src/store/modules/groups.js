@@ -73,18 +73,22 @@ const actions = {
     if (admins) {
       // if uid is admin
       console.log('auth is admin')
-      Object.keys(admins).length > 1
-        ? group(gid)
-            .child(`members/admins/${uid}`)
-            .remove() &&
+      if (Object.keys(admins).length > 1) {
+        group(gid)
+          .child(`members/admins/${uid}`)
+          .remove() &&
           user(uid)
             .child(`groups/`)
             .update({ [gid]: null })
-        : alert(
-            'Dude, you are the only admin in this group. Remove the group or transfer the admin status to another user to leave.'
-          )
+      } else {
+        alert(
+          'Dude, you are the only admin in this group. Remove the group or transfer the admin status to another user to leave.'
+        )
+      }
     } else if (users) {
       // if uid is user
+
+      // Todo: add some kind of confirmation
       console.log('auth is User')
       group(gid)
         .child(`members/users/${uid}`)
@@ -105,6 +109,7 @@ const actions = {
       const input = confirm(`Do you really want to delete ${localGroup.name}? `)
       if (input) {
         group(gid).remove()
+        // Todo: Remove group from all users that are members
       } else {
         return
       }
@@ -143,9 +148,7 @@ const getters = {
   },
 
   getGroupMemberCount: state => gid => {
-    const group = state.groups.find(group => {
-      return group.uid === gid
-    })
+    const group = state.groups.find(group => group.uid === gid)
     const { members } = group
     const users = members.hasOwnProperty('users')
       ? Object.keys(members.users).length
@@ -154,6 +157,24 @@ const getters = {
       ? Object.keys(members.admins).length
       : 0
     return users + admins
+  },
+
+  getActiveGroup: (state, getters, rootState) => {
+    if (!rootState.users.user) {
+      return
+    } else {
+      const activeGroup = GET_KEY(['users', 'user', 'activeGroup'], rootState)
+      if (activeGroup) {
+        const foundGroup = state.groups.find(group => group.uid === activeGroup)
+        if (foundGroup) {
+          return foundGroup
+        } else {
+          throw Error(`Did not find a group with ID: ${activeGroup} `)
+        }
+      } else {
+        throw Error(`User has no active group.`)
+      }
+    }
   }
 }
 
