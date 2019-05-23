@@ -158,6 +158,7 @@ export default {
     },
     setActiveGroup(id) {
       this.$store.dispatch('users/setActiveGroup', id)
+      this.redirect('home')
     },
     logout() {
       this.$store.dispatch('users/logOutUser').then(res => {
@@ -207,7 +208,7 @@ export default {
           border-radius: 5px;
           border: 1px solid lightgrey;
           padding: 0;
-
+          z-index: 999;
           position: absolute;
           right: 0;
           top: 3rem;
