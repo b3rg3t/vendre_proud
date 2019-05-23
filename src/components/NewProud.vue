@@ -73,7 +73,8 @@ export default {
         message: this.newProud.message,
         mentions: null, // Todo: Add a way to mention someone
         owner: this.user.uid,
-        created: firebase.database.ServerValue.TIMESTAMP
+        created: firebase.database.ServerValue.TIMESTAMP,
+        slack_user: this.user.slack_data.user_id
       }
       const proudId = prouds.push(newProud).key
       this.newProud.message = ''
@@ -95,24 +96,23 @@ export default {
       this.sendToSlack(newProud)
     },
 
-    sendToSlack: async function(proud) {
+    async sendToSlack(proud) {
       if (!this.slack_data) {
-        await users.child(this.user.uid).once('value', snapshot => {
-          const temp = snapshot.val()
-          if (GET_KEY(['slack_data', 'access_token'], temp)) {
-            this.slack_data = {
-              access_token: temp.slack_data.access_token,
-              user_id: temp.slack_data.user_id
-            }
+        if (GET_KEY(['slack_data', 'access_token'], this.user)) {
+          this.slack_data = {
+            access_token: this.user.slack_data.access_token,
+            user_id: this.user.slack_data.user_id
           }
-        })
+        }
 
         if (this.user.slack_data) {
           var url = 'https://evening-temple-56525.herokuapp.com/sendMessage'
 
+          let proudMessage = proud.message.split(' ')
+          proudMessage = ['PROUD', ...proudMessage]
           var postData = {
             channel: 'proud',
-            text: proud.message,
+            text: proudMessage.join(' '),
             token: this.user.slack_data.access_token,
             userId: this.user.slack_data.user_id
           }

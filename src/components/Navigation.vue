@@ -3,7 +3,7 @@
     <ul class="navigation__list">
       <li v-if="isHidden" class="navigation__list__item">
         <a
-          href="https://slack.com/oauth/authorize?scope=incoming-webhook,chat:write:user&client_id=230513850368.604545361031"
+          href="https://slack.com/oauth/authorize?scope=incoming-webhook,chat:write:user,groups:history&client_id=230513850368.604545361031"
         >
           <!-- href="https://slack.com/oauth/authorize?scope=incoming-webhook,chat:write:user,users:read&client_id=230513850368.604545361031&redirect_uri=https://evening-temple-56525.herokuapp.com/oauth" -->
 
@@ -158,6 +158,7 @@ export default {
     },
     setActiveGroup(id) {
       this.$store.dispatch('users/setActiveGroup', id)
+      this.redirect('home')
     },
     logout() {
       this.$store.dispatch('users/logOutUser').then(res => {
@@ -208,7 +209,7 @@ export default {
           border-radius: rem-calc(5);
           border: rem-calc(1) solid lightgrey;
           padding: 0;
-
+          z-index: 999;
           position: absolute;
           right: 0;
           top: rem-calc(48);
