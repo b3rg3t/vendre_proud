@@ -73,7 +73,8 @@ export default {
         message: this.newProud.message,
         mentions: null, // Todo: Add a way to mention someone
         owner: this.user.uid,
-        created: firebase.database.ServerValue.TIMESTAMP
+        created: firebase.database.ServerValue.TIMESTAMP,
+        slack_user: this.user.slack_data.user_id
       }
       const proudId = prouds.push(newProud).key
       this.newProud.message = ''

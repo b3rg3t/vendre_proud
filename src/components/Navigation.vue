@@ -3,7 +3,7 @@
     <ul class="navigation__list">
       <li v-if="isHidden" class="navigation__list__item">
         <a
-          href="https://slack.com/oauth/authorize?scope=incoming-webhook,chat:write:user&client_id=230513850368.604545361031"
+          href="https://slack.com/oauth/authorize?scope=incoming-webhook,chat:write:user,groups:history&client_id=230513850368.604545361031"
         >
           <!-- href="https://slack.com/oauth/authorize?scope=incoming-webhook,chat:write:user,users:read&client_id=230513850368.604545361031&redirect_uri=https://evening-temple-56525.herokuapp.com/oauth" -->
 
