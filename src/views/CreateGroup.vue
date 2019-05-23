@@ -53,7 +53,7 @@ export default {
         .dispatch('groups/createNewGroup', this.name)
         .then(res => {
           this.name = ''
-          this.$router.replace('invite-members')
+          this.$router.replace('home')
         })
         .catch(err => {
           throw Error(err)
