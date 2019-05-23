@@ -190,7 +190,7 @@ export default {
 }
 
 .users {
-  padding: rem-calc(8 16 16);
+  padding: rem-calc(16);
   width: 100%;
   &__row {
     position: relative;
@@ -198,9 +198,10 @@ export default {
     flex-direction: row;
     justify-content: space-between;
     align-items: center;
-    padding: rem-calc(16 16);
+    padding: rem-calc(16);
+    padding-right: rem-calc(16);
     margin-bottom: rem-calc(8);
-    border: 1px solid lightgray;
+    border: rem-calc(1) solid lightgray;
     border-radius: rem-calc(5);
 
     &__actions {

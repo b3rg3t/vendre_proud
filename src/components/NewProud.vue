@@ -140,8 +140,8 @@ export default {
   display: flex;
   flex-direction: column;
   justify-content: flex-start;
-  border-radius: rem-calc(11);
-  border: rem-calc(2) solid grey;
+  border-radius: rem-calc(5);
+  border: rem-calc(1) solid lightgrey;
 
   &__title {
     margin: rem-calc(8 0 16 0);
@@ -158,13 +158,16 @@ export default {
       padding: rem-calc(10 10 10 10);
       width: 100%;
       margin-bottom: rem-calc(16);
-      border: rem-calc(2) solid grey;
-      border-radius: rem-calc(11);
+      border: rem-calc(1) solid grey;
+      border-radius: rem-calc(5);
     }
   }
   .btn {
     margin-bottom: rem-calc(8);
-    border-radius: rem-calc(11);
+    border-radius: rem-calc(5);
+    &:focus {
+      background-color: seagreen;
+    }
   }
 }
 </style>
