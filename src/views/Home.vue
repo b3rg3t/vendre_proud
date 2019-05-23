@@ -5,6 +5,10 @@
         <Timeline :options="{ timeline: 'group' }" />
       </main>
       <aside class="sidebar">
+        <section class="new-proud">
+          <NewProud msg="Create new proud" />
+        </section>
+
         <section v-if="state">
           <h4>Group members</h4>
 
@@ -43,9 +47,6 @@
               </div>
             </div>
           </div>
-        </section>
-        <section class="new-proud">
-          <NewProud msg="Create new proud" />
         </section>
       </aside>
     </div>
@@ -166,6 +167,7 @@ export default {
 }
 
 .wrapper {
+  /* @include xy-grid; */
   display: grid;
   grid-template-columns: 1fr;
 
@@ -179,7 +181,11 @@ export default {
 .input {
   margin-top: rem-calc(500);
 }
+/* .main {
+  @include xy-cell();
+} */
 .sidebar {
+  /* @include xy-cell(); */
   padding: rem-calc(16);
 }
 
