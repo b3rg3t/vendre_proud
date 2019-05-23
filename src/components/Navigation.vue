@@ -47,11 +47,22 @@
             </a>
           </li>
           <div class="divider"></div>
+
           <li class="dropdown-menu__item dropdown-menu__item--with-icon">
-            <a class="dropdown-menu__item__link">
-              <i class="fas fa-user-plus"></i>
-              <span>Join group</span>
-            </a>
+            <router-link class="navigation__list__item__link" to="groups">
+              <a class="dropdown-menu__item__link">
+                <i class="fas fa-user-plus"></i>
+                <span>Join group</span>
+              </a>
+            </router-link>
+          </li>
+          <li class="dropdown-menu__item dropdown-menu__item--with-icon">
+            <router-link class="navigation__list__item__link" to="create-group">
+              <a class="dropdown-menu__item__link">
+                <i class="fas fa-plus-circle"></i>
+                <span>Create group</span>
+              </a>
+            </router-link>
           </li>
         </ul>
       </li>

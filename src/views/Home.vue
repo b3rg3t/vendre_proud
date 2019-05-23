@@ -7,7 +7,12 @@
       <aside class="sidebar">
         <section v-if="state">
           <h4>Group members</h4>
-
+          <router-link to="invite-members">
+            <button>
+              Invite members
+              <i class="fas fa-user-plus"></i>
+            </button>
+          </router-link>
           <div class="users">
             <div
               class="users__row"

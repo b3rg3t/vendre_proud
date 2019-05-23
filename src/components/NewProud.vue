@@ -69,33 +69,36 @@ export default {
   },
   methods: {
     addMessage: function() {
-      const newProud = {
-        message: this.newProud.message,
-        mentions: null, // Todo: Add a way to mention someone
-        owner: this.user.uid,
-        created: firebase.database.ServerValue.TIMESTAMP,
-        slack_user: this.user.slack_data.user_id
-      }
-      const proudId = prouds.push(newProud).key
-      this.newProud.message = ''
+      if (this.newProud.message.length >= 10) {
+        const newProud = {
+          message: this.newProud.message,
+          mentions: null, // Todo: Add a way to mention someone
+          owner: this.user.uid,
+          created: firebase.database.ServerValue.TIMESTAMP,
+          slack_user: this.user.slack_data.user_id
+        }
+        const proudId = prouds.push(newProud).key
+        this.newProud.message = ''
 
-      if (this.user.activeGroup) {
-        console.log('This ran')
-        console.log(this.user.activeGroup, proudId)
+        if (this.user.activeGroup) {
+          console.log('This ran')
+          console.log(this.user.activeGroup, proudId)
 
-        group(this.user.activeGroup)
+          group(this.user.activeGroup)
+            .child('prouds')
+            .update({ [proudId]: true })
+
+          proud(proudId).update({ group: this.user.activeGroup })
+        }
+        user(this.user.uid)
           .child('prouds')
           .update({ [proudId]: true })
 
-        proud(proudId).update({ group: this.user.activeGroup })
+        this.sendToSlack(newProud)
+      } else {
+        console.error('proud must have at least 10 characters')
       }
-      user(this.user.uid)
-        .child('prouds')
-        .update({ [proudId]: true })
-
-      this.sendToSlack(newProud)
     },
-
     async sendToSlack(proud) {
       if (!this.slack_data) {
         if (GET_KEY(['slack_data', 'access_token'], this.user)) {

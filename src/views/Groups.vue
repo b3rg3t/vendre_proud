@@ -15,12 +15,8 @@
     </div>
 
     <div class="groups-buttons">
-      <button class="btn" @click="handleOpenJoinGroups()">
-        Join group
-      </button>
-
       <router-link to="create-group">
-        Create new group
+        Create new group +
       </router-link>
     </div>
   </section>
@@ -64,7 +60,7 @@ section {
   padding: 1rem 0;
   display: flex;
   flex-direction: row;
-  justify-content: flex-start;
+  justify-content: center;
   align-items: center;
   button {
     margin-bottom: 0;
