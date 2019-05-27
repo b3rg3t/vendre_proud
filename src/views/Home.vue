@@ -199,6 +199,11 @@ export default {
   padding: rem-calc(6);
   border: rem-calc(1) solid lightslategrey;
   border-radius: rem-calc(5);
+  background-color: none;
+  cursor: pointer;
+  &:hover {
+    background-color: lightgray;
+  }
 }
 .btn-invite-members {
   color: seagreen;
