@@ -1,13 +1,18 @@
 <template>
   <section class="timeline">
     <header class="timeline__header">
-      <button @click="getProudsFromSlack" class="btn-invite">
-        <i class="fab fa-slack-hash btn-getprouds-icon"></i>
-        Get prouds
-      </button>
       <!-- <button @click="pushProudsToFirebaseFromSlack">Push to firebase</button> -->
       <h2 class="timeline__header__title" v-if="options.timeline === 'group'">
-        <span v-if="activeGroup">{{ activeGroup.name }}</span>
+        <span v-if="activeGroup">
+          {{ activeGroup.name }}
+          <br />
+          <br />
+          <button @click="getProudsFromSlack" class="btn-invite">
+            <i class="fab fa-slack-hash btn-getprouds-icon"></i>
+            Get prouds
+          </button>
+        </span>
+
         <span v-else>Loading...</span>
       </h2>
       <h2 class="timeline__header__title" v-if="options.timeline === 'user'">
@@ -182,6 +187,21 @@ export default {
     padding: rem-calc(16 16);
     background: rgb(255, 249, 198);
     border-radius: rem-calc(8);
+<<<<<<< HEAD
+  }
+}
+.btn-invite {
+  margin-bottom: rem-calc(8);
+  padding: rem-calc(6);
+  border: rem-calc(1) solid lightslategrey;
+  border-radius: rem-calc(5);
+  background-color: none;
+  cursor: pointer;
+  &:hover {
+    background-color: lightgray;
+  }
+}
+=======
   }
 }
 .btn-invite {
@@ -190,6 +210,7 @@ export default {
   border: rem-calc(1) solid lightslategrey;
   border-radius: rem-calc(5);
 }
+>>>>>>> master
 .btn-getprouds-icon {
   color: seagreen;
 }
