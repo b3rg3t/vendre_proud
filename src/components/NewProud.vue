@@ -5,7 +5,10 @@
       class="create-proud"
       v-on:submit.prevent="addMessage"
     >
-      <h3 class="create-proud__title">{{ msg }}</h3>
+      <h3 class="create-proud__title">
+        <i class="fab fa-slack-hash btn-getprouds-icon"></i>
+        {{ msg }}
+      </h3>
       <fieldset class="input-container">
         <input
           class="input-container__input"

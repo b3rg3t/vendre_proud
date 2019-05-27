@@ -1,6 +1,9 @@
 <template>
   <div class="form-wrapper sign-in">
-    <h1>#PROUD</h1>
+    <h1>
+      <i class="fab fa-slack-hash btn-getprouds-icon"></i>
+      PROUD
+    </h1>
     <p class="text-center">Please login to your Proud account</p>
     <form class="form" @submit.prevent="login()">
       <input
@@ -123,6 +126,9 @@ export default {
   padding: rem-calc(48 32);
   border: rem-calc(1) solid lightgray;
   border-radius: rem-calc(8);
+}
+.btn-getprouds-icon {
+  color: seagreen;
 }
 .form {
   width: 100%;

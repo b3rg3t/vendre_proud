@@ -3,7 +3,10 @@
     <header v-show="user" class="main-header">
       <div class="main-header__wrapper grid-container">
         <div class="logo">
-          <h2 class="logo__text">#PROUD</h2>
+          <h2 class="logo__text">
+            <i class="fab fa-slack-hash btn-getprouds-icon"></i>
+            PROUD
+          </h2>
         </div>
         <Navigation v-if="user" :user="user" />
         <div v-else class="placeholder-menu"></div>
@@ -107,7 +110,9 @@ body {
     }
   }
 }
-
+.btn-getprouds-icon {
+  color: seagreen;
+}
 .btn--small {
   @extend .btn;
   padding: rem-calc(4 8);

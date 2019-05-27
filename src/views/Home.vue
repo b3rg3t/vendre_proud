@@ -12,9 +12,9 @@
         <section v-if="state">
           <h4>Group members</h4>
           <router-link to="invite-members">
-            <button>
+            <button class="btn-invite">
+              <i class="fas fa-user-plus btn-invite-members"></i>
               Invite members
-              <i class="fas fa-user-plus"></i>
             </button>
           </router-link>
           <div class="users">
@@ -166,6 +166,7 @@ export default {
 
 <style lang="scss" scoped>
 @import '~foundation-sites/scss/foundation.scss';
+@include foundation-button;
 .home {
   width: 100%;
   height: 100%;
@@ -193,7 +194,15 @@ export default {
   /* @include xy-cell(); */
   padding: rem-calc(16);
 }
-
+.btn-invite {
+  margin-bottom: rem-calc(8);
+  padding: rem-calc(6);
+  border: rem-calc(1) solid lightslategrey;
+  border-radius: rem-calc(5);
+}
+.btn-invite-members {
+  color: seagreen;
+}
 .users {
   padding: rem-calc(16);
   width: 100%;

@@ -1,6 +1,9 @@
 <template>
   <div class="login">
-    <h1>#PROUD</h1>
+    <h1>
+      <i class="fab fa-slack-hash btn-getprouds-icon"></i>
+      PROUD
+    </h1>
     <p class="text-center">Please login to your Proud account</p>
     <form class="login__form" @submit.prevent="login">
       <input
@@ -174,6 +177,9 @@ export default {
         cursor: pointer;
       }
     }
+  }
+  .btn-getprouds-icon {
+    color: seagreen;
   }
   .social-button {
     width: rem-calc(48);

@@ -1,6 +1,9 @@
 <template>
   <div class="form-wrapper sign-up">
-    <h1>#PROUD</h1>
+    <h1>
+      <i class="fab fa-slack-hash btn-getprouds-icon"></i>
+      PROUD
+    </h1>
     <p>Let's create a new account!</p>
     <form class="form" @submit.prevent="signUp">
       <input
@@ -134,5 +137,8 @@ export default {
       text-decoration: none;
     }
   }
+}
+.btn-getprouds-icon {
+  color: seagreen;
 }
 </style>
