@@ -44,7 +44,7 @@
               <div class="users__row__left">
                 <img
                   class="user-picture"
-                  v-if="user.slack_data"
+                  v-if="user.slack_data && user.slack_data.userpic"
                   :src="user.slack_data.userpic"
                 />
                 <img class="user-picture" v-else src="../assets/logo.png" />
