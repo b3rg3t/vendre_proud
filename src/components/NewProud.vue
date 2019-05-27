@@ -164,7 +164,7 @@ export default {
       padding: rem-calc(10 10 10 10);
       width: 100%;
       margin-bottom: rem-calc(16);
-      border: rem-calc(1) solid grey;
+      border: rem-calc(1) solid lightgray;
       border-radius: rem-calc(5);
     }
   }

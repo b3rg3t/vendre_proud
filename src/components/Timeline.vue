@@ -187,30 +187,19 @@ export default {
     padding: rem-calc(16 16);
     background: rgb(255, 249, 198);
     border-radius: rem-calc(8);
-<<<<<<< HEAD
   }
 }
 .btn-invite {
   margin-bottom: rem-calc(8);
   padding: rem-calc(6);
-  border: rem-calc(1) solid lightslategrey;
+  border: rem-calc(1) solid lightgrey;
   border-radius: rem-calc(5);
-  background-color: none;
+  background: none;
   cursor: pointer;
   &:hover {
-    background-color: lightgray;
+    background-color: rgb(246, 252, 249);
   }
 }
-=======
-  }
-}
-.btn-invite {
-  margin-bottom: rem-calc(8);
-  padding: rem-calc(6);
-  border: rem-calc(1) solid lightslategrey;
-  border-radius: rem-calc(5);
-}
->>>>>>> master
 .btn-getprouds-icon {
   color: seagreen;
 }

@@ -49,19 +49,15 @@
           <div class="divider"></div>
 
           <li class="dropdown-menu__item dropdown-menu__item--with-icon">
-            <router-link class="navigation__list__item__link" to="groups">
-              <a class="dropdown-menu__item__link">
-                <i class="fas fa-user-plus"></i>
-                <span>Join group</span>
-              </a>
+            <router-link class="dropdown-menu__item__link" to="groups">
+              <i class="fas fa-user-plus"></i>
+              <span>Join group</span>
             </router-link>
           </li>
           <li class="dropdown-menu__item dropdown-menu__item--with-icon">
-            <router-link class="navigation__list__item__link" to="create-group">
-              <a class="dropdown-menu__item__link">
-                <i class="fas fa-plus-circle"></i>
-                <span>Create group</span>
-              </a>
+            <router-link class="dropdown-menu__item__link" to="create-group">
+              <i class="fas fa-plus-circle"></i>
+              <span>Create group</span>
             </router-link>
           </li>
         </ul>
@@ -237,6 +233,7 @@ export default {
                 display: flex;
                 flex-direction: row;
                 cursor: pointer;
+                color: rgb(44, 62, 80);
               }
               span {
                 padding-left: rem-calc(8);
