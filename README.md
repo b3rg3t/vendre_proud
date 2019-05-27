@@ -1,6 +1,5 @@
 
 ![Alt text](/readme_banner.png?raw=true "Vendre - Proud")
-# #Proud
 ### Project made for Vendre
 This project is made as a school assignment and handed to us from Vendre AB in Stockholm. 
 
