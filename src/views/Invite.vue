@@ -102,17 +102,18 @@ export default {
 </script>
 
 <style lang="scss" scoped>
+@import '~foundation-sites/scss/foundation.scss';
 .card {
-  max-width: 600px;
+  max-width: rem-calc(600);
   margin: 0 auto;
 }
 
 .invites {
   background: rgb(248, 248, 248);
-  border: 1px solid lightgray;
-  border-radius: 5px;
+  border: rem-calc(1) solid lightgray;
+  border-radius: rem-calc(5);
   width: 100%;
-  margin-bottom: 1rem;
+  margin-bottom: rem-calc(16);
 }
 
 .icon-large {
@@ -124,8 +125,8 @@ export default {
   flex-direction: row;
   justify-content: space-between;
   align-items: center;
-  padding: 1rem;
-  border-bottom: 1px solid lightgrey;
+  padding: rem-calc(16);
+  border-bottom: rem-calc(1) solid lightgrey;
 
   &:last-of-type {
     border-bottom: none;
@@ -138,7 +139,7 @@ export default {
 
   &__controls {
     cursor: pointer;
-    padding: 0 0.3rem;
+    padding: rem-calc(0 3);
     i {
       color: rgb(61, 35, 35);
     }

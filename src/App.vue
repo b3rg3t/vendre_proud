@@ -3,7 +3,10 @@
     <header v-show="user" class="main-header">
       <div class="main-header__wrapper grid-container">
         <div class="logo">
-          <h2 class="logo__text">#PROUD</h2>
+          <h2 class="logo__text">
+            <i class="fab fa-slack-hash btn-getprouds-icon"></i>
+            PROUD
+          </h2>
         </div>
         <Navigation v-if="user" :user="user" />
         <div v-else class="placeholder-menu"></div>
@@ -87,14 +90,14 @@ body {
 .btn {
   @extend .button;
   background: seagreen;
-  border-radius: 5px;
+  border-radius: rem-calc(5);
 
   &:hover {
     background: darkseagreen;
   }
   &--outline {
     background: transparent;
-    border: lightgray 2px solid;
+    border: rem-calc(2) lightgray solid;
     color: $text-color;
     &:hover {
       background: rgb(241, 241, 241);
@@ -103,24 +106,26 @@ body {
   }
   &--with-icon {
     i {
-      margin-right: 0.5rem;
+      margin-right: rem-calc(8);
     }
   }
 }
-
+.btn-getprouds-icon {
+  color: seagreen;
+}
 .btn--small {
   @extend .btn;
-  padding: 0.3rem 0.5rem;
+  padding: rem-calc(4 8);
 }
 
 .main-header {
-  border-bottom: 1px solid lightgrey;
-  margin-bottom: 1.5rem;
-  padding: 1rem;
+  border-bottom: rem-calc(1) solid lightgrey;
+  margin-bottom: rem-calc(24);
+  padding: rem-calc(16);
   vertical-align: middle;
 
   &__wrapper {
-    height: 42px;
+    height: rem-calc(42);
     display: flex;
     justify-content: space-between;
     align-items: center;
@@ -134,7 +139,7 @@ body {
 
   .placeholder-menu {
     background: lightgray;
-    border-radius: 5px;
+    border-radius: rem-calc(5);
     width: 100%;
   }
 }
@@ -143,10 +148,10 @@ body {
   background: #fff;
   position: fixed;
   bottom: 0;
-  padding: 1rem;
+  padding: rem-calc(16);
   display: flex;
   width: 100%;
-  border-top: 1px solid lightgray;
+  border-top: rem-calc(1) solid lightgray;
   .bottom {
     width: 100%;
     display: flex;
@@ -157,7 +162,7 @@ body {
 
 .page-wrapper {
   width: 100%;
-  padding-top: 4rem;
+  padding-top: rem-calc(64);
 }
 
 // Form styles
@@ -170,23 +175,23 @@ body {
 
   &__input {
     &--text {
-      margin-bottom: 1rem;
+      margin-bottom: rem-calc(16);
       width: 100%;
-      padding: 15px;
-      border: 1px solid lightgrey;
+      padding: rem-calc(15);
+      border: rem-calc(1) solid lightgrey;
       background: none;
-      border-radius: 5px;
+      border-radius: rem-calc(5);
     }
     &--checkbox {
-      width: 18px;
-      height: 18px;
-      padding: 0.5rem;
+      width: rem-calc(18);
+      height: rem-calc(18);
+      padding: rem-calc(8);
     }
   }
   &__label {
     &--checkbox {
-      margin-left: 0.5rem;
-      font-size: 0.8em;
+      margin-left: rem-calc(8);
+      font-size: rem-calc(8);
       font-weight: 600;
     }
   }
@@ -207,13 +212,13 @@ body {
   }
 
   &__button {
-    margin-top: 20px;
+    margin-top: rem-calc(20);
     width: 100%;
     cursor: pointer;
   }
   &__signup {
-    margin-top: 40px;
-    font-size: 0.75em;
+    margin-top: rem-calc(40);
+    font-size: rem-calc(6);
     &__link {
       text-decoration: underline;
       cursor: pointer;

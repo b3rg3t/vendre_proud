@@ -1,6 +1,9 @@
 <template>
   <div class="login">
-    <h1>#PROUD</h1>
+    <h1>
+      <i class="fab fa-slack-hash btn-getprouds-icon"></i>
+      PROUD
+    </h1>
     <p class="text-center">Please login to your Proud account</p>
     <form class="login__form" @submit.prevent="login">
       <input
@@ -138,12 +141,13 @@ export default {
 </script>
 
 <style lang="scss">
+@import '~foundation-sites/scss/foundation.scss';
 .login {
-  width: 400px;
+  width: rem-calc(400);
   margin: 10vh auto;
-  padding: 3rem 2rem;
+  padding: rem-calc(48 32);
   border: 1px solid lightgray;
-  border-radius: 8px;
+  border-radius: rem-calc(8);
   .login__form {
     width: 100%;
     margin: 0 auto;
@@ -153,36 +157,39 @@ export default {
     align-items: center;
 
     &__input {
-      margin: 10px 0;
+      margin: rem-calc(10 0);
       width: 100%;
-      padding: 15px;
-      border: 1px solid lightgrey;
+      padding: rem-calc(15);
+      border: rem-calc(1) solid lightgrey;
       background: none;
-      border-radius: 5px;
+      border-radius: rem-calc(5);
     }
     &__button {
-      margin-top: 20px;
+      margin-top: rem-calc(20);
       width: 100%;
       cursor: pointer;
     }
     &__signup {
-      margin-top: 40px;
-      font-size: 0.75em;
+      margin-top: rem-calc(40);
+      font-size: rem-calc(12);
       &__link {
         text-decoration: underline;
         cursor: pointer;
       }
     }
   }
+  .btn-getprouds-icon {
+    color: seagreen;
+  }
   .social-button {
-    width: 48px;
-    height: 48px;
+    width: rem-calc(48);
+    height: rem-calc(48);
     background: white;
-    padding: 0.75rem;
+    padding: rem-calc(12);
     border-radius: 50%;
     border: none;
     outline: 0;
-    margin-right: 1rem;
+    margin-right: rem-calc(16);
 
     &:nth-last-child() {
       margin-right: 0;
