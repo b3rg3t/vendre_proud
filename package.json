@@ -9,34 +9,34 @@
     "lint-autofix": "eslint --ext .js,.vue src test --fix"
   },
   "dependencies": {
-    "auth0-js": "^9.10.2",
+    "auth0-js": "^9.10.4",
     "axios": "^0.18.0",
     "core-js": "^2.6.5",
-    "express": "^4.16.4",
-    "firebase": "^5.9.2",
+    "express": "^4.17.1",
+    "firebase": "^6.0.4",
     "foundation-sites": "^6.5.3",
     "request": "^2.88.0",
     "slack-webhook": "^1.0.0",
-    "vue": "^2.6.6",
+    "vue": "^2.6.10",
     "vue-axios": "^2.1.4",
-    "vue-router": "^3.0.1",
-    "vuex": "^3.1.0"
+    "vue-router": "^3.0.6",
+    "vuex": "^3.1.1"
   },
   "devDependencies": {
-    "@vue/cli-plugin-babel": "^3.5.0",
-    "@vue/cli-plugin-eslint": "^3.5.0",
-    "@vue/cli-service": "^3.6.0",
+    "@vue/cli-plugin-babel": "^3.8.0",
+    "@vue/cli-plugin-eslint": "^3.8.0",
+    "@vue/cli-service": "^3.8.0",
     "@vue/eslint-config-standard": "^4.0.0",
     "babel-eslint": "^10.0.1",
     "eslint": "^5.16.0",
-    "eslint-config-prettier": "^4.1.0",
-    "eslint-plugin-prettier": "^3.0.1",
+    "eslint-config-prettier": "^4.3.0",
+    "eslint-plugin-prettier": "^3.1.0",
     "eslint-plugin-vue": "^5.2.2",
     "node-sass": "^4.12.0",
-    "prettier": "^1.16.4",
+    "prettier": "^1.17.1",
     "sass-loader": "^7.1.0",
     "style-loader": "^0.23.1",
-    "vue-template-compiler": "^2.5.21"
+    "vue-template-compiler": "^2.6.10"
   },
   "eslintConfig": {
     "root": true,
