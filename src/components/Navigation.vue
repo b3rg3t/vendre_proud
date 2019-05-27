@@ -183,13 +183,14 @@ export default {
 </script>
 
 <style lang="scss" scoped>
+@import '~foundation-sites/scss/foundation.scss';
 .extra-margin {
-  margin-right: 1rem;
+  margin-right: rem-calc(16);
 }
 
 .divider {
-  height: 1px;
-  background: lightgray;
+  height: rem-calc(1);
+  background: lightgrey;
 }
 
 .navigation {
@@ -202,32 +203,32 @@ export default {
     flex-direction: row;
 
     &__item {
-      height: 50px;
+      height: rem-calc(50);
       display: flex;
       flex-direction: row;
       justify-content: center;
       align-items: center;
-      padding: 1rem;
+      padding: rem-calc(16);
 
       &:nth-last-child() {
-        margin-right: -1rem;
+        margin-right: rem-calc(-16);
       }
       &--has-dropdown {
         position: relative;
         .dropdown-menu {
           background: #fff;
-          border-radius: 5px;
-          border: 1px solid lightgrey;
+          border-radius: rem-calc(5);
+          border: rem-calc(1) solid lightgrey;
           padding: 0;
           z-index: 999;
           position: absolute;
           right: 0;
-          top: 3rem;
+          top: rem-calc(48);
 
-          width: 200px;
+          width: rem-calc(200);
           &__item {
             width: 100%;
-            padding: 0.5rem 0;
+            padding: rem-calc(8) 0;
             &:hover {
               background: darken(#fff, 5%);
             }
@@ -238,10 +239,10 @@ export default {
                 cursor: pointer;
               }
               span {
-                padding-left: 0.5rem;
+                padding-left: rem-calc(8);
               }
               i {
-                padding-top: 2px;
+                padding-top: rem-calc(2);
               }
             }
           }
@@ -268,8 +269,8 @@ export default {
   }
 }
 .profile-picture {
-  height: 42px;
-  border: 1px solid rgba(44, 62, 80, 0.2);
+  height: rem-calc(42);
+  border: rem-calc(1) solid rgba(44, 62, 80, 0.2);
   border-radius: 50%;
 }
 </style>

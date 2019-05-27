@@ -5,12 +5,16 @@
         <Timeline :options="{ timeline: 'group' }" />
       </main>
       <aside class="sidebar">
+        <section class="new-proud">
+          <NewProud msg="Create new proud" />
+        </section>
+
         <section v-if="state">
           <h4>Group members</h4>
           <router-link to="invite-members">
-            <button>
+            <button class="btn-invite">
+              <i class="fas fa-user-plus btn-invite-members"></i>
               Invite members
-              <i class="fas fa-user-plus"></i>
             </button>
           </router-link>
           <div class="users">
@@ -48,9 +52,6 @@
               </div>
             </div>
           </div>
-        </section>
-        <section class="new-proud">
-          <NewProud msg="Create new proud" />
         </section>
       </aside>
     </div>
@@ -164,12 +165,15 @@ export default {
 </script>
 
 <style lang="scss" scoped>
+@import '~foundation-sites/scss/foundation.scss';
+@include foundation-button;
 .home {
   width: 100%;
   height: 100%;
 }
 
 .wrapper {
+  /* @include xy-grid; */
   display: grid;
   grid-template-columns: 1fr;
 
@@ -181,14 +185,26 @@ export default {
   flex: 1;
 }
 .input {
-  margin-top: 500px;
+  margin-top: rem-calc(500);
 }
+/* .main {
+  @include xy-cell();
+} */
 .sidebar {
-  padding: 1rem;
+  /* @include xy-cell(); */
+  padding: rem-calc(16);
 }
-
+.btn-invite {
+  margin-bottom: rem-calc(8);
+  padding: rem-calc(6);
+  border: rem-calc(1) solid lightslategrey;
+  border-radius: rem-calc(5);
+}
+.btn-invite-members {
+  color: seagreen;
+}
 .users {
-  padding: 0.5rem 1rem 1rem;
+  padding: rem-calc(16);
   width: 100%;
   &__row {
     position: relative;
@@ -196,10 +212,11 @@ export default {
     flex-direction: row;
     justify-content: space-between;
     align-items: center;
-    padding: 1rem 1rem;
-    margin-bottom: 0.5rem;
-    border: 1px solid lightgray;
-    border-radius: 5px;
+    padding: rem-calc(16);
+    padding-right: rem-calc(16);
+    margin-bottom: rem-calc(8);
+    border: rem-calc(1) solid lightgray;
+    border-radius: rem-calc(5);
 
     &__actions {
       position: absolute;
@@ -214,10 +231,10 @@ export default {
       flex-grow: 1;
       flex-direction: row;
       .user-picture {
-        height: 48px;
+        height: rem-calc(48);
         border-radius: 50%;
-        border: 1px lightgrey solid;
-        margin-right: 1rem;
+        border: rem-calc(1) lightgrey solid;
+        margin-right: rem-calc(16);
       }
     }
     h4,
@@ -227,8 +244,8 @@ export default {
     }
     .makeAdminBtn {
       background-color: white;
-      border: 0px solid lightgray;
-      border-radius: 3px;
+      border: rem-calc(0) solid lightgray;
+      border-radius: rem-calc(3);
     }
   }
 }

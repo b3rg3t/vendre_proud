@@ -129,9 +129,10 @@ export default {
 </script>
 
 <style lang="scss" scoped>
+@import '~foundation-sites/scss/foundation.scss';
 .group {
-  border-top: 1px solid lightgray;
-  padding: 0 1rem 0 1rem;
+  border-top: rem-calc(1) solid lightgray;
+  padding: rem-calc(0 16 0 16);
   &__section {
     display: flex;
     flex-direction: row;
@@ -143,10 +144,10 @@ export default {
     flex-direction: row;
     align-items: center;
     &__name {
-      margin-right: 0.75rem;
+      margin-right: rem-calc(10);
     }
     &__active-group {
-      margin-right: 0.75rem;
+      margin-right: rem-calc(10);
     }
   }
 
@@ -155,14 +156,14 @@ export default {
     flex-direction: row;
     align-items: center;
     &__joined {
-      margin-right: 0.75rem;
+      margin-right: rem-calc(10);
       cursor: pointer;
     }
     &__icon {
       color: rgb(34, 100, 63);
     }
     &__badge {
-      margin-left: 0.75rem;
+      margin-left: rem-calc(10);
       background: rgb(34, 100, 63);
     }
   }

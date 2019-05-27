@@ -1,14 +1,19 @@
 <template>
   <section class="timeline">
     <header class="timeline__header">
-      <button @click="getProudsFromSlack">Get prouds</button>
+      <button @click="getProudsFromSlack" class="btn-invite">
+        <i class="fab fa-slack-hash btn-getprouds-icon"></i>
+        Get prouds
+      </button>
       <!-- <button @click="pushProudsToFirebaseFromSlack">Push to firebase</button> -->
       <h2 class="timeline__header__title" v-if="options.timeline === 'group'">
         <span v-if="activeGroup">{{ activeGroup.name }}</span>
         <span v-else>Loading...</span>
       </h2>
       <h2 class="timeline__header__title" v-if="options.timeline === 'user'">
-        Your #PROUD's
+        Your
+        <i class="fab fa-slack-hash btn-getprouds-icon"></i>
+        PROUD's
       </h2>
     </header>
 
@@ -168,45 +173,56 @@ export default {
 </script>
 
 <style lang="scss" scoped>
+@import '~foundation-sites/scss/foundation.scss';
 .timeline__body {
-  max-width: 600px;
-  padding: 1rem;
+  max-width: rem-calc(600);
+  padding: rem-calc(16);
   .no-prouds {
     color: hsl(54, 100%, 10%);
-    padding: 1rem;
+    padding: rem-calc(16 16);
     background: rgb(255, 249, 198);
-    border-radius: 8px;
+    border-radius: rem-calc(8);
   }
 }
+.btn-invite {
+  margin-bottom: rem-calc(8);
+  padding: rem-calc(6);
+  border: rem-calc(1) solid lightslategrey;
+  border-radius: rem-calc(5);
+}
+.btn-getprouds-icon {
+  color: seagreen;
+}
+
 .proud {
-  padding: 0.5rem;
-  border: 1px solid rgb(211, 211, 211);
+  padding: rem-calc(8);
+  border: rem-calc(1) solid rgb(211, 211, 211);
 
   position: relative;
 
-  border-radius: 5px;
+  border-radius: rem-calc(5);
   display: flex;
   flex-direction: row;
   justify-content: flex-start;
 
-  max-height: 400px;
-  margin-bottom: 1rem;
+  max-height: rem-calc(400);
+  margin-bottom: rem-calc(16);
 
   &__profile {
     display: flex;
     flex-direction: column;
     justify-content: center;
     align-items: center;
-    margin-right: 1rem;
+    margin-right: rem-calc(16);
     &__img {
-      height: 56px;
+      height: rem-calc(56);
       border-radius: 50%;
-      border: 1px lightgrey solid;
+      border: rem-calc(1) lightgrey solid;
     }
   }
 
   &__content {
-    padding: 0.25rem;
+    padding: rem-calc(4);
     display: flex;
     flex-direction: column;
     justify-content: flex-start;
@@ -215,15 +231,19 @@ export default {
       margin: 0;
     }
     &__message {
-      margin-bottom: 0.35rem;
+      margin-bottom: rem-calc(5);
     }
     &__owner {
-      margin-bottom: 0.2rem;
-      font-size: 0.75rem;
+      margin-bottom: rem-calc(2);
+      font-size: rem-calc(12);
     }
 
     &__date {
-      font-size: 0.75em;
+      font-size: rem-calc(11.3);
+    }
+    &__btn {
+      border-radius: rem-calc(25 10 25 0);
+      margin: rem-calc(18 0 0 0);
     }
   }
 }

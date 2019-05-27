@@ -1,6 +1,9 @@
 <template>
   <div class="form-wrapper sign-up">
-    <h1>#PROUD</h1>
+    <h1>
+      <i class="fab fa-slack-hash btn-getprouds-icon"></i>
+      PROUD
+    </h1>
     <p>Let's create a new account!</p>
     <form class="form" @submit.prevent="signUp">
       <input
@@ -118,20 +121,24 @@ export default {
 </script>
 
 <style lang="scss" scoped>
+@import '~foundation-sites/scss/foundation.scss';
 .sign-up {
   position: relative;
   &__back-btn {
     position: absolute;
-    bottom: 1.5rem;
-    left: 1.5rem;
+    bottom: rem-calc(24);
+    left: rem-calc(24);
 
     i {
-      margin-right: 0.5rem;
+      margin-right: rem-calc(8);
     }
 
     a {
       text-decoration: none;
     }
   }
+}
+.btn-getprouds-icon {
+  color: seagreen;
 }
 </style>

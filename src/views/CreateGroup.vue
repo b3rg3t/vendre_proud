@@ -64,29 +64,30 @@ export default {
 </script>
 
 <style lang="scss" scoped>
+@import '~foundation-sites/scss/foundation.scss';
 .btn-wrapper {
   position: absolute;
-  bottom: 1rem;
-  left: 1rem;
+  bottom: rem-calc(16);
+  left: rem-calc(16);
   display: flex;
   flex-direction: row;
   justify-content: flex-start;
   align-items: center;
 
-  font-size: 0.8em;
+  font-size: rem-calc(13);
   .back-btn {
     text-decoration: none;
     i {
-      margin-right: 0.3rem;
+      margin-right: rem-calc(4);
     }
   }
 }
 .create-group {
   position: relative;
   margin: 0 auto;
-  max-width: 400px;
-  border-radius: 8px;
-  padding: 1rem 1rem 3rem;
-  border: 1px solid lightgray;
+  max-width: rem-calc(400);
+  border-radius: rem-calc(10);
+  padding: rem-calc(13 13 40);
+  border: rem-calc(1) solid lightgray;
 }
 </style>

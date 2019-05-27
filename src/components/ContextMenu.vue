@@ -36,11 +36,12 @@ export default {
 </script>
 
 <style lang="scss" scoped>
+@import '~foundation-sites/scss/foundation.scss';
 .context-menu {
   position: absolute;
-  padding: 0.5rem;
-  top: 0.5rem;
-  right: 0.25rem;
+  padding: rem-calc(8);
+  top: rem-calc(4);
+  right: rem-calc(4);
   background: none;
   border: none;
   color: rgb(97, 97, 97);
@@ -48,20 +49,20 @@ export default {
 
   .context-menu__list {
     z-index: 9999;
-    min-width: 130px;
+    min-width: rem-calc(130);
     position: absolute;
     right: 0;
-    top: 1rem;
+    top: rem-calc(16);
 
     background: #fff;
-    box-shadow: 0px 3px 6px rgba(0, 0, 0, 0.1);
-    border-radius: 5px;
-    border: 1px solid rgb(240, 240, 240);
+    box-shadow: rem-calc(0 3 6) rgba(0, 0, 0, 0.1);
+    border-radius: rem-calc(5);
+    border: rem-calc(1) solid rgb(240, 240, 240);
     padding: 0;
     list-style: none;
 
     &__item {
-      padding: 0.7rem;
+      padding: rem-calc(10);
       width: 100%;
       cursor: pointer;
 

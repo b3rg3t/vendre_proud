@@ -5,7 +5,10 @@
       class="create-proud"
       v-on:submit.prevent="addMessage"
     >
-      <h3 class="create-proud__title">{{ msg }}</h3>
+      <h3 class="create-proud__title">
+        <i class="fab fa-slack-hash btn-getprouds-icon"></i>
+        {{ msg }}
+      </h3>
       <fieldset class="input-container">
         <input
           class="input-container__input"
@@ -139,15 +142,15 @@ export default {
 @import '~foundation-sites/scss/foundation.scss';
 @include foundation-button;
 .create-proud {
-  padding: 1rem;
+  padding: rem-calc(16);
   display: flex;
   flex-direction: column;
   justify-content: flex-start;
-
-  border: 1px solid grey;
+  border-radius: rem-calc(5);
+  border: rem-calc(1) solid lightgrey;
 
   &__title {
-    margin: 0.5rem 0 1rem;
+    margin: rem-calc(8 0 16 0);
   }
   .input-container {
     padding: 0;
@@ -158,13 +161,19 @@ export default {
     justify-content: flex-start;
 
     &__input {
-      padding: 10px;
+      padding: rem-calc(10 10 10 10);
       width: 100%;
-      margin-bottom: 1rem;
+      margin-bottom: rem-calc(16);
+      border: rem-calc(1) solid grey;
+      border-radius: rem-calc(5);
     }
   }
   .btn {
-    margin-bottom: 0.5rem;
+    margin-bottom: rem-calc(8);
+    border-radius: rem-calc(5);
+    &:focus {
+      background-color: seagreen;
+    }
   }
 }
 </style>
