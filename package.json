@@ -9,7 +9,7 @@
     "lint-autofix": "eslint --ext .js,.vue src test --fix"
   },
   "dependencies": {
-    "auth0-js": "^9.10.4",
+    "auth0-js": "^9.13.2",
     "axios": "^0.18.0",
     "core-js": "^2.6.5",
     "express": "^4.17.1",
