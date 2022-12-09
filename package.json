@@ -12,7 +12,7 @@
     "auth0-js": "^9.10.4",
     "axios": "^0.18.0",
     "core-js": "^2.6.5",
-    "express": "^4.17.1",
+    "express": "^4.17.3",
     "firebase": "^6.0.4",
     "foundation-sites": "^6.5.3",
     "request": "^2.88.0",
